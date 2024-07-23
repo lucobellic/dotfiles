@@ -2,7 +2,7 @@
 
 {
   home.file.wezterm = {
-    source = ~/.dotfiles/wezterm;
+    source = ../.config/wezterm;
     target = ".config/wezterm";
     recursive = true;
   };

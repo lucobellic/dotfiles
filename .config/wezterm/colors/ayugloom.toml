@@ -1,0 +1,17 @@
+# Ayu Gloom
+[colors]
+foreground = "#bfbdb6"
+background = "#0f131a"
+cursor_bg = "#ffb454"
+cursor_border = "#ffb454"
+cursor_fg = "#0b0e14"
+selection_bg = "#152538"
+
+ansi = ["#0b0e14","#f26d78","#aad94c","#ffb454","#39bae6","#d2a6ff","#73b8ff","#bfbdb6"]
+brights = ["#0b0e14","#f26d78","#aad94c","#ffb454","#39bae6","#d2a6ff","#73b8ff","#bfbdb6"]
+
+[colors.indexed]
+
+[metadata]
+author = 'Luco Bellic'
+name = 'Ayu Gloom'

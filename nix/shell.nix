@@ -56,8 +56,8 @@ let typewritten_symbol = if builtins.getEnv "INSIDE_DOCKER" != "" then "󰡨" el
         bindkey "^[[H" beginning-of-line
         bindkey "^[[F" end-of-line
         bindkey "^H" backward-kill-word
-        . $HOME/.dotfiles/wezterm/shell-integration/wezterm.sh
-        . $HOME/.dotfiles/wezterm/shell-integration/shell-inegration.zsh
+        . $HOME/.config/wezterm/shell-integration/wezterm.sh
+        . $HOME/.config/wezterm/shell-integration/shell-inegration.zsh
       '';
       sessionVariables = {
         NVIM_SERVER = "/tmp/neovim_server.pipe";
