@@ -53,13 +53,6 @@
 
     lazygit = {
       enable = true;
-      package = pkgs.fetchFromGitHub {
-        owner = "jesseduffield";
-        repo = "lazygit";
-        rev = "v0.43.1";
-        sha256 = "iFx/ffaijhOqEDRW1QVzhQMvSgnS4lKFOzq1YdlkUzc=";
-
-      };
       settings = {
         git = {
           # branchLogCmd: 'git log --graph --color=always --format=format:"%C(yellow)%h %C(green)%<|(75,trunc)%s%Creset %C(blue)%an %Creset%ar"'
@@ -111,10 +104,7 @@
           };
         };
         os = {
-          # NOTE= use <esc> to close floaterm
-          edit = "nvim --server $NVIM_SERVER --remote-send \"<C-\\><C-N><esc>=e {{filename}}<cr>\"";
-          editAtLine = "nvim --server $NVIM_SERVER --remote-send \"<C-\\><C-N><esc>=e +{{line}} {{filename}}<cr>\"";
-          editAtLineAndWait = "nvim --server $NVIM_SERVER --remote-send \"<C-\\><C-N><esc>=e +{{line}} {{filename}}<cr>\""; # note= remote-wait is not yet supported by nvim
+          editPreset = "nvim-remote";
         };
         promptToReturnFromSubprocess = false; # display confirmation when subprocess terminates
         services = {
