@@ -3,8 +3,6 @@
 {
 
   home.packages = [
-    pkgs.ripgrep
-    pkgs.yarn
     pkgs.grc
   ];
 

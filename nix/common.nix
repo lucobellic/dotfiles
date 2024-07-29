@@ -10,19 +10,15 @@
   # release notes.
   home.stateVersion = "24.05"; # Please read the comment before changing.
 
+  home.packages = [
+    pkgs.curl
+  ];
+
   imports = [
-    ./zsh.nix
-    ./fish.nix
+    ./shell/shell.nix
     ./btop.nix
     ./git.nix
     ./neovim.nix
-    ./wezterm.nix
-    ./kitty.nix
-  ];
-
-  home.packages = [
-    pkgs.curl
-    pkgs.go
   ];
 
   # Let Home Manager install and manage itself.

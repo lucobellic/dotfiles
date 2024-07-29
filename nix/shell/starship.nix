@@ -2,7 +2,7 @@
 
 {
 
-  xdg.configFile."starship.toml".source = ../.config/starship.toml;
+  xdg.configFile."starship.toml".source = ../../.config/starship.toml;
 
   programs = {
     starship = {
