@@ -1,10 +1,10 @@
 -- Pull in the wezterm API
 local colors = require('colors')
+local docker = require('docker')
 local keys = require('keys')
 local tabbar = require('tabbar')
 local wezterm = require('wezterm')
 local work = require('work')
-local docker = require('docker')
 -- local mux = wezterm.mux
 
 -- This table will hold the configuration.
@@ -36,8 +36,8 @@ config.font_size = 11.0
 config.strikethrough_position = '0.5cell'
 config.underline_position = '200%'
 config.warn_about_missing_glyphs = false
-config.force_reverse_video_cursor = true
--- abcdefghijklmnopqrstuvwxy
+config.force_reverse_video_cursor = false
+config.cursor_blink_rate = 0
 
 -- config.term = 'wezterm'
 config.set_environment_variables = {
@@ -54,10 +54,5 @@ config.window_padding = {
 
 -- Disable ime to fix issue with one shot layer custom key
 config.use_ime = false
-
-
-wezterm.on('user-var-changed', function(window, pane, name, value)
-  wezterm.log_info('var', name, value)
-end)
 
 return config

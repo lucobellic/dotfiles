@@ -11,18 +11,18 @@
   home.stateVersion = "24.05"; # Please read the comment before changing.
 
   imports = [
-    ./shell.nix
+    ./zsh.nix
+    ./fish.nix
     ./btop.nix
     ./git.nix
     ./neovim.nix
     ./wezterm.nix
+    ./kitty.nix
   ];
 
   home.packages = [
     pkgs.curl
     pkgs.go
-    pkgs.rustc
-    pkgs.cargo
   ];
 
   # Let Home Manager install and manage itself.
