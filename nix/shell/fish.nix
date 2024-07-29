@@ -19,11 +19,19 @@
       interactiveShellInit = ''
         set fish_greeting # Disable greeting
       '';
+      shellAbbrs = {
+        neovim = "nvim --listen /tmp/neovim_server.pipe";
+        astronvim = "env NVIM_APPNAME=astronvim nvim";
+        start-docker = ''
+          cd ~/Development/rapidash
+          if test (docker container inspect --format '{{.State.Running}}' rapidash) = "true"
+            ./reach docker exec --container rapidash zsh
+          else
+            ./reach docker run --name rapidash --docker-build=allow zsh
+          end
+          cd -
+        '';
+      };
     };
   };
-
-  imports = [
-    ./starship.nix
-  ];
-
 }

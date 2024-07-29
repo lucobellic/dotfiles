@@ -20,5 +20,8 @@
     withRuby = false;
   };
 
-  home.sessionVariables.EDITOR = "nvim";
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    NVIM_SERVER = "/tmp/neovim_server.pipe";
+  };
 }

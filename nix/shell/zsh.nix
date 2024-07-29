@@ -1,6 +1,5 @@
 { pkgs, ... }:
 
-let typewritten_symbol = if builtins.getEnv "INSIDE_DOCKER" != "" then "󰡨" else " "; in
 {
 
   home.packages = [
@@ -24,15 +23,6 @@ let typewritten_symbol = if builtins.getEnv "INSIDE_DOCKER" != "" then "󰡨" el
             repo = "fast-syntax-highlighting";
             rev = "v1.55";
             sha256 = "sha256-DWVFBoICroKaKgByLmDEo4O+xo6eA8YO792g8t8R7kA=";
-          };
-        }
-        {
-          name = "typewritten";
-          src = pkgs.fetchFromGitHub {
-            owner = "reobin";
-            repo = "typewritten";
-            rev = "v1.5.1";
-            sha256 = "sha256-qiC4IbmvpIseSnldt3dhEMsYSILpp7epBTZ53jY18x8=";
           };
         }
       ];
@@ -60,10 +50,6 @@ let typewritten_symbol = if builtins.getEnv "INSIDE_DOCKER" != "" then "󰡨" el
         . $HOME/.config/wezterm/shell-integration/shell-inegration.zsh
       '';
       sessionVariables = {
-        NVIM_SERVER = "/tmp/neovim_server.pipe";
-        TYPEWRITTEN_PROMPT_LAYOUT = "half_pure";
-        TYPEWRITTEN_RELATIVE_PATH = "git";
-        TYPEWRITTEN_SYMBOL = "${typewritten_symbol}";
         ZSH_DISABLE_COMPFIX = true;
         ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE = "fg=#626A73";
       };
