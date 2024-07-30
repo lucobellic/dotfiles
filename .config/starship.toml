@@ -7,27 +7,13 @@ $container\
 $git_branch\
 $git_metrics\
 $git_status\
-$fill\
-$cmd_duration\
-\n\
-$hostname\
-$localip\
-$shlvl\
-$shell\
-$env_var\
-$jobs\
-$sudo\
-$username\
-$character"""
-
-right_format = """
-$singularity\
-$kubernetes\
-$directory\
-$vcsh\
-$fossil_branch\
 $git_commit\
 $git_state\
+$fill\
+$singularity\
+$kubernetes\
+$vcsh\
+$fossil_branch\
 $hg_branch\
 $pijul_channel\
 $docker_context\
@@ -88,7 +74,22 @@ $custom\
 $status\
 $os\
 $battery\
-$time"""
+$time \
+\n\
+$hostname\
+$localip\
+$shlvl\
+$shell\
+$env_var\
+$jobs\
+$sudo\
+$username\
+$character"""
+
+right_format = """
+$cmd_duration\
+$directory\
+"""
 
 continuation_prompt = "[∙](bright-black) "
 scan_timeout = 30
@@ -273,7 +274,7 @@ format = "[$path]($style)[$read_only]($read_only_style) "
 repo_root_format = "[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
 style = "purple bold"
 disabled = false
-read_only = "󰌾 "
+read_only = " 󰌾"
 read_only_style = "red"
 truncation_symbol = ""
 home_symbol = "~"
@@ -411,7 +412,7 @@ commit_hash_length = 7
 format = '[\($hash$tag\)]($style) '
 style = "green bold"
 only_detached = true
-disabled = false
+disabled = true
 tag_symbol = " 🏷  "
 tag_disabled = true
 tag_max_candidates = 0
@@ -434,7 +435,7 @@ am = "AM"
 am_or_rebase = "AM/REBASE"
 style = "bold yellow"
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
-disabled = false
+disabled = true
 
 [git_status]
 # format = '([\[$all_status$ahead_behind\]]($style) )'
@@ -1085,4 +1086,3 @@ disabled = false
 detect_extensions = ["zig"]
 detect_files = []
 detect_folders = []
-
