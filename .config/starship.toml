@@ -439,9 +439,9 @@ disabled = true
 
 [git_status]
 # format = '([\[$all_status$ahead_behind\]]($style) )'
-format = "[$ahead $behind]($style) "
-ahead = "[${count}](green)"
-behind = "[${count}](red)"
+format = "[$ahead_behind]($style)"
+ahead = "[${count}](green) "
+behind = "[${count}](red) "
 style = "red bold"
 stashed = '\$'
 up_to_date = ""
