@@ -6,6 +6,7 @@
     pkgs.ripgrep
     pkgs.yarn
     pkgs.grc
+    pkgs.numbat
   ];
 
   imports = [
