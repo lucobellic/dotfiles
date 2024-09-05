@@ -1,0 +1,31 @@
+wsl = false
+no-multigrid = false
+vsync = true
+maximized = false
+srgb = false
+idle = true
+frame = "none"
+
+[font]
+normal = { family = "DMMono Nerd Font", style = "W100" }
+italic = { family = "DM Mono", style = "Medium Italic" }
+bold = { family = "DMMono Nerd Font", style = "Bold" }
+
+size = 11.3
+
+edging = "subpixelantialias"
+hinting = "full"
+
+[font.features]
+"DMMono Nerd Font" = [
+  "+ss07",
+  "+ss09",
+  "+cv25",
+  "+cv26",
+  "+cv27",
+  "+cv28",
+  "+cv29",
+  "+cv30",
+  "+cv31",
+  "+cv32",
+]
