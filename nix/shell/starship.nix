@@ -1,8 +1,8 @@
-{ ... }:
+{ config, ... }:
 
 {
 
-  xdg.configFile."starship.toml".source = ../../.config/starship.toml;
+  xdg.configFile."starship.toml".source = config.lib.file.mkOutOfStoreSymlink ../../.config/starship.toml;
 
   programs = {
     starship = {
