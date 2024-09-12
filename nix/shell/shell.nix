@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
 
@@ -7,7 +7,16 @@
     pkgs.yarn
     pkgs.grc
     pkgs.numbat
+    pkgs.gh
   ];
+
+  home.activation.customMessage = lib.mkAfter ''
+    echo -e "\033[1;32m"
+    echo -e "Perform github authentication:"
+    echo -e "\tgh auth login --web -h github.com"
+    echo -e "\tgh extension install github/gh-copilot --force"
+    echo -e "\033[0m"
+  '';
 
   imports = [
     ./kitty.nix
