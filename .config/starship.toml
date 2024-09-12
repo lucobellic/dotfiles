@@ -5,8 +5,8 @@ format = """
 $nix_shell\
 $container\
 $git_branch\
-$git_metrics\
 $git_status\
+$git_metrics\
 $git_commit\
 $git_state\
 $fill\
@@ -440,8 +440,8 @@ disabled = true
 [git_status]
 # format = '([\[$all_status$ahead_behind\]]($style) )'
 format = "[$ahead_behind]($style)"
-ahead = "[${count}](green) "
-behind = "[${count}](red) "
+ahead = "[󰅃${count}](green) "
+behind = "[󰅀${count}](red) "
 style = "red bold"
 stashed = '\$'
 up_to_date = ""
