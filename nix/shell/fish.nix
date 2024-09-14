@@ -3,6 +3,7 @@
 {
 
   home.packages = [
+    pkgs.fishPlugins.grc
     pkgs.grc
   ];
 
