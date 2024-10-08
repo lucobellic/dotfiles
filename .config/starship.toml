@@ -213,9 +213,9 @@ ignore_base = true
 disabled = false
 
 [container]
-format = '[$symbol \[$name\]]($style) '
-symbol = "⬢"
-style = "red bold dimmed"
+format = '[$symbol $name]($style) '
+symbol = " "
+style = "cyan italic"
 disabled = false
 
 [crystal]
