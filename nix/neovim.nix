@@ -16,6 +16,9 @@
     extraPython3Packages = ps: [
       ps.pynvim
     ];
+    extraLuaPackages = ps: [
+      ps.magick
+    ];
     withNodeJs = true;
     withRuby = false;
   };
