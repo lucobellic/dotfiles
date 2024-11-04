@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   # This value determines the Home Manager release that your configuration is
@@ -15,10 +15,11 @@
   ];
 
   imports = [
-    ./shell/shell.nix
     ./btop.nix
+    ./wm/hypr.nix
     ./git.nix
     ./neovim.nix
+    ./shell/shell.nix
   ];
 
   # Let Home Manager install and manage itself.

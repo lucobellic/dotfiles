@@ -48,11 +48,8 @@
         bindkey "^H" backward-kill-word
         . $HOME/.config/wezterm/shell-integration/wezterm.sh
         . $HOME/.config/wezterm/shell-integration/shell-inegration.zsh
+        export PATH="$PATH:$HOME/.cargo/bin:$HOME/.nix-profile/bin"
       '';
-      sessionVariables = {
-        ZSH_DISABLE_COMPFIX = true;
-        ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE = "fg=#626A73";
-      };
       oh-my-zsh = {
         enable = true;
         extraConfig = ''
