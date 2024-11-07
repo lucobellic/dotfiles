@@ -7,10 +7,13 @@
   ];
 
   programs = {
+    zoxide = {
+      enable = true;
+      enableFishIntegration = true;
+    };
     fish = {
       enable = true;
       plugins = [
-        { name = "z"; src = pkgs.fishPlugins.z.src; }
         { name = "grc"; src = pkgs.fishPlugins.grc.src; }
         { name = "plugin-git"; src = pkgs.fishPlugins.plugin-git; }
         { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish; }
@@ -58,6 +61,8 @@
       '';
       interactiveShellInit = ''
         set fish_greeting # Disable greeting
+        # Initialize zoxide
+        zoxide init fish | source
       '';
       shellAbbrs = {
         neovim = "nvim --listen /tmp/neovim_server.pipe";
