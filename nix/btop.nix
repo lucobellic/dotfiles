@@ -8,6 +8,7 @@
       theme_background = false;
       truecolor = true;
       force_tty = false;
+      update_ms=500;
     };
   };
 }
