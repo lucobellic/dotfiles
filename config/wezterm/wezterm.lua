@@ -1,6 +1,5 @@
 -- Pull in the wezterm API
 local colors = require('colors')
-local docker = require('docker')
 local keys = require('keys')
 local tabbar = require('tabbar')
 local wezterm = require('wezterm')
@@ -37,7 +36,7 @@ config.strikethrough_position = '0.5cell'
 config.underline_position = '200%'
 config.warn_about_missing_glyphs = false
 config.force_reverse_video_cursor = false
-config.cursor_blink_rate = 0
+-- config.cursor_blink_rate = 0
 
 -- config.term = 'wezterm'
 config.set_environment_variables = {

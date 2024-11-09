@@ -12,7 +12,7 @@
   ];
 
 
-  xdg.configFile.yazi.source = ../../.config/yazi;
+  xdg.configFile.yazi.source = ../../config/yazi;
 
   home.activation.customMessage = lib.mkAfter ''
     echo -e "\033[1;32m"

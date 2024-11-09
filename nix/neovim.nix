@@ -23,7 +23,7 @@
     withRuby = false;
   };
 
-  xdg.configFile.neovide.source = config.lib.file.mkOutOfStoreSymlink ../.config/neovide;
+  xdg.configFile.neovide.source = config.lib.file.mkOutOfStoreSymlink ../config/neovide;
 
   home.sessionVariables = {
     EDITOR = "nvim";
