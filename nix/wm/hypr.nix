@@ -10,6 +10,7 @@
     pkgs.grimblast # screenshot tool
     pkgs.swww
     pkgs.rofi-wayland
+    pkgs.waybar
     pkgs.xdg-desktop-portal-hyprland # xdg desktop portal for hyprland
     pkgs.imagemagick
   ];
@@ -22,6 +23,7 @@
   xdg.configFile.qt6ct.source = config.lib.file.mkOutOfStoreSymlink ../../config/qt6ct;
   xdg.configFile.rofi.source = config.lib.file.mkOutOfStoreSymlink ../../config/rofi;
   xdg.configFile.wlogout.source = config.lib.file.mkOutOfStoreSymlink ../../config/wlogout;
+  xdg.configFile.waybar.source = config.lib.file.mkOutOfStoreSymlink ../../config/waybar;
 
   home.file.".local/share/bin" = {
     recursive = true;

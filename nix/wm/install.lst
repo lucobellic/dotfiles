@@ -23,7 +23,7 @@ pipewire-alsa
 pipewire-audio
 pipewire-jack
 pipewire-pulse
-policykit
+policykit-1
 qt5ct
 qt6-wayland
 qt6ct
@@ -31,7 +31,6 @@ sddm
 slurp
 swappy
 udiskie
-waybar
 wireplumber
 wl-clipboard
 wlogout
