@@ -49,6 +49,16 @@
         . $HOME/.config/wezterm/shell-integration/wezterm.sh
         . $HOME/.config/wezterm/shell-integration/shell-inegration.zsh
         export PATH="$PATH:$HOME/.cargo/bin:$HOME/.nix-profile/bin"
+        export __GLX_VENDOR_LIBRARY_NAME=nvidia
+        export LIBVA_DRIVER_NAME=nvidia
+        export XDG_SESSION_TYPE=wayland
+        export GBM_BACKEND=nvidia-drm
+        export __GLX_VENDOR_LIBRARY_NAME=nvidia
+        export __GL_GSYNC_ALLOWED=1
+        export __GL_VRR_ALLOWED=1
+        export WLR_NO_HARDWARE_CURSORS=1
+        export WLR_DRM_NO_ATOMIC=1
+        export XCURSOR_SIZE=12
       '';
       oh-my-zsh = {
         enable = true;
