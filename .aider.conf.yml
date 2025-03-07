@@ -193,31 +193,31 @@ dark-mode: true
 #stream: true
 
 ## Set the color for user input (default: #00cc00)
-user-input-color: #B3B1AD
+user-input-color: B3B1AD
 
 ## Set the color for tool output (default: None)
-tool-output-color: #B3B1AD
+tool-output-color: B3B1AD
 
 ## Set the color for tool error messages (default: #FF2222)
-tool-error-color: #F26D78
+tool-error-color: F26D78
 
 ## Set the color for tool warning messages (default: #FFA500)
-tool-warning-color: #FFB454
+tool-warning-color: FFB454
 
 ## Set the color for assistant output (default: #0088ff)
-assistant-output-color: #39BAE6
+assistant-output-color: 39BAE6
 
 ## Set the color for the completion menu (default: terminal's default text color)
-completion-menu-color: #B3B1AD
+completion-menu-color: B3B1AD
 
 ## Set the background color for the completion menu (default: terminal's default background color)
-completion-menu-bg-color: #0F131A
+completion-menu-bg-color: 0F131A
 
 ## Set the color for the current item in the completion menu (default: terminal's default background color)
-completion-menu-current-color: #B3B1AD
+completion-menu-current-color: B3B1AD
 
 ## Set the background color for the current item in the completion menu (default: terminal's default text color)
-completion-menu-current-bg-color: #1B3A5B
+completion-menu-current-bg-color: 1B3A5B
 
 ## Set the markdown code theme (default: default, other options include monokai, solarized-dark, solarized-light, or a Pygments builtin style, see https://pygments.org/styles for available themes)
 code-theme: one-dark
