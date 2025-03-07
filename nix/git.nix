@@ -93,7 +93,7 @@
           splitDiff = "auto"; # one of 'auto' | 'always'
           theme = {
             inactiveBorderColor = [ "#1B2733" ];
-            selectedLineBgColor = [ "#111d2c" "bold" ];
+            selectedLineBgColor = [ "#1b3a5a" "bold" ];
             timeFormat = "\"02 Jan 06 15=04 MST\""; # https=//pkg.go.dev/time#Time.Format
             windowSize = "normal"; # one of 'normal' | 'half' | 'full' default is 'normal'
           };
