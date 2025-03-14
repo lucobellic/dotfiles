@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, config, ... }:
 
 {
 
@@ -13,6 +13,7 @@
 
 
   xdg.configFile.yazi.source = ../../config/yazi;
+  home.file.".aider.conf.yml".source = config.lib.file.mkOutOfStoreSymlink ../../config/.aider.conf.yml;
 
   home.activation.customMessage = lib.mkAfter ''
     echo -e "\033[1;32m"
@@ -23,11 +24,12 @@
   '';
 
   imports = [
-    ./kitty.nix
-    ./wezterm.nix
-    ./zsh.nix
     ./fish.nix
+    # ./ghostty.nix
+    ./kitty.nix
     ./starship.nix
+    ./wezterm.nix
+    # ./zsh.nix
   ];
 
 }

@@ -3,8 +3,9 @@
 {
 
   home.packages = [
-    pkgs.fishPlugins.grc
+    pkgs.fish
     pkgs.grc
+    pkgs.pyenv
   ];
 
   programs = {
@@ -12,13 +13,19 @@
       enable = true;
       enableFishIntegration = true;
     };
+
+    fzf = {
+      enable = true;
+      enableFishIntegration = false;
+    };
+
     fish = {
       enable = true;
       plugins = [
         { name = "grc"; src = pkgs.fishPlugins.grc.src; }
-        { name = "plugin-git"; src = pkgs.fishPlugins.plugin-git; }
-        { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish; }
-        { name = "async-prompt"; src = pkgs.fishPlugins.async-prompt; }
+        { name = "plugin-git"; src = pkgs.fishPlugins.plugin-git.src; }
+        { name = "bass"; src = pkgs.fishPlugins.bass.src; }
+        { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }
       ];
       shellInit = ''
         # Colorscheme: ayu Dark
@@ -62,8 +69,11 @@
       '';
       interactiveShellInit = ''
         set fish_greeting # Disable greeting
-        # Initialize zoxide
-        zoxide init fish | source
+        zoxide init fish | source # Initialize zoxide
+        set -x PATH $HOME/.local/bin $PATH
+        set -x PATH $HOME/.pyenv/bin $PATH
+        status --is-interactive; and source (pyenv init --path | psub)
+        status --is-interactive; and source (pyenv init - | psub)
       '';
       shellAbbrs = {
         neovim = "nvim --listen /tmp/neovim_server.pipe";
