@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # This value determines the Home Manager release that your configuration is
@@ -10,11 +10,23 @@
   # release notes.
   home.stateVersion = "24.05"; # Please read the comment before changing.
 
+  nixpkgs.config = {
+    allowUnfree = true;
+    packageOverrides = pkgs: {
+      nixpkgs.config.hardware.opengl.enable = true;
+    };
+  };
+
   home.packages = [
     pkgs.curl
   ];
 
+  home.sessionVariables = {
+    OLLAMA_API_BASE = "http://127.0.0.1:11434";
+  };
+
   imports = [
+    # ./flake.nix
     ./btop.nix
     ./wm/hypr.nix
     ./git.nix

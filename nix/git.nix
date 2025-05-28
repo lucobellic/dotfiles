@@ -55,8 +55,17 @@
       enable = true;
       settings = {
         git = {
-          # branchLogCmd: 'git log --graph --color=always --format=format:"%C(yellow)%h %C(green)%<|(75,trunc)%s%Creset %C(blue)%an %Creset%ar"'
-          allBranchesLogCmd = "git log --graph --all --color=always --abbrev-commit --decorate --date=relative  --pretty=medium";
+          allBranchesLogCmds = [
+            "git"
+            "log"
+            "--graph"
+            "--all"
+            "--color=always"
+            "--abbrev-commit"
+            "--decorate"
+            "--date=relative"
+            "--pretty=medium"
+          ];
           autoFetch = true;
           disableForcePushing = true;
           log = {
@@ -122,7 +131,7 @@
               command = "glab mr view -w {{.SelectedLocalBranch.UpstreamBranch}}";
               context = "localBranches";
               description = "Go to MR in gitlab";
-              stream = true;
+              output = "log";
             }
             {
               key = "<c-n>";
@@ -141,13 +150,13 @@
               key = "<c-o>";
               context = "mergeConflicts";
               command = "git restore --ours {{.SelectedFile.Name | quote}}";
-              subprocess = true;
+              output = "terminal";
             }
             {
               key = "<c-t>";
               context = "mergeConflicts";
               command = "git restore --theirs {{.SelectedFile.Name | quote}}";
-              subprocess = true;
+              output = "terminal";
             }];
       };
     };
