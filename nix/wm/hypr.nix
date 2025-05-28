@@ -2,46 +2,61 @@
 
 {
 
-  home.packages = [
-    pkgs.ark
-    pkgs.blueman
-    pkgs.bluez
-    pkgs.brightnessctl
-    pkgs.cava
-    pkgs.cliphist
-    pkgs.dolphin
-    pkgs.dunst
-    pkgs.fastfetch
-    pkgs.ffmpegthumbs
-    pkgs.gamemode
-    pkgs.grim
-    pkgs.grimblast # screenshot tool
-    # pkgs.hyprlock # build from source
-    pkgs.hyprpicker # color picker
-    pkgs.hyprutils
-    pkgs.imagemagick
-    pkgs.kde-cli-tools
-    pkgs.libnotify # for notifications
-    pkgs.mako
-    pkgs.mangohud
-    pkgs.networkmanager # network manager
-    pkgs.nwg-look
-    pkgs.pamixer
-    pkgs.parallel
-    pkgs.pavucontrol
-    pkgs.rofi-wayland
-    pkgs.slurp
-    pkgs.swappy
-    pkgs.swww
-    pkgs.udiskie
-    pkgs.waybar
-    pkgs.wireplumber
-    pkgs.wl-clipboard
-    pkgs.wlogout
-    pkgs.wlr-randr
-    pkgs.wofi
-    pkgs.xdg-desktop-portal-hyprland # xdg desktop portal for hyprland
+  home.packages = with pkgs; [
+    mesa
+    libglvnd
+    # If using NVIDIA
+    # nvidia-vaapi-driver
+    # Or for AMD/Intel
+    libva
+    # pkgs.ark
+    blueman
+    bluez
+    brightnessctl
+    # cava
+    cliphist
+    dunst
+    fastfetch
+    kdePackages.ffmpegthumbs
+    gamemode
+    grim
+    grimblast # screenshot tool
+    # swaylock # install from package manager
+    hyprlock # build from source
+    hyprpaper
+    hyprpicker # color picker
+    hyprutils
+    imagemagick
+    kdePackages.kde-cli-tools
+    libnotify # for notifications
+    mako
+    mangohud
+    networkmanager # network manager
+    nwg-look
+    pamixer
+    parallel
+    pavucontrol
+    rofi-wayland
+    slurp
+    swappy
+    swww
+    udiskie
+    waybar
+    wireplumber
+    wl-clipboard
+    wl-gammarelay-rs
+    wlogout
+    wlr-randr
+    wofi
+    xdg-desktop-portal-hyprland # xdg desktop portal for hyprland
   ];
+
+
+  # imports = [
+  #   ./hyprpanel.nix
+  # ];
+
+  # hardware.graphics.enable = true;
 
   xdg.configFile.hypr.source = config.lib.file.mkOutOfStoreSymlink ../../config/hypr;
 
@@ -52,6 +67,7 @@
   xdg.configFile.rofi.source = config.lib.file.mkOutOfStoreSymlink ../../config/rofi;
   xdg.configFile.wlogout.source = config.lib.file.mkOutOfStoreSymlink ../../config/wlogout;
   xdg.configFile.waybar.source = config.lib.file.mkOutOfStoreSymlink ../../config/waybar;
+  xdg.configFile.swaylock.source = config.lib.file.mkOutOfStoreSymlink ../../config/swaylock;
 
   home.file.".local/share/bin" = {
     recursive = true;

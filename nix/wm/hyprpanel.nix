@@ -5,27 +5,30 @@ let
   hyprpanel = pkgs.fetchFromGitHub {
     owner = "Jas-SinghFSU";
     repo = "HyprPanel.git";
-    rev = "commit-or-branch";
-    sha256 = "sha256-hash-of-the-repo";
+    rev = "4810d0f502b26469d96de2ea5310a7a84cd4696f";
+    sha256 = "";
   };
 in
 {
+
+  # libtomlplusplus-dev
 
   home.packages = with pkgs; [
     # hyprpanel and dependencies
     hyprpanel
 
+    # Required dependencies
+    # aylurs-gtk-shell-git
     # aylurs-gtk-shell
-    bightnessctl
-    bluez
-    bluez-utils
-    bun
-    dart-sass
-    # gnome-bluetooth-3.0
-    libgtop
-    pipewire
-    pywal
-    wl-clipboard
+    # wireplumber
+    # libgtop
+    # bluez
+    # bluez-utils
+    # networkmanager
+    # dart-sass
+    # wl-clipboard
+    # upower
+    # gvfs
   ];
 
 }
