@@ -9,6 +9,7 @@
     pkgs.numbat
     pkgs.gh
     pkgs.yazi
+    pkgs.fd
   ];
 
 

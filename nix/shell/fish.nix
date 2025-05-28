@@ -2,11 +2,7 @@
 
 {
 
-  home.packages = [
-    pkgs.fish
-    pkgs.grc
-    pkgs.pyenv
-  ];
+  home.packages = [ pkgs.fish pkgs.grc pkgs.pyenv ];
 
   programs = {
     zoxide = {
@@ -22,10 +18,22 @@
     fish = {
       enable = true;
       plugins = [
-        { name = "grc"; src = pkgs.fishPlugins.grc.src; }
-        { name = "plugin-git"; src = pkgs.fishPlugins.plugin-git.src; }
-        { name = "bass"; src = pkgs.fishPlugins.bass.src; }
-        { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }
+        {
+          name = "grc";
+          src = pkgs.fishPlugins.grc.src;
+        }
+        {
+          name = "plugin-git";
+          src = pkgs.fishPlugins.plugin-git.src;
+        }
+        {
+          name = "bass";
+          src = pkgs.fishPlugins.bass.src;
+        }
+        {
+          name = "fzf-fish";
+          src = pkgs.fishPlugins.fzf-fish.src;
+        }
       ];
       shellInit = ''
         # Colorscheme: ayu Dark
@@ -69,6 +77,7 @@
       '';
       interactiveShellInit = ''
         set fish_greeting # Disable greeting
+        starship init fish | source # Initialize starship
         zoxide init fish | source # Initialize zoxide
         set -x PATH $HOME/.local/bin $PATH
         set -x PATH $HOME/.pyenv/bin $PATH
@@ -77,7 +86,7 @@
       '';
       shellAbbrs = {
         neovim = "nvim --listen /tmp/neovim_server.pipe";
-        astronvim = "env NVIM_APPNAME=astronvim nvim";
+        astronvim = "NVIM_APPNAME=astronvim nvim";
         start-docker = ''
           cd ~/Development/rapidash
           if test (docker container inspect --format '{{.State.Running}}' rapidash) = "true"

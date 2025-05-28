@@ -6,7 +6,7 @@
 
   programs = {
     starship = {
-      enable = true;
+      enable = false; # Use cargo install instead
     };
   };
 }
