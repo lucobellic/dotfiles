@@ -2,19 +2,22 @@ wsl = false
 no-multigrid = false
 vsync = true
 maximized = false
+tabs = false
 srgb = false
 idle = true
 frame = "none"
 
 [font]
-normal = { family = "DMMono Nerd Font", style = "W100" }
+normal = { family = "DMMono Nerd Font", style = "Medium" }
 italic = { family = "DM Mono", style = "Medium Italic" }
 bold = { family = "DMMono Nerd Font", style = "Bold" }
 
-size = 11.3
-
+size = 12
 edging = "subpixelantialias"
 hinting = "full"
+
+[box-drawing.sizes]
+default = [1, 2]  # Thin and thick values respectively, for all sizes
 
 [font.features]
 "DMMono Nerd Font" = [
