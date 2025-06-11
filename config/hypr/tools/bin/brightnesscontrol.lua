@@ -1,53 +1,24 @@
 #!/usr/bin/env lua
 
+local script_path = debug.getinfo(1, 'S').source:sub(2):match('(.*/)')
+package.path = package.path .. ';' .. script_path .. '?.lua'
+local utils = require('utils')
+
 --- @type string
-local script_name = arg[0]:match('([^/]+)$')
+local script_name = utils.get_script_name(arg[0])
 
 -- Check if the script is already running
-local function is_already_running()
-  local handle = io.popen("pgrep -cf '" .. script_name .. "' | grep -qv 1")
-  local result = handle:read('*a')
-  handle:close()
-  return result ~= ''
-end
-
-if is_already_running() then
+if utils.is_already_running(script_name) then
   print('An instance of the script is already running...')
   os.exit(1)
 end
 
---- @type string
-local scr_dir = arg[0]:match('(.*/)')
-if not scr_dir then
-  scr_dir = './'
-end
-
--- Source globalcontrol.sh equivalent (would need to be converted separately)
--- require(scr_dir .. "globalcontrol")
-
 -- Check if SwayOSD is installed
 --- @type boolean
-local use_swayosd = false
-
-local function command_exists(cmd)
-  local handle = io.popen('command -v ' .. cmd .. ' >/dev/null 2>&1')
-  local result = handle:close()
-  return result
-end
-
-local function process_running(name)
-  local handle = io.popen('pgrep -x ' .. name .. ' >/dev/null')
-  local result = handle:close()
-  return result
-end
-
-if command_exists('swayosd-client') and process_running('swayosd-server') then
-  use_swayosd = true
-end
+local use_swayosd = utils.command_exists('swayosd-client') and utils.process_running('swayosd-server')
 
 --- @return nil
 local function print_error()
-  local basename = script_name
   print(string.format(
     [[
     %s <action> [step]
@@ -59,17 +30,15 @@ local function print_error()
         %s i 10    # Increase brightness by 10%%
         %s d       # Decrease brightness by default step (5%%)
 ]],
-    basename,
-    basename,
-    basename
+    script_name,
+    script_name,
+    script_name
   ))
 end
 
 --- @return nil
 local function send_notification()
-  local handle = io.popen("brightnessctl info | grep -oP '(?<=\\()\\d+(?=%)'")
-  local brightness_str = handle:read('*a')
-  handle:close()
+  local brightness_str, _ = utils.execute_command("brightnessctl info | grep -oP '(?<=\\()\\d+(?=%)'")
 
   -- Clean the string and ensure it's valid
   if brightness_str then
@@ -79,9 +48,8 @@ local function send_notification()
 
   local brightness = tonumber(brightness_str) or 0
 
-  handle = io.popen("brightnessctl info | awk -F \"'\" '/Device/ {print $2}'")
-  local brightinfo = handle:read('*a'):gsub('%s+', '')
-  handle:close()
+  local brightinfo, _ = utils.execute_command("brightnessctl info | awk -F \"'\" '/Device/ {print $2}'")
+  brightinfo = brightinfo:gsub('%s+', '')
 
   local angle = math.floor(((brightness + 2) / 5)) * 5
   local ico = os.getenv('HOME') .. '/.config/dunst/icons/vol/vol-' .. angle .. '.svg'
@@ -89,17 +57,14 @@ local function send_notification()
   local bar_length = math.floor(brightness / 15)
   local bar = string.rep('.', bar_length)
 
-  local cmd = string.format('notify-send -a "t2" -r 91190 -t 800 -i "%s" "%s%s" "%s"', ico, brightness, bar, brightinfo)
-  os.execute(cmd)
+  utils.notify(brightness .. bar, brightinfo, 'normal', '-a "t2" -r 91190 -t 800 -i "' .. ico .. '"')
 end
 
 --- @return number
 local function get_brightness()
-  local handle = io.popen("brightnessctl -m | grep -o '[0-9]\\+%' | head -c-2")
-  local brightness_str = handle:read('*a'):gsub('%s+', '')
-  local brightness = tonumber(brightness_str)
-  handle:close()
-  return brightness or 0
+  local brightness_str, _ = utils.execute_command("brightnessctl -m | grep -o '[0-9]\\+%' | head -c-2")
+  brightness_str = brightness_str:gsub('%s+', '')
+  return tonumber(brightness_str) or 0
 end
 
 --- @type string

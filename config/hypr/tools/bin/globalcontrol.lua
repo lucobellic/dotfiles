@@ -1,5 +1,9 @@
 #!/usr/bin/env lua
 
+local script_path = debug.getinfo(1, 'S').source:sub(2):match('(.*/)')
+package.path = package.path .. ';' .. script_path .. '?.lua'
+local utils = require('utils')
+
 --- @class GlobalControl
 --- @field conf_dir string
 --- @field hyde_conf_dir string
@@ -13,6 +17,7 @@
 --- @field enable_wall_dcol number
 --- @field hypr_border number
 --- @field hypr_width number
+--- @field hyde table
 local GlobalControl = {}
 GlobalControl.__index = GlobalControl
 
@@ -29,7 +34,7 @@ GlobalControl.__index = GlobalControl
 --- @return GlobalControl
 function GlobalControl.new()
   -- Hyde environment variables
-  local home = os.getenv('HOME') or ''
+  local home = os.getenv('HOME')
   local xdg_config = os.getenv('XDG_CONFIG_HOME')
 
   self = setmetatable({
@@ -41,38 +46,13 @@ function GlobalControl.new()
     hash_mech = 'sha1sum',
     hypr_border = 0,
     hypr_width = 0,
+    hyde = {},
     enable_wall_dcol = 0,
   }, GlobalControl)
 
   self:initialize()
 
   return self
-end
-
---- Execute shell command and return output
---- @param cmd string
---- @return string output
---- @return number exitCode
-function GlobalControl:execute_command(cmd)
-  local handle = io.popen(cmd .. ' 2>&1')
-  if not handle then
-    return '', 1
-  end
-  local result = handle:read('*a')
-  local _, _, code = handle:close()
-  return result or '', code or 1
-end
-
---- Check if file exists
---- @param path string
---- @return boolean
-function GlobalControl:file_exists(path)
-  local file = io.open(path, 'r')
-  if file then
-    file:close()
-    return true
-  end
-  return false
 end
 
 --- Get hash map from wallpaper sources
@@ -87,15 +67,15 @@ function GlobalControl:get_hash_map(wall_sources, skip_strays, verbose_map)
   for _, wall_source in ipairs(wall_sources or {}) do
     if wall_source and wall_source ~= '' then
       if wall_source ~= '--skipstrays' and wall_source ~= '--verbose' then
-        local find_cmd = string.format(
-          'find "%s" -type f \\( -iname "*.gif" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \\) -exec %s {} + | sort -k2',
-          wall_source,
+        local find_pattern = string.format(
+          '-type f \\( -iname "*.gif" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \\) -exec %s {} + | sort -k2',
           self.hash_mech
         )
 
-        local hash_map, exit_code = self:execute_command(find_cmd)
+        local hash_files = utils.find_files(wall_source, find_pattern)
+        local hash_map = table.concat(hash_files, '\n')
 
-        if exit_code ~= 0 or hash_map == '' then
+        if #hash_files == 0 or hash_map == '' then
           print(string.format('WARNING: No image found in "%s"', wall_source))
         else
           for line in hash_map:gmatch('[^\r\n]+') do
@@ -138,23 +118,22 @@ function GlobalControl:get_themes(verbose)
   local thm_wall_s = {}
 
   -- Find theme directories
-  local find_cmd = string.format('find "%s/themes" -mindepth 1 -maxdepth 1 -type d', self.hyde_conf_dir)
-  local theme_dirs, _ = self:execute_command(find_cmd)
+  local theme_dirs = utils.find_files(self.hyde_conf_dir .. '/themes', '-mindepth 1 -maxdepth 1 -type d')
 
-  for thm_dir in theme_dirs:gmatch('[^\r\n]+') do
+  for _, thm_dir in ipairs(theme_dirs) do
     if thm_dir and thm_dir ~= '' then
       local wall_set_path = thm_dir .. '/wall.set'
-      local readlink_cmd = string.format('readlink "%s" 2>/dev/null', wall_set_path)
-      local wall_set_target, exit_code = self:execute_command(readlink_cmd)
+      local wall_set_target, exit_code =
+        utils.execute_command(string.format('readlink "%s" 2>/dev/null', wall_set_path))
       wall_set_target = wall_set_target:gsub('\n', '')
 
       -- Check if wall.set link is valid
-      if exit_code ~= 0 or not self:file_exists(wall_set_target) then
+      if exit_code ~= 0 or not utils.file_exists(wall_set_target) then
         local hash_result = self:get_hash_map({ thm_dir }, true)
         if hash_result and #hash_result.wall_list > 0 then
           print(string.format('fixing link :: %s/wall.set', thm_dir))
           local ln_cmd = string.format('ln -fs "%s" "%s"', hash_result.wall_list[1], wall_set_path)
-          self:execute_command(ln_cmd)
+          utils.execute_command(ln_cmd)
           wall_set_target = hash_result.wall_list[1]
         else
           goto continue
@@ -164,11 +143,10 @@ function GlobalControl:get_themes(verbose)
       -- Read sort order
       local sort_file = thm_dir .. '/.sort'
       local sort_order = '0'
-      if self:file_exists(sort_file) then
-        local file = io.open(sort_file, 'r')
-        if file then
-          sort_order = file:read('*line') or '0'
-          file:close()
+      if utils.file_exists(sort_file) then
+        local sort_lines = utils.read_file_lines(sort_file)
+        if #sort_lines > 0 then
+          sort_order = sort_lines[1] or '0'
         end
       end
 
@@ -227,17 +205,22 @@ function GlobalControl:get_themes(verbose)
   return { thm_sort = thm_sort, thm_list = thm_list, thm_wall = thm_wall }
 end
 
---- Load configuration from hyde.conf
+--- Load configuration from hyde.conf and set environment variables
 function GlobalControl:load_config()
   local config_file = self.hyde_conf_dir .. '/hyde.conf'
-  if self:file_exists(config_file) then
-    local file = io.open(config_file, 'r')
-    if file then
-      for line in file:lines() do
+  if utils.file_exists(config_file) then
+    local config_lines = utils.read_file_lines(config_file)
+    for _, line in ipairs(config_lines) do
+      -- Skip comments and empty lines
+      if not line:match('^%s*#') and not line:match('^%s*$') then
         local key, value = line:match('^([^=]+)=(.*)$')
         if key and value then
           -- Remove quotes if present
           value = value:gsub('^"(.*)"$', '%1')
+
+          self.hyde[key] = value
+
+          -- Handle specific configuration values for internal use
           if key == 'enableWallDcol' then
             local num = tonumber(value, 10)
             if num and num >= 0 and num <= 3 then
@@ -248,7 +231,6 @@ function GlobalControl:load_config()
           end
         end
       end
-      file:close()
     end
   end
 end
@@ -261,17 +243,14 @@ function GlobalControl:init_hypr_vars()
   end
 
   -- Check if required commands exist
-  local hyprctl_check = self:execute_command('command -v hyprctl')
-  local jq_check = self:execute_command('command -v jq')
-
-  if hyprctl_check == '' or jq_check == '' then
+  if not utils.command_exists('hyprctl') or not utils.command_exists('jq') then
     print('Error: hyprctl or jq not found')
     return
   end
 
   -- Get border rounding
   local border_cmd = "hyprctl -j getoption decoration:rounding 2>&1 | jq -e '.int'"
-  local border_result, border_exit = self:execute_command(border_cmd)
+  local border_result, border_exit = utils.execute_command(border_cmd)
   if border_exit == 0 then
     local border = tonumber(border_result:gsub('\n', ''), 10)
     if border then
@@ -281,7 +260,7 @@ function GlobalControl:init_hypr_vars()
 
   -- Get border width
   local width_cmd = "hyprctl -j getoption general:border_size 2>&1 | jq -e '.int'"
-  local width_result, width_exit = self:execute_command(width_cmd)
+  local width_result, width_exit = utils.execute_command(width_cmd)
   if width_exit == 0 then
     local width = tonumber(width_result:gsub('\n', ''), 10)
     if width then
@@ -296,25 +275,23 @@ end
 function GlobalControl:pkg_installed(pkg_name)
   -- Check with pacman
   local pacman_cmd = string.format('pacman -Qi "%s" 2>/dev/null', pkg_name)
-  local _, pacman_exit = self:execute_command(pacman_cmd)
+  local _, pacman_exit = utils.execute_command(pacman_cmd)
   if pacman_exit == 0 then
     return true
   end
 
   -- Check flatpak
-  local flatpak_check = self:execute_command('pacman -Qi "flatpak" 2>/dev/null')
-  if flatpak_check ~= '' then
+  local flatpak_check, _ = utils.execute_command('pacman -Qi "flatpak" 2>/dev/null')
+  if utils.is_valid_content(flatpak_check) then
     local flatpak_cmd = string.format('flatpak info "%s" 2>/dev/null', pkg_name)
-    local _, flatpak_exit = self:execute_command(flatpak_cmd)
+    local _, flatpak_exit = utils.execute_command(flatpak_cmd)
     if flatpak_exit == 0 then
       return true
     end
   end
 
   -- Check if command exists
-  local command_cmd = string.format('command -v "%s" 2>/dev/null', pkg_name)
-  local _, command_exit = self:execute_command(command_cmd)
-  return command_exit == 0
+  return utils.command_exists(pkg_name)
 end
 
 --- Get AUR helper
@@ -336,24 +313,20 @@ function GlobalControl:set_conf(var_name, var_data)
 
   -- Ensure file exists
   local touch_cmd = string.format('touch "%s"', config_file)
-  self:execute_command(touch_cmd)
+  utils.execute_command(touch_cmd)
 
   -- Check if variable already exists
   local grep_cmd = string.format('grep -c "^%s=" "%s" 2>/dev/null || echo 0', var_name, config_file)
-  local count, _ = self:execute_command(grep_cmd)
-  count = tonumber(count:gsub('\n', ''), 10) or 0
+  local count_str, _ = utils.execute_command(grep_cmd)
+  local count = tonumber(count_str:gsub('\n', ''), 10) or 0
 
   if count == 1 then
     -- Update existing variable
     local sed_cmd = string.format('sed -i "/^%s=/c%s=\\"%s\\"" "%s"', var_name, var_name, var_data, config_file)
-    self:execute_command(sed_cmd)
+    utils.execute_command(sed_cmd)
   else
     -- Add new variable
-    local file = io.open(config_file, 'a')
-    if file then
-      file:write(string.format('%s="%s"\n', var_name, var_data))
-      file:close()
-    end
+    utils.append_to_file(config_file, string.format('%s="%s"', var_name, var_data))
   end
 end
 
@@ -362,8 +335,8 @@ end
 --- @return string|nil
 function GlobalControl:set_hash(hash_image)
   local hash_cmd = string.format('%s "%s" 2>/dev/null | awk \'{print $1}\'', self.hash_mech, hash_image)
-  local result, exit_code = self:execute_command(hash_cmd)
-  return exit_code == 0 and result:gsub('\n', '')
+  local result, exit_code = utils.execute_command(hash_cmd)
+  return exit_code == 0 and result:gsub('\n', '') or nil
 end
 
 --- Initialize the GlobalControl instance
@@ -372,12 +345,12 @@ function GlobalControl:initialize()
   self:load_config()
 
   -- Validate enable_wall_dcol
-  if not (self.enable_wall_dcol >= 0 and self.enable_wall_dcol <= 3) then
+  if not utils.check_range(self.enable_wall_dcol, 0, 3, 'enable_wall_dcol') then
     self.enable_wall_dcol = 0
   end
 
   -- Set theme if not valid
-  if not self.hyde_theme or not self:file_exists(self.hyde_conf_dir .. '/themes/' .. self.hyde_theme) then
+  if not self.hyde_theme or not utils.file_exists(self.hyde_conf_dir .. '/themes/' .. self.hyde_theme) then
     local themes = self:get_themes()
     if #themes.thm_list > 0 then
       self.hyde_theme = themes.thm_list[1]
@@ -398,34 +371,5 @@ end
 local M = {
   config = GlobalControl.new(),
 }
-
-function M.export_vars()
-  local control = M.config
-
-  os.execute("export conf_dir='" .. control.conf_dir .. "'")
-  os.execute("export hyde_conf_dir='" .. control.hyde_conf_dir .. "'")
-  os.execute("export cache_dir='" .. control.cache_dir .. "'")
-  os.execute("export thmb_dir='" .. control.thmb_dir .. "'")
-  os.execute("export dcol_dir='" .. control.dcol_dir .. "'")
-  os.execute("export hash_mech='" .. control.hash_mech .. "'")
-
-  if control.hyde_theme then
-    os.execute("export hyde_theme='" .. control.hyde_theme .. "'")
-    os.execute("export hyde_theme_dir='" .. control.hyde_theme_dir .. "'")
-  end
-
-  if control.wallbash_dir then
-    os.execute("export wallbash_dir='" .. control.wallbash_dir .. "'")
-  end
-
-  os.execute("export enable_wall_dcol='" .. tostring(control.enable_wall_dcol) .. "'")
-  os.execute("export hypr_border='" .. tostring(control.hypr_border) .. "'")
-  os.execute("export hypr_width='" .. tostring(control.hypr_width) .. "'")
-end
-
--- If running as script, initialize and export variables
-if arg and arg[0]:match('globalcontrol%.lua$') then
-  M.export_vars()
-end
 
 return M

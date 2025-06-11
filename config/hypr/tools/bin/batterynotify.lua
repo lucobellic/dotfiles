@@ -1,5 +1,9 @@
 #!/usr/bin/env lua
 
+local script_path = debug.getinfo(1, 'S').source:sub(2):match('(.*/)')
+package.path = package.path .. ';' .. script_path .. '?.lua'
+local utils = require('utils')
+
 --- @alias BatteryStatus "Discharging" | "Charging" | "Not charging" | "Full" | "Unknown"
 --- @alias NotificationUrgency "NORMAL" | "LOW" | "CRITICAL"
 
@@ -32,38 +36,11 @@ local state = {
 	undock = false,
 }
 
-local io = require("io")
-local os = require("os")
-
---- Execute a shell command and return its output
---- @param cmd string
---- @return string?
-local function execute_command(cmd)
-	local handle = io.popen(cmd)
-	if not handle then
-		return nil
-	end
-	local result = handle:read("*a")
-	handle:close()
-	return result and result:gsub("%s+$", "") or nil
-end
-
---- Execute a command without waiting for output
---- @param cmd string
-local function execute_async(cmd)
-	if cmd and cmd ~= "" then
-		if config.verbose then
-			print("Executing: " .. cmd)
-		end
-		os.execute("nohup " .. cmd .. " >/dev/null 2>&1 &")
-	end
-end
-
 --- Check if the system is a laptop by detecting battery
 --- @return boolean
 local function is_laptop()
-	local result = execute_command("find /sys/class/power_supply -name 'BAT*' | wc -l")
-	local battery_count = tonumber(result) or 0
+	local battery_files = utils.find_files('/sys/class/power_supply', '-name "BAT*"')
+	local battery_count = #battery_files
 
 	if battery_count > 0 then
 		return true
@@ -89,18 +66,7 @@ end
 --- @param title string
 --- @param message string
 local function fn_notify(flags, urgency, title, message)
-	-- Check if notify-send is available
-	local notify_available = execute_command("command -v notify-send")
-	if not notify_available then
-		print(string.format("[%s] %s: %s", urgency, title, message))
-		return
-	end
-
-	local cmd = string.format("notify-send -a 'Power' %s -u %s '%s' '%s'", flags, urgency, title, message)
-	if config.verbose then
-		print("Notification: " .. cmd)
-	end
-	execute_command(cmd)
+	utils.notify(title, message, urgency:lower(), flags, 'Power')
 end
 
 --- Handle battery percentage thresholds and notifications
@@ -160,7 +126,7 @@ local function fn_percentage()
 		end
 
 		if count == 0 and state.battery_status == "Discharging" then
-			execute_async(config.execute_critical)
+			utils.execute_async(config.execute_critical, config.verbose)
 		end
 
 	-- Low battery notification
@@ -186,7 +152,7 @@ local function fn_percentage()
 			string.format("Battery is at %d%%. Connect the charger.", state.battery_percentage)
 		)
 		state.last_notified_percentage = state.battery_percentage
-		execute_async(config.execute_low)
+		utils.execute_async(config.execute_low, config.verbose)
 	end
 end
 
@@ -213,7 +179,7 @@ local function fn_status()
 				"Charger Plug OUT",
 				string.format("Battery is at %d%%.", state.battery_percentage)
 			)
-			execute_async(config.execute_discharging)
+			utils.execute_async(config.execute_discharging, config.verbose)
 		end
 		fn_percentage()
 
@@ -231,7 +197,7 @@ local function fn_status()
 				"Charger Plug In",
 				string.format("Battery is at %d%%.", state.battery_percentage)
 			)
-			execute_async(config.execute_charging)
+			utils.execute_async(config.execute_charging, config.verbose)
 		end
 		fn_percentage()
 
@@ -245,7 +211,7 @@ local function fn_status()
 			fn_notify("-t 5000 -r 54321", "CRITICAL", "Battery Full", "Please unplug your Charger")
 			state.prev_status = state.battery_status
 			state.lt = now
-			execute_async(config.execute_charging)
+			utils.execute_async(config.execute_charging, config.verbose)
 		end
 
 	elseif state.battery_status == "Not charging" then
@@ -269,19 +235,20 @@ function get_battery_info()
 	local status = "Unknown"
 
 	-- Find all battery directories
-	local batteries_result = execute_command("find /sys/class/power_supply -name 'BAT*' 2>/dev/null")
-	if not batteries_result or batteries_result == "" then
+	local battery_files = utils.find_files('/sys/class/power_supply', '-name "BAT*"')
+
+	if #battery_files == 0 then
 		if config.verbose then
 			print("No batteries found")
 		end
 		return
 	end
 
-	for battery_path in batteries_result:gmatch("[^\r\n]+") do
-		local status_result = execute_command(string.format("cat %s/status 2>/dev/null", battery_path))
-		local capacity_result = execute_command(string.format("cat %s/capacity 2>/dev/null", battery_path))
+	for _, battery_path in ipairs(battery_files) do
+		local status_result, _ = utils.execute_command(string.format("cat %s/status 2>/dev/null", battery_path))
+		local capacity_result, _ = utils.execute_command(string.format("cat %s/capacity 2>/dev/null", battery_path))
 
-		if status_result and capacity_result then
+		if utils.is_valid_content(status_result) and utils.is_valid_content(capacity_result) then
 			status = status_result
 			local percentage = tonumber(capacity_result)
 			if percentage then
@@ -335,21 +302,6 @@ Battery notification configuration:
 	))
 end
 
---- Check if a value is within the specified range
---- @param value number
---- @param min_val number
---- @param max_val number
---- @param name string
---- @return boolean
-local function check_range(value, min_val, max_val, name)
-	if value >= min_val and value <= max_val then
-		return true
-	else
-		print(string.format("WARNING: %s must be %d - %d. Current value: %d", name, min_val, max_val, value))
-		return false
-	end
-end
-
 --- Monitor battery using inotify or polling
 local function monitor_battery()
 	local sleep_interval = 5
@@ -385,13 +337,13 @@ local function main()
 
 	-- Validate configuration ranges
 	local valid = true
-	valid = check_range(config.battery_full_threshold, 80, 100, "Full Threshold") and valid
-	valid = check_range(config.battery_critical_threshold, 2, 50, "Critical Threshold") and valid
-	valid = check_range(config.battery_low_threshold, 10, 80, "Low Threshold") and valid
-	valid = check_range(config.unplug_charger_threshold, 50, 100, "Unplug Threshold") and valid
-	valid = check_range(config.timer, 60, 1000, "Timer") and valid
-	valid = check_range(config.notify, 1, 1140, "Notify") and valid
-	valid = check_range(config.interval, 1, 10, "Interval") and valid
+	valid = utils.check_range(config.battery_full_threshold, 80, 100, "Full Threshold") and valid
+	valid = utils.check_range(config.battery_critical_threshold, 2, 50, "Critical Threshold") and valid
+	valid = utils.check_range(config.battery_low_threshold, 10, 80, "Low Threshold") and valid
+	valid = utils.check_range(config.unplug_charger_threshold, 50, 100, "Unplug Threshold") and valid
+	valid = utils.check_range(config.timer, 60, 1000, "Timer") and valid
+	valid = utils.check_range(config.notify, 1, 1140, "Notify") and valid
+	valid = utils.check_range(config.interval, 1, 10, "Interval") and valid
 
 	if not valid then
 		print("Configuration validation failed. Please check your settings.")
