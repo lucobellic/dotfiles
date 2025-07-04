@@ -77,6 +77,7 @@
             colorArg = "always";
             pager = "delta --hyperlinks --dark --paging=never";
           };
+          overrideGpg = true;
         };
         gui = {
           border = "rounded"; # one of 'single' | 'double' | 'rounded

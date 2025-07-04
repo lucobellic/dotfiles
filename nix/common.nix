@@ -32,6 +32,7 @@
     ./git.nix
     ./neovim.nix
     ./shell/shell.nix
+    ./ai/opencode.nix
   ];
 
   # Let Home Manager install and manage itself.
