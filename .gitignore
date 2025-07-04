@@ -3,3 +3,4 @@ home.nix
 .aider.*
 .aider.tags.cache.v3
 .env
+.opencode

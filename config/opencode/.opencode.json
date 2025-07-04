@@ -1,0 +1,28 @@
+{
+  "data": {},
+  "providers": {
+    "anthropic": {
+      "apiKey": "",
+      "disabled": true
+    },
+    "copilot": {
+      "apiKey": "",
+      "disabled": false
+    },
+    "openai": {
+      "apiKey": "",
+      "disabled": true
+    }
+  },
+  "agents": {
+    "coder": {
+      "model": "copilot.gpt-4.1",
+      "maxTokens": 16384,
+      "reasoningEffort": ""
+    }
+  },
+  "tui": {
+    "theme": "tron"
+  },
+  "shell": {}
+}
