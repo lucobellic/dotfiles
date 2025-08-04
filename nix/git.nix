@@ -80,7 +80,7 @@
           overrideGpg = true;
         };
         gui = {
-          border = "rounded"; # one of 'single' | 'double' | 'rounded
+          border = "single"; # one of 'single' | 'double' | 'rounded
           commandLogSize = 8;
           commitLength = {
             show = true;
@@ -106,11 +106,6 @@
             selectedLineBgColor = [ "#1b3a5a" "bold" ];
             timeFormat = "\"02 Jan 06 15=04 MST\""; # https=//pkg.go.dev/time#Time.Format
             windowSize = "normal"; # one of 'normal' | 'half' | 'full' default is 'normal'
-          };
-        };
-        keybinding = {
-          universal = {
-            return = "<delete>"; # return to previous menu, will quit if there's nowhere to return
           };
         };
         os = {

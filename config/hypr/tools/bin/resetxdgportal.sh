@@ -10,9 +10,11 @@ killall xdg-desktop-portal-wlr
 killall xdg-desktop-portal
 sleep 1
 
-# Use different directory on NixOS
+# Resolve libexec directory for portals
 if [ -d /run/current-system/sw/libexec ]; then
     libDir=/run/current-system/sw/libexec
+elif [ -d /usr/libexec ]; then
+    libDir=/usr/libexec
 else
     libDir=/usr/lib
 fi

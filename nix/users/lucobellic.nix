@@ -8,6 +8,6 @@ rec {
   programs.git.userEmail = "luco.bellic@protonmail.com";
 
   imports = [
-    ../common.nix
+    ./nix/common.nix
   ];
 }

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "theme": "ayugloom",
+  "model": "github-copilot/gpt-4.1",
+  "autoshare": false,
+  "autoupdate": true,
+  "keybinds": {
+    "messages_half_page_up": "ctrl+u",
+    "messages_half_page_down": "ctrl+d"
+  }
+}

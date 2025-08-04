@@ -1,14 +1,20 @@
 { pkgs, ... }:
 
 {
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
+  # This value determines the Home Manager release that your
+  # configuration is compatible with. This helps avoid breakage
+  # when a new Home Manager release introduces backwards
+  # incompatible changes.
   #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
-  home.stateVersion = "24.05"; # Please read the comment before changing.
+  # You can update Home Manager without changing this value. See
+  # the Home Manager release notes for a list of state version
+  # changes in each release.
+  home.stateVersion = "25.05"; # Please read the comment before changing.
+
+  targets.genericLinux.enable = true;
+
+  programs.bash.enable = true;
+  xdg.enable = true;
 
   nixpkgs.config = {
     allowUnfree = true;
@@ -26,13 +32,13 @@
   };
 
   imports = [
-    # ./flake.nix
+    ./ai/opencode.nix
     ./btop.nix
-    ./wm/hypr.nix
     ./git.nix
     ./neovim.nix
+    ./nix.nix
     ./shell/shell.nix
-    ./ai/opencode.nix
+    ./wm/hypr/hypr.nix
   ];
 
   # Let Home Manager install and manage itself.
