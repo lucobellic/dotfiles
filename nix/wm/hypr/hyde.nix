@@ -1,38 +1,5 @@
 { config, pkgs, ... }:
 
-# let
-#   quickshell-git = pkgs.stdenv.mkDerivation rec {
-#     pname = "quickshell";
-#     version = "v0.2.0";
-#
-#     src = pkgs.fetchFromGitHub {
-#       owner = "quickshell-mirror";
-#       repo = pname;
-#       rev = version;
-#       hash = "sha256-vqkSDvh7hWhPvNjMjEDV4KbSCv2jyl2Arh73ZXe274k=";
-#     };
-#     buildInputs = [
-#       pkgs.breakpad
-#       pkgs.jemalloc
-#       pkgs.libdrm
-#       pkgs.pipewire
-#       # pkgs.libxcb
-#       pkgs.mesa
-#       pkgs.qt6.full
-#       pkgs.wayland
-#       pkgs.wayland-protocols
-#       pkgs.wayland-scanner
-#     ];
-#     nativeBuildInputs = [
-#       pkgs.cmake
-#       pkgs.ninja
-#       pkgs.cli11
-#       pkgs.spirv-tools
-#       pkgs.pkg-config
-#     ];
-#     cmakeFlags = [ "-G" "Ninja" "-D" "INSTALL_QML_PREFIX=lib/qt6/qml"];
-#   };
-# in
 {
   nixGL.packages = import <nixgl> { inherit pkgs; };
   nixGL.defaultWrapper = "mesa";
@@ -101,13 +68,13 @@
   ];
 
 
-  xdg.configFile."hypr/hyprlock.conf".source = config.lib.file.mkOutOfStoreSymlink ../../../../config/hypr/hyprlock.conf;
-  xdg.configFile.qt5ct.source = config.lib.file.mkOutOfStoreSymlink ../../../../config/qt5ct;
-  xdg.configFile.qt6ct.source = config.lib.file.mkOutOfStoreSymlink ../../../../config/qt6ct;
+  xdg.configFile."hypr/hyprlock.conf".source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/hypr/hyprlock.conf;
+  xdg.configFile.qt5ct.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/qt5ct;
+  xdg.configFile.qt6ct.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/qt6ct;
 
   home.file.".local/share/bin" = {
     recursive = true;
-    source = ../../../../config/hypr/tools/bin;
+    source = ~/.config/home-manager/config/hypr/tools/bin;
   };
 
 }
