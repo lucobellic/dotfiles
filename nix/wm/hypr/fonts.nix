@@ -80,6 +80,7 @@ in
     pkgs.nerd-fonts.fira-code
     pkgs.nerd-fonts.jetbrains-mono
     pkgs.nerd-fonts._0xproto
+    pkgs.papirus-icon-theme
     oneui4-cursors
     bibata-cursors
   ];

@@ -4,6 +4,7 @@
   # wayland.windowManager.hyprland.enable = true;
 
   imports = [
+    ../nixgl-nvidia.nix
     ../quickshell.nix
     ./fonts.nix
     ./hyde.nix

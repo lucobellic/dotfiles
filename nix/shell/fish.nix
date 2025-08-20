@@ -87,6 +87,7 @@
       shellAbbrs = {
         neovim = "nvim --listen /tmp/neovim_server.pipe";
         astronvim = "NVIM_APPNAME=astronvim nvim";
+        caelestia-shell = "quickshell -c caelestia";
         start-docker = ''
           cd ~/Development/rapidash
           if test (docker container inspect --format '{{.State.Running}}' rapidash) = "true"

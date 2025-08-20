@@ -1,10 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  nixGL.packages = import <nixgl> { inherit pkgs; };
-  nixGL.defaultWrapper = "mesa";
-  nixGL.installScripts = [ "mesa" ];
-
   wayland.windowManager.hyprland = {
     enable = true;
     package = config.lib.nixGL.wrap pkgs.hyprland;

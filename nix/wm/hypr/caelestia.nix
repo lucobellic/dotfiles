@@ -1,21 +1,34 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 let
   # Install caelestia-cli from source using fetchFromGitHub
-  caelestia-cli = pkgs.callPackage (pkgs.fetchFromGitHub {
-    owner = "caelestia-dots";
-    repo = "cli";
-    rev = "99142f11ad7bccf3bb51cedfe55013c9690dcc0e";
-    sha256 = "sha256-yd2NIfjWgsOWZsiMDgBw/p3IUHz60xoCsDzmZUWrOc4=";
-  }) {
-    rev = "99142f11ad7bccf3bb51cedfe55013c9690dcc0e";
-    caelestia-shell = null; # Set to null unless you want the shell component
-  };
+  caelestia-cli = pkgs.callPackage
+    (pkgs.fetchFromGitHub {
+      owner = "caelestia-dots";
+      repo = "cli";
+      rev = "12f0d518622cbb9e00455c9591bd597f64a1747b";
+      sha256 = "sha256-ZI+TIo/cnW18b5hPgCNBLNgujRV2ULfLAnit9TMzwA4=";
+    })
+    {
+      rev = "12f0d518622cbb9e00455c9591bd597f64a1747b";
+      caelestia-shell = null;
+      withShell = false;
+    };
+  
+  # Create a separate caelestia-shell script using nixGL-wrapped quickshell
+  caelestia-shell = pkgs.writeShellScriptBin "caelestia-shell" ''
+    exec ${config.lib.nixGL.wrap pkgs.quickshell}/bin/quickshell -c caelestia "$@"
+  '';
 in
 {
   home.packages = with pkgs; [
+
+    # Core packages for caelestia
     ddcutil
+    material-symbols
+
     caelestia-cli
+    caelestia-shell
 
     # Dependencies for caelestia-cli functionality
     libnotify
@@ -28,7 +41,7 @@ in
     wl-screenrec
     wf-recorder
     glib
-    pulseaudio  # libpulse is part of pulseaudio
+    pulseaudio # libpulse is part of pulseaudio
     cliphist
     fuzzel
   ];

@@ -55,13 +55,8 @@
 
   qt = {
     enable = true;
-    platformTheme = {
-      name = "gtk3";
-    };
-    style = {
-      package = pkgs.adwaita-qt6;
-      name = "adwaita-dark";
-    };
+    style.name = "adwaita-dark";
+    platformTheme.name = "gtk3";
   };
 
   xdg.configFile.hypr.source = config.lib.file.mkOutOfStoreSymlink ~/dots-hyprland/.config/hypr;
