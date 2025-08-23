@@ -1,8 +1,6 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
-  # wayland.windowManager.hyprland.enable = true;
-
   imports = [
     ../nixgl-nvidia.nix
     ../quickshell.nix
@@ -12,7 +10,14 @@
     # ./end4.nix
   ];
 
-  xdg.configFile.cava.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/cava;
+  nixpkgs.overlays = [
+    (final: prev: {
+      wayland-bongocat = final.callPackage ../bongocat.nix { };
+    })
+  ];
+  home.packages = [ pkgs.wayland-bongocat ];
+  xdg.configFile.bongocat.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/bongocat;
+
   xdg.configFile.dunst.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/dunst;
   xdg.configFile.rofi.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/rofi;
   xdg.configFile.wlogout.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/wlogout;

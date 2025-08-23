@@ -25,9 +25,7 @@
     blueman
     bluez
     brightnessctl
-    # cava
     cliphist
-    dunst
     fastfetch
     kdePackages.ffmpegthumbs
     gamemode
@@ -35,14 +33,13 @@
     grimblast # screenshot tool
     # swaylock # install from package manager
     (config.lib.nixGL.wrap hyprlock)
-    # (config.lib.nixGL.wrap hyprland)
+
     hyprpaper
     hyprpicker # color picker
     hyprutils
     imagemagick
     kdePackages.kde-cli-tools
     libnotify # for notifications
-    mako
     mangohud
     networkmanager # network manager
     nwg-look
