@@ -35,7 +35,7 @@
 # in
 {
   home.packages = with pkgs; [
-    (config.lib.nixGL.wrap quickshell)
+    (config.lib.nixGL.wrapOffload quickshell)
 
     qt6.qt5compat
     qt6.full

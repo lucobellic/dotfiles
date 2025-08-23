@@ -9,14 +9,9 @@
       nvidiaVersion = "575.64.03";
       nvidiaHash = "sha256-S7eqhgBLLtKZx9QwoGIsXJAyfOOspPbppTHUxB06DKA=";
     };
-    defaultWrapper = "nvidia";
-    installScripts = [ "nvidia" ];
+    defaultWrapper = "mesa";
+    offloadWrapper = "nvidia";
+    installScripts = [ "mesa" "mesaPrime" "nvidia" "nvidiaPrime" ];
   };
 
-  # Set environment variables for NVIDIA
-  home.sessionVariables = {
-    LIBVA_DRIVER_NAME = "nvidia";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    GBM_BACKEND = "nvidia-drm";
-  };
 }
