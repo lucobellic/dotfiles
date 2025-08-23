@@ -1,11 +1,11 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
-  # Does not work (https://github.com/NixOS/nixpkgs/issues/80936)
-  # programs.kitty = {
-  #   enable = true;
-  #   extraConfig = builtins.readFile ../../config/kitty/kitty.conf;
-  # };
+  programs.kitty = {
+    package = (config.lib.nixGL.wrapOffload pkgs.kitty);
+    enable = true;
+    extraConfig = builtins.readFile ~/.config/home-manager/config/kitty/kitty.conf;
+  };
 
-  xdg.configFile.kitty.source = config.lib.file.mkOutOfStoreSymlink ../../config/kitty;
+  # xdg.configFile.kitty.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/kitty;
 }

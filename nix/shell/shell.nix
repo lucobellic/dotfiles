@@ -1,5 +1,11 @@
 { lib, pkgs, config, ... }:
 
+let
+  unimatrix = import (builtins.fetchGit {
+    url = "https://github.com/will8211/unimatrix";
+    name = "unimatrix";
+  }) { inherit pkgs; };
+in
 {
 
   home.packages = [
@@ -10,6 +16,7 @@
     pkgs.gh
     pkgs.yazi
     pkgs.fd
+    unimatrix
   ];
 
 
