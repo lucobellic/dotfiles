@@ -60,7 +60,7 @@ in
 
     caelestia-cli
     caelestia-shell
-    beat_detector
+    # beat_detector
 
     # Dependencies for caelestia-cli functionality
     libnotify

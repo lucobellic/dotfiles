@@ -1,26 +1,8 @@
 { config, pkgs, ... }:
 
 {
-  wayland.windowManager.hyprland = {
-    enable = true;
-    package = config.lib.nixGL.wrap pkgs.hyprland;
-    settings = { };
-    extraConfig = ''source = ~/.config/home-manager/config/hypr/hyprland.conf'';
-  };
-
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      (config.lib.nixGL.wrap xdg-desktop-portal-gnome)
-      (config.lib.nixGL.wrap xdg-desktop-portal-gtk)
-    ];
-  };
-
   home.packages = with pkgs; [
-    xwayland
-
-    # Hardware acceleration on NVIDIA and Wayland
-    nvidia-vaapi-driver
+    (config.lib.nixGL.wrap baobab)
 
     blueman
     bluez
@@ -42,6 +24,7 @@
     libnotify # for notifications
     mangohud
     networkmanager # network manager
+    dunst
     nwg-look
     pamixer
     parallel
@@ -61,7 +44,6 @@
   ];
 
 
-  xdg.configFile."hypr/hyprlock.conf".source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/hypr/hyprlock.conf;
   xdg.configFile.qt5ct.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/qt5ct;
   xdg.configFile.qt6ct.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/qt6ct;
 

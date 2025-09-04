@@ -9,6 +9,9 @@ in
 {
 
   home.packages = [
+    pkgs.nodejs
+    pkgs.yarn
+
     pkgs.ripgrep
     pkgs.yarn
     pkgs.grc

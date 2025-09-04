@@ -77,10 +77,11 @@
       '';
       interactiveShellInit = ''
         set fish_greeting # Disable greeting
-        starship init fish | source # Initialize starship
-        zoxide init fish | source # Initialize zoxide
         set -x PATH $HOME/.local/bin $PATH
         set -x PATH $HOME/.pyenv/bin $PATH
+        set -x PATH $HOME/.cargo/bin $PATH
+        starship init fish | source # Initialize starship
+        zoxide init fish | source # Initialize zoxide
         status --is-interactive; and source (pyenv init --path | psub)
         status --is-interactive; and source (pyenv init - | psub)
       '';

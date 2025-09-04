@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # Configure nixGL using the built-in home-manager module with the default nixGL import
@@ -6,11 +6,11 @@
     packages = import <nixgl> {
       inherit pkgs;
       # Specify NVIDIA version to avoid auto-detection issues
-      nvidiaVersion = "575.64.03";
-      nvidiaHash = "sha256-S7eqhgBLLtKZx9QwoGIsXJAyfOOspPbppTHUxB06DKA=";
+      nvidiaVersion = "570.169";
+      nvidiaHash = "sha256-XzKoR3lcxcP5gPeRiausBw2RSB1702AcAsKCndOHN2U=";
     };
     defaultWrapper = "mesa";
-    offloadWrapper = "nvidia";
+    offloadWrapper = "nvidiaPrime";
     installScripts = [ "mesa" "mesaPrime" "nvidia" "nvidiaPrime" ];
   };
 

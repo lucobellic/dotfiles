@@ -33,6 +33,7 @@
 
   imports = [
     ./ai/opencode.nix
+    ./development/python3.nix
     ./btop.nix
     ./git.nix
     ./neovim.nix

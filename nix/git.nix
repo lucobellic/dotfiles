@@ -66,6 +66,7 @@
             "--date=relative"
             "--pretty=medium"
           ];
+          autoForwardBranches = "none";
           autoFetch = true;
           disableForcePushing = true;
           log = {
@@ -85,16 +86,18 @@
           commitLength = {
             show = true;
           };
-          expandFocusedSidePanel = false;
           enlargedSideViewLocation = "top";
+          expandFocusedSidePanel = false;
           language = "auto"; # one of 'auto' | 'en' | 'zh' | 'pl' | 'nl' | 'ja' | 'ko'
+          localBranchSortOrder = "recency";
           mainPanelSplitMode = "flexible"; # one of 'horizontal' | 'flexible' | 'vertical'
           mouseEvents = true;
           nerdFontsVersion = "3"; # nerd fonts version to use ("2" or "3"); empty means don't show nerd font icons
-          showIcons = true;
+          remoteBranchSortOrder = "recency";
           scrollHeight = 2; # how many lines you scroll by
           scrollPastBottom = true; # enable scrolling past the bottom  showBottomLine= true # for hiding the bottom information line (unless it has important information to tell you)  showCommandLog= false
           showFileTree = true; # for rendering changes files in a tree format
+          showIcons = true;
           showListFooter = true; # for seeing the '5 of 20' message in list panels
           showRandomTip = true;
           sidePanelWidth = 0.3333; # number from 0 to 1
@@ -107,6 +110,7 @@
             timeFormat = "\"02 Jan 06 15=04 MST\""; # https=//pkg.go.dev/time#Time.Format
             windowSize = "normal"; # one of 'normal' | 'half' | 'full' default is 'normal'
           };
+          useHunkModeInStagingView = true;
         };
         os = {
           editPreset = "nvim-remote";
