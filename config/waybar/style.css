@@ -136,7 +136,7 @@ tooltip {
 
 #workspaces,
 #taskbar {
-  padding: 0px;
+  color: @main-fg;
 }
 
 #custom-r_end {

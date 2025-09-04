@@ -1,5 +1,5 @@
-@define-color bar-bg rgb(3,20,36);
-@define-color main-bg rgb(3,20,36);
+@define-color bar-bg rgba(3,20,36,0);
+@define-color main-bg rgba(3,20,36,1.0);
 @define-color main-fg rgb(170,206,240);
 @define-color wb-act-bg rgba(223,195,24, 0.8);
 @define-color wb-act-fg rgb(255,248,204);
