@@ -7,5 +7,51 @@
   "keybinds": {
     "messages_half_page_up": "ctrl+u",
     "messages_half_page_down": "ctrl+d"
+  },
+  "mcp": {
+    "github": {
+      "enabled": false,
+      "type": "remote",
+      "url": "https://api.githubcopilot.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    }
+  },
+  "lsp": {
+    "lua_ls": {
+      "command": [
+        "lua-language-server"
+      ],
+      "extensions": [
+        ".lua"
+      ]
+    },
+    "clangd": {
+      "disabled": true,
+      "command": [
+        "clangd",
+        "--background-index",
+        "--background-index-priority=background",
+        "--all-scopes-completion",
+        "--pch-storage=memory",
+        "--completion-style=detailed",
+        "--clang-tidy",
+        "--enable-config",
+        "--header-insertion=iwyu",
+        "--all-scopes-completion",
+        "-j",
+        "2"
+      ],
+      "extensions": [
+        ".c",
+        ".cpp",
+        ".ipp",
+        ".h",
+        ".hpp",
+        ".cu",
+        ".cuh"
+      ]
+    }
   }
 }

@@ -102,7 +102,7 @@
       "label": "",
       "occupiedBg": false,
       "occupiedLabel": "",
-      "perMonitorWorkspaces": true,
+      "perMonitorWorkspaces": false,
       "showWindows": true,
       "shown": 5
     },
@@ -112,7 +112,7 @@
   },
   "border": {
     "rounding": 10,
-    "thickness": 5
+    "thickness": 2
   },
   "dashboard": {
     "enabled": true,
