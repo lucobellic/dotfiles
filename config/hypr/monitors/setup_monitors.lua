@@ -95,6 +95,8 @@ end
 -- Run main function with error handling
 local success, err = pcall(main)
 if not success then
-  execute_command('notify-send "Setup Monitor" "Error: ' .. err .. '"')
+  execute_command('notify-send "Setup monitors" "Error: ' .. err .. '"')
   os.exit(1)
+else
+  execute_command('notify-send "Setup monitors"')
 end
