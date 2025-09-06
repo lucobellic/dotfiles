@@ -1,4 +1,4 @@
-{ config,pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   wayland-bongocat = pkgs.stdenv.mkDerivation rec {
@@ -40,8 +40,31 @@ let
     };
   };
 
+  find-keyboard-devices = pkgs.stdenv.mkDerivation {
+    name = "find-keyboard-devices";
+    src = null;
+    phases = [ "installPhase" ];
+    installPhase = ''
+            mkdir -p $out/bin
+            cat > $out/bin/find-keyboard-devices <<'EOF'
+      #!/usr/bin/env bash
+      grep -E 'Handlers|EV=' /proc/bus/input/devices | \
+        grep -B1 'EV=120013' | \
+        grep -Eo 'event[0-9]+' | \
+        xargs -I{} echo /dev/input/{}
+      EOF
+            chmod +x $out/bin/find-keyboard-devices
+    '';
+    meta = {
+      description = "Script to list all keyboard devices on /dev/input/event*";
+      platforms = lib.platforms.linux;
+    };
+  };
 in
 {
-  home.packages = [ wayland-bongocat ];
+  home.packages = [
+    (config.lib.nixGL.wrap wayland-bongocat)
+    find-keyboard-devices
+  ];
   xdg.configFile.bongocat.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/bongocat;
 }
