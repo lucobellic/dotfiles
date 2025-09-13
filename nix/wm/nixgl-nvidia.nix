@@ -6,8 +6,8 @@
     packages = import <nixgl> {
       inherit pkgs;
       # Specify NVIDIA version to avoid auto-detection issues
-      nvidiaVersion = "570.169";
-      nvidiaHash = "sha256-XzKoR3lcxcP5gPeRiausBw2RSB1702AcAsKCndOHN2U=";
+      nvidiaVersion = "580.65.06";
+      nvidiaHash = "sha256-BLEIZ69YXnZc+/3POe1fS9ESN1vrqwFy6qGHxqpQJP8=";
     };
     defaultWrapper = "mesa";
     offloadWrapper = "nvidiaPrime";

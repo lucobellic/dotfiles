@@ -26,12 +26,10 @@
   xdg.configFile.hypr.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/hypr;
 
   imports = [
-    ../nixgl-nvidia.nix
-    ../quickshell.nix
+    # ../quickshell.nix
     ./bongocat.nix
-    ./fonts.nix
     ./hyde.nix
-    ./caelestia.nix
+    # ./caelestia.nix
     # ./end4.nix
   ];
 
