@@ -13,6 +13,13 @@
     fzf = {
       enable = true;
       enableFishIntegration = false;
+      defaultCommand = "rg --files --hidden --follow --no-ignore-vcs";
+      defaultOptions = [
+        "--layout=reverse"
+        "--info=inline"
+        "--color info:12,border:#1a2632"
+        "--color prompt:2,bg+:#111d2c,hl+:#e7b774,hl:#e7b774,pointer:7"
+      ];
     };
 
     fish = {
@@ -81,6 +88,9 @@
         set -x PATH $HOME/.pyenv/bin $PATH
         set -x PATH $HOME/.cargo/bin $PATH
         starship init fish | source # Initialize starship
+        function fish_prompt
+          starship prompt | awk 'NF'
+        end
         zoxide init fish | source # Initialize zoxide
         status --is-interactive; and source (pyenv init --path | psub)
         status --is-interactive; and source (pyenv init - | psub)
@@ -88,6 +98,7 @@
       shellAbbrs = {
         neovim = "nvim --listen /tmp/neovim_server.pipe";
         astronvim = "NVIM_APPNAME=astronvim nvim";
+        nvchad = "NVIM_APPNAME=nvchad nvim";
         caelestia-shell = "quickshell -c caelestia";
         start-docker = ''
           cd ~/Development/rapidash

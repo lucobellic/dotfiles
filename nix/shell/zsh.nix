@@ -75,10 +75,12 @@
     fzf = {
       enable = true;
       enableZshIntegration = true;
+      enableFishIntegration = true;
       defaultCommand = "rg --files --hidden --follow --no-ignore-vcs";
       defaultOptions = [
         "--layout=reverse"
-        "--color gutter:-1,info:12,border:#1a2632"
+        "--info=inline"
+        "--color info:12,border:#1a2632"
         "--color prompt:2,bg+:#111d2c,hl+:#e7b774,hl:#e7b774,pointer:7"
       ];
     };
