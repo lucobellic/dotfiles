@@ -2,11 +2,12 @@
   "$schema": "https://opencode.ai/config.json",
   "theme": "ayugloom",
   "model": "github-copilot/gpt-4.1",
+  "share": "disabled",
   "autoshare": false,
   "autoupdate": true,
   "keybinds": {
     "messages_half_page_up": "ctrl+u",
-    "messages_half_page_down": "ctrl+d"
+    "messages_half_page_down": "ctrl+d",
   },
   "mcp": {
     "github": {
@@ -14,18 +15,14 @@
       "type": "remote",
       "url": "https://api.githubcopilot.com/mcp",
       "headers": {
-        "Authorization": "Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}"
-      }
-    }
+        "Authorization": "Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}",
+      },
+    },
   },
   "lsp": {
     "lua_ls": {
-      "command": [
-        "lua-language-server"
-      ],
-      "extensions": [
-        ".lua"
-      ]
+      "command": ["lua-language-server"],
+      "extensions": [".lua"],
     },
     "clangd": {
       "disabled": true,
@@ -41,17 +38,9 @@
         "--header-insertion=iwyu",
         "--all-scopes-completion",
         "-j",
-        "2"
+        "2",
       ],
-      "extensions": [
-        ".c",
-        ".cpp",
-        ".ipp",
-        ".h",
-        ".hpp",
-        ".cu",
-        ".cuh"
-      ]
-    }
-  }
+      "extensions": [".c", ".cpp", ".ipp", ".h", ".hpp", ".cu", ".cuh"],
+    },
+  },
 }

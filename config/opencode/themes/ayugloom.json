@@ -7,7 +7,7 @@
     "darkPanel": "#0F131A",
     "darkFg": "#BFBDB6",
     "darkFgMuted": "#565B66",
-    "darkGutter": "#6C7380",
+    "darkGutter": "#0D1017",
     "darkTag": "#39BAE6",
     "darkFunc": "#FFB454",
     "darkEntity": "#59C2FF",
@@ -23,7 +23,7 @@
     "darkRemoved": "#F26D78",
     "darkAccent": "#E6B450",
     "darkError": "#D95757",
-    "darkIndentActive": "#6C7380"
+    "darkIndentActive": "#11151C"
   },
   "theme": {
     "primary": "darkEntity",
