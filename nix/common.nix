@@ -15,13 +15,7 @@
 
   programs.bash.enable = true;
   xdg.enable = true;
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    packageOverrides = pkgs: {
-      nixpkgs.config.hardware.opengl.enable = true;
-    };
-  };
+  nixpkgs.config = { allowUnfree = true; };
 
   home.packages = [
     pkgs.curl
@@ -33,13 +27,13 @@
 
   imports = [
     ./ai/opencode.nix
-    ./development/python3.nix
+    ./dev/dev.nix
     ./btop.nix
     ./git.nix
     ./neovim.nix
     ./nix.nix
     ./shell/shell.nix
-    ./wm/hypr/hypr.nix
+    ./wm/wm.nix
   ];
 
   # Let Home Manager install and manage itself.
