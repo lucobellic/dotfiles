@@ -2,14 +2,6 @@
 "$schema" = "https://starship.rs/config-schema.json"
 
 format = """
-$nix_shell\
-$container\
-$git_branch\
-$git_status\
-$git_metrics\
-$git_commit\
-$git_state\
-$fill\
 $singularity\
 $kubernetes\
 $vcsh\
@@ -76,6 +68,17 @@ $os\
 $battery\
 $time \
 \n\
+$nix_shell\
+$container\
+$directory\
+$cmd_duration\
+\n\
+$git_branch\
+$git_status\
+$git_metrics\
+$git_commit\
+$git_state\
+\n\
 $hostname\
 $localip\
 $shlvl\
@@ -86,10 +89,10 @@ $sudo\
 $username\
 $character"""
 
-right_format = """
-$cmd_duration\
-$directory\
-"""
+# right_format = """
+# $cmd_duration\
+# $directory\
+# """
 
 continuation_prompt = "[∙](bright-black) "
 scan_timeout = 30
