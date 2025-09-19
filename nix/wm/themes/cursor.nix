@@ -1,10 +1,10 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   home.pointerCursor = {
     gtk.enable = true;
     x11.enable = true;
     hyprcursor.enable = true;
-    name = "bibata-cursors";
+    name = "Bibata-Modern-Ice";
     package = pkgs.bibata-cursors;
     size = 12;
   };

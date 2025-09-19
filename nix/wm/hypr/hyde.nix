@@ -2,32 +2,33 @@
 
 {
   home.packages = with pkgs; [
-    (config.lib.nixGL.wrap baobab)
+    # Install from package manager:
+    # cliphist
+    # swaylock
+    # pavucontrol
 
-    brightnessctl
-    cliphist
-    fastfetch
-    kdePackages.ffmpegthumbs
-    # swaylock # install from package manager
+    (config.lib.nixGL.wrap baobab)
     (config.lib.nixGL.wrap hyprlock)
+    brightnessctl
+    dunst
+    fastfetch
+    hyprcursor
+
+    # wallpaper
     hyprpaper
+    swww
+
     hyprpicker # color picker
     hyprutils
-    hyprcursor
+    hyprshade
+    swappy
+    grimblast
     imagemagick
+    kdePackages.ffmpegthumbs
     libnotify # for notifications
-    # mangohud
-    # networkmanager # network manager
-    dunst
-    # nwg-look
-    # pamixer
-    # parallel
-    # pavucontrol
+    parallel
     rofi
-    # slurp
-    # swappy
-    # swww
-    # udiskie
+    udiskie
     waybar
     wl-clipboard
     wl-gammarelay-rs
@@ -36,9 +37,8 @@
     wofi
   ];
 
-
-  xdg.configFile.qt5ct.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/qt5ct;
-  xdg.configFile.qt6ct.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/qt6ct;
+  # xdg.configFile.qt5ct.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/qt5ct;
+  # xdg.configFile.qt6ct.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/qt6ct;
 
   home.file.".local/share/bin" = {
     recursive = true;
