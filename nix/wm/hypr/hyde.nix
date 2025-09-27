@@ -8,11 +8,12 @@
     # pavucontrol
 
     (config.lib.nixGL.wrap baobab)
-    (config.lib.nixGL.wrap hyprlock)
+    # (config.lib.nixGL.wrap hyprlock)
     brightnessctl
     dunst
     fastfetch
     hyprcursor
+
 
     # wallpaper
     hyprpaper
@@ -21,6 +22,9 @@
     hyprpicker # color picker
     hyprutils
     hyprshade
+    # hyprsunset hyprland v0.45
+    (config.lib.nixGL.wrap hyprpanel)
+
     swappy
     grimblast
     imagemagick
@@ -36,6 +40,11 @@
     wlr-randr
     wofi
   ];
+
+  programs.hyprlock = {
+    enable = true;
+    package = (config.lib.nixGL.wrap pkgs.hyprlock);
+  };
 
   # xdg.configFile.qt5ct.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/qt5ct;
   # xdg.configFile.qt6ct.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/qt6ct;

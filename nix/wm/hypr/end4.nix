@@ -14,7 +14,6 @@
     hypridle
     (config.lib.nixGL.wrap hyprlock)
     hyprpicker
-    hyprsunset
     hyprutils
     xdg-desktop-portal-hyprland
 
