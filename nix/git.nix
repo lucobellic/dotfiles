@@ -87,6 +87,7 @@
           overrideGpg = true;
         };
         gui = {
+          skipUpdateNotification = true;
           border = "single"; # one of 'single' | 'double' | 'rounded
           commandLogSize = 8;
           commitLength = {
