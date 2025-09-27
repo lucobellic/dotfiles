@@ -75,7 +75,6 @@
     fzf = {
       enable = true;
       enableZshIntegration = true;
-      enableFishIntegration = true;
       defaultCommand = "rg --files --hidden --follow --no-ignore-vcs";
       defaultOptions = [
         "--layout=reverse"
