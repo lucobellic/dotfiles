@@ -16,19 +16,23 @@
   programs.bash.enable = true;
   xdg.enable = true;
   nixpkgs.config = { allowUnfree = true; };
+  services.ssh-agent.enable = true;
 
   home.packages = [
     pkgs.curl
   ];
 
   home.sessionVariables = {
+    PATH = "/nix/var/nix/profiles/default/bin:$HOME/.nix-profile/bin:$PATH";
     OLLAMA_API_BASE = "http://127.0.0.1:11434";
+    SSH_AUTH_SOCK = "/run/user/1000/ssh-agent";
   };
 
   imports = [
     ./ai/opencode.nix
-    ./dev/dev.nix
     ./btop.nix
+    ./dev/dev.nix
+    ./dev/docker.nix
     ./git.nix
     ./neovim.nix
     ./nix.nix
