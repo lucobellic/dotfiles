@@ -32,40 +32,36 @@ end
 
 --- @return string
 local function get_window_positioning()
-  -- Evaluate spawn position
   local cursor_pos_output, _ = utils.execute_command('hyprctl cursorpos -j')
-  utils.execute_command('hyprctl -j monitors')
+  local monitors_output, _ = utils.execute_command('hyprctl monitors -j')
 
-  -- Parse cursor position
-  local cur_pos = {}
-  cur_pos[1] = tonumber(utils.parse_json_value(cursor_pos_output, 'x')) or 0
-  cur_pos[2] = tonumber(utils.parse_json_value(cursor_pos_output, 'y')) or 0
+  local cur_x = tonumber(utils.parse_json_value(cursor_pos_output, 'x')) or 0
+  local cur_y = tonumber(utils.parse_json_value(cursor_pos_output, 'y')) or 0
 
-  -- Parse monitor resolution (simplified)
-  local mon_res = { 1920, 1080, 100, 0, 0 } -- width, height, scale*100, x_offset, y_offset
-  local off_res = { 0, 0, 0, 0 } -- would need proper JSON parsing
+  local mon_width = tonumber(monitors_output:match('"width":%s*(%d+)')) or 1920
+  local mon_height = tonumber(monitors_output:match('"height":%s*(%d+)')) or 1080
+  local mon_x = tonumber(monitors_output:match('"x":%s*(%-?%d+)')) or 0
+  local mon_y = tonumber(monitors_output:match('"y":%s*(%-?%d+)')) or 0
 
-  -- Calculate relative cursor position
-  cur_pos[1] = cur_pos[1] - mon_res[4]
-  cur_pos[2] = cur_pos[2] - mon_res[5]
+  local rel_x = cur_x - mon_x
+  local rel_y = cur_y - mon_y
 
-  -- Determine position
   local x_pos, y_pos, x_off, y_off
 
-  if cur_pos[1] >= (mon_res[1] / 2) then
+  if rel_x >= (mon_width / 2) then
     x_pos = 'east'
-    x_off = -(mon_res[1] - cur_pos[1] - off_res[3])
+    x_off = -(mon_width - rel_x)
   else
     x_pos = 'west'
-    x_off = cur_pos[1] - off_res[1]
+    x_off = rel_x
   end
 
-  if cur_pos[2] >= (mon_res[2] / 2) then
+  if rel_y >= (mon_height / 2) then
     y_pos = 'south'
-    y_off = -(mon_res[2] - cur_pos[2] - off_res[4])
+    y_off = -(mon_height - rel_y)
   else
     y_pos = 'north'
-    y_off = cur_pos[2] - off_res[2]
+    y_off = rel_y
   end
 
   return string.format(
@@ -243,7 +239,8 @@ local function handle_view_favorites_action()
 end
 
 local function handle_manage_favorites_action()
-  local manage_action = show_rofi_menu('Add to Favorites\\nDelete from Favorites\\nClear All Favorites', 'Manage Favorites')
+  local manage_action =
+    show_rofi_menu('Add to Favorites\\nDelete from Favorites\\nClear All Favorites', 'Manage Favorites')
 
   if manage_action == 'Add to Favorites' then
     local r_override = get_window_positioning()
