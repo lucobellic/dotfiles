@@ -14,6 +14,7 @@
     fastfetch
     hyprcursor
 
+    (config.lib.nixGL.wrap eww)
 
     # wallpaper
     hyprpaper

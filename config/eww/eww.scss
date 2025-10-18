@@ -1,0 +1,9 @@
+* {
+  all: unset;
+}
+
+window {
+  background-color: transparent;
+}
+
+@import "./styles/modern-clock.scss";

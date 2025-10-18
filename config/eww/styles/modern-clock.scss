@@ -1,0 +1,28 @@
+.modern-clock-container {
+  background-color: transparent;
+  padding: 20px;
+}
+
+.day label {
+  font-family: "Anurati", sans-serif;
+  font-size: 72px;
+  letter-spacing: 17px;
+  color: #FFFFFF;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.date label {
+  font-family: "Poppins", sans-serif;
+  font-size: 19px;
+  letter-spacing: 3px;
+  color: #FFFFFF;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.time label {
+  font-family: "Poppins", sans-serif;
+  font-size: 19px;
+  letter-spacing: 3px;
+  color: #FFFFFF;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}

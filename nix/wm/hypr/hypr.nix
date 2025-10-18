@@ -33,6 +33,7 @@
     # ./end4.nix
   ];
 
+  xdg.configFile.eww.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/eww;
   xdg.configFile.dunst.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/dunst;
   xdg.configFile.rofi.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/rofi;
   xdg.configFile.wlogout.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/wlogout;
