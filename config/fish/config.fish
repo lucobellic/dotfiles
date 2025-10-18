@@ -10,3 +10,9 @@ end
 
 # Use zoxide query for cd completions
 complete -c cd -f -a '(__zoxide_cd_complete)'
+
+# Import graphical environment variables for user systemd
+if type -q systemctl
+    systemctl --user import-environment DISPLAY XAUTHORITY DBUS_SESSION_BUS_ADDRESS
+end
+

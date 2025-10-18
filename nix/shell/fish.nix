@@ -10,6 +10,7 @@
       enableFishIntegration = true;
     };
 
+
     fzf = {
       enable = true;
       enableFishIntegration = false;
@@ -51,7 +52,7 @@
         set -U fish_color_end F29668
         set -U fish_color_error F26D78
         set -U fish_color_param D2A6FF
-        set -U fish_color_comment 626A73
+        set -U fish_color_comment 6F7F9B
         set -U fish_color_match F07178
         set -U fish_color_selection --background=152538
         set -U fish_color_search_match --background=2D4965
@@ -61,7 +62,7 @@
         set -U fish_color_cwd 59C2FF
         set -U fish_color_cwd_root red
         set -U fish_color_valid_path D2A6FF
-        set -U fish_color_autosuggestion 4D5566
+        set -U fish_color_autosuggestion 6F7F9B
         set -U fish_color_user brgreen
         set -U fish_color_host normal
         set -U fish_color_cancel --reverse
@@ -94,6 +95,15 @@
         zoxide init fish | source # Initialize zoxide
         status --is-interactive; and source (pyenv init --path | psub)
         status --is-interactive; and source (pyenv init - | psub)
+
+        # Auto-add SSH keys if agent is running and keys exist
+        if test -n "$SSH_AUTH_SOCK"
+          for key in ~/.ssh/github_personal ~/.ssh/gitlab ~/.ssh/gitlab_perso ~/.ssh/read ~/.ssh/testbench
+            if test -f "$key"
+              ssh-add -l | grep -q (ssh-keygen -lf "$key" | awk '{print $2}') || ssh-add "$key" 2>/dev/null
+            end
+          end
+        end
       '';
       shellAbbrs = {
         neovim = "nvim --listen /tmp/neovim_server.pipe";

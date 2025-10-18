@@ -42,6 +42,15 @@
       };
       initExtra = ''
         setopt magic_equal_subst
+
+        # Fix completion issues with magic_equal_subst
+        # Disable problematic completers and use safer options
+        zstyle ':completion:*' completer _complete _ignored
+        zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=* r:|=*'
+
+        # Ensure completion works properly after = sign
+        compdef '_files -/' '*:*='
+
         bindkey -M menuselect '\r' .accept-line
         bindkey "^[[H" beginning-of-line
         bindkey "^[[F" end-of-line
