@@ -109,12 +109,12 @@
   },
 
   "custom/wallchange": {
-    "format": "{}",
+    "format": "{}",
     "rotate": 0,
     "exec": "echo ; echo 󰆊 switch wallpaper",
-    "on-click": "swwwallpaper.sh -n",
-    "on-click-right": "swwwallpaper.sh -p",
-    "on-click-middle": "sleep 0.1 && swwwallselect.sh",
+    "on-click": "swwwallpaper.rs next",
+    "on-click-right": "swwwallpaper.rs previous",
+    "on-click-middle": "sleep 0.1 && swwwallselect.rs",
     "interval": 86400, // once every day
     "tooltip": true,
   },
