@@ -1,0 +1,29 @@
+(include "./widgets/audio-control.yuck")
+
+(defpoll speaker_data :interval "500ms"
+  :initial "{\"volume\": 0, \"muted\": false, \"output\": \"Unknown\"}"
+  "scripts/audio.rs json")
+
+(defpoll mic_data :interval "500ms"
+  :initial "{\"volume\": 0, \"muted\": false, \"input\": \"Unknown\"}"
+  "scripts/audio.rs mic-json")
+
+(defwidget speaker-widget []
+  (audio-control :poll_data speaker_data
+                 :icon-muted "󰖁"
+                 :icon-zero "󰕿"
+                 :icon-low "󰖀"
+                 :icon-high "󰕾"
+                 :device-label "output"
+                 :scroll-cmd "scripts/audio.rs set-volume"
+                 :mute-cmd "scripts/audio.rs toggle-mute"))
+
+(defwidget microphone-widget []
+  (audio-control :poll_data mic_data
+                 :icon-muted "󰍭"
+                 :icon-zero "󰍬"
+                 :icon-low "󰍬"
+                 :icon-high "󰍬"
+                 :device-label "input"
+                 :scroll-cmd "scripts/audio.rs set-mic-volume"
+                 :mute-cmd "scripts/audio.rs toggle-mic-mute"))

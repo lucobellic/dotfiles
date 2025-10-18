@@ -7,3 +7,10 @@ window {
 }
 
 @import "./styles/modern-clock.scss";
+@import "./styles/usage-circle.scss";
+@import "./styles/audio.scss";
+@import "./styles/cpu-temp-bar.scss";
+
+.system-monitors-container {
+  background-color: transparent;
+}

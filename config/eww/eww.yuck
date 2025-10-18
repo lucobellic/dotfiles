@@ -1,1 +1,79 @@
 (include "./widgets/modern-clock.yuck")
+
+(include "./widgets/system-tray.yuck")
+(include "./widgets/audio.yuck")
+(include "./widgets/cpu-cores-monitor.yuck")
+
+(defwindow modern-clock
+  :monitor 0
+  :geometry (geometry :x "0%"
+                      :y "5%"
+                      :anchor "center top")
+  :stacking "bottom"
+  :windowtype "desktop"
+  :wm-ignore true
+  :decorated false
+  :transparent true
+  (modern-clock
+    :show_day true
+    :show_date true
+    :show_time true
+    :use_24_hour_format true
+    :time_character "-"
+  )
+)
+
+(defwindow microphone
+  :monitor 0
+  :geometry (geometry :x "1%"
+                      :y "10px"
+                      :anchor "bottom left")
+  :stacking "bottom"
+  :windowtype "desktop"
+  :wm-ignore true
+  :decorated false
+  :transparent true
+  (microphone-widget)
+)
+
+(defwindow speaker
+  :monitor 0
+  :geometry (geometry :x "1%"
+                      :y "38px"
+                      :anchor "bottom left")
+  :stacking "bottom"
+  :windowtype "desktop"
+  :wm-ignore true
+  :decorated false
+  :transparent true
+  (speaker-widget)
+)
+
+(defwindow cpu-cores
+  :monitor 0
+  :geometry (geometry :x "0%"
+                      :y "10px"
+                      :anchor "bottom center")
+  :stacking "bottom"
+  :windowtype "desktop"
+  :wm-ignore false
+  :decorated false
+  :transparent true
+  (cpu-cores-monitor
+   :display_usage false
+   :display_temperature true
+  )
+)
+
+(defwindow system-tray
+  :monitor 0
+  :geometry (geometry :x "1%"
+                      :y "13px"
+                      :anchor "bottom right")
+  :stacking "bottom"
+  :windowtype "desktop"
+  :wm-ignore false
+  :decorated false
+  :transparent true
+  (system-monitors)
+)

@@ -1,0 +1,26 @@
+(include "./widgets/cpu-temp-bar.yuck")
+
+(defpoll cpu_cores :interval "500ms"
+  :initial "[]"
+  "scripts/cpu-cores.rs")
+
+(defwidget cpu-cores-monitor [?display_usage ?display_temperature]
+  (box :class "cpu-cores-monitor-container"
+       :orientation "v"
+       :space-evenly false
+    (box :class "cpu-cores-grid"
+         :orientation "h"
+         :space-evenly false
+         :spacing 10
+      (for core in cpu_cores
+        (cpu-temp-bar :core {core.core}
+                      :usage {core.usage}
+                      :temp {core.temp}
+                      :color "#59c2ff"
+                      :display_usage {display_usage ?: true}
+                      :display_temperature {display_temperature ?: true}
+        )
+      )
+    )
+  )
+)

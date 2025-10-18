@@ -1,0 +1,41 @@
+(defwidget cpu-temp-bar [core usage temp ?color display_usage display_temperature]
+  (box :class "cpu-temp-bar-container"
+       :orientation "v"
+       :space-evenly false
+       :spacing 10
+    (box :class "cpu-temp-row"
+         :orientation "h"
+         :space-evenly false
+         :spacing 8
+         :visible display_usage
+      (scale :class "cpu-temp-scale"
+             :value usage
+             :min 0
+             :max 100
+             :orientation "h"
+             :active false
+             :style "color: ${usage < 20 ? '#39bae6'
+                            : usage < 40 ? '#95e6cb'
+                            : usage < 60 ? '#ffcc66'
+                            : usage < 80 ? '#ffb454'
+                            : '#f78c6c'};")
+    )
+    (box :class "cpu-temp-row"
+         :orientation "h"
+         :space-evenly false
+         :spacing 8
+         :visible display_temperature
+      (scale :class "cpu-temp-scale"
+             :value temp
+             :min 40
+             :max 100
+             :orientation "h"
+             :active false
+             :style "color: ${temp < 50 ? '#39bae6'
+                            : temp < 70 ? '#95e6cb'
+                            : temp < 80 ? '#ffcc66'
+                            : temp < 90 ? '#ffb454'
+                            : '#f78c6c'};")
+    )
+  )
+)

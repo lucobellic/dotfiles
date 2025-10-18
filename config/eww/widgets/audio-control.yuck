@@ -1,0 +1,29 @@
+(defwidget audio-control [poll_data icon-muted icon-zero icon-low icon-high device-label scroll-cmd mute-cmd]
+  (box :class "audio-widget-container"
+       :orientation "v"
+       :halign "center"
+       :valign "center"
+    (box :class "audio-control"
+         :orientation "h"
+         :space-evenly false
+         :spacing 20
+      (eventbox :onscroll "${scroll-cmd} {}"
+                :onclick mute-cmd
+        (label :class "audio-icon"
+               :tooltip {poll_data[device-label]}
+               :style "font-size: 20px;"
+               :text {poll_data.muted == "true" ? icon-muted :
+                      poll_data.volume == 0 ? icon-zero :
+                      poll_data.volume < 50 ? icon-low : icon-high}))
+      (eventbox :onscroll "${scroll-cmd} {}"
+        (scale :class "audio-slider"
+               :value {poll_data.volume}
+               :width 220
+               :min 0
+               :max 100
+               :orientation "h"
+               :tooltip {poll_data[device-label]}
+               :active false))
+    )
+  )
+)

@@ -1,3 +1,7 @@
+(defvar day-size "72px")
+(defvar date-size "19px")
+(defvar time-size "19px")
+
 (defpoll time :interval "1s"
   "date '+%I:%M %p'")
 
@@ -10,25 +14,7 @@
 (defpoll date :interval "1m"
   "date '+%d %b %Y' | tr '[:lower:]' '[:upper:]'")
 
-(defvar show_day true)
-(defvar show_date true)
-(defvar show_time true)
-(defvar use_24_hour_format false)
-(defvar time_character "-")
-
-(defvar day_font_size 72)
-(defvar day_letter_spacing 17)
-(defvar day_font_color "#FFFFFF")
-
-(defvar date_font_size 19)
-(defvar date_letter_spacing 3)
-(defvar date_font_color "#FFFFFF")
-
-(defvar time_font_size 19)
-(defvar time_letter_spacing 3)
-(defvar time_font_color "#FFFFFF")
-
-(defwidget modern-clock []
+(defwidget modern-clock [show_day show_date show_time use_24_hour_format time_character]
   (box :class "modern-clock-container"
        :orientation "v"
        :space-evenly false
@@ -37,24 +23,21 @@
        :valign "center"
     (box :class "day"
          :visible show_day
-      (label :text day))
+      (label :text day
+             :style "font-size: ${day-size};"
+      )
+    )
     (box :class "date"
          :visible show_date
-      (label :text date))
+      (label :text date
+             :style "font-size: ${date-size};"
+      )
+    )
     (box :class "time"
          :visible show_time
-      (label :text "${time_character} ${use_24_hour_format ? time_24h : time} ${time_character}"))))
-
-(defwindow modern-clock
-  :monitor 0
-  :geometry (geometry :x "0%"
-                      :y "0%"
-                      :width "400px"
-                      :height "300px"
-                      :anchor "center top")
-  :stacking "bottom"
-  :windowtype "desktop"
-  :wm-ignore true
-  :decorated false
-  :transparent true
-  (modern-clock))
+      (label :text "${time_character} ${use_24_hour_format ? time_24h : time} ${time_character}"
+             :style "font-size: ${time-size};"
+      )
+    )
+  )
+)

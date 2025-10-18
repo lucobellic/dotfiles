@@ -1,0 +1,30 @@
+(defwidget usage-circle [poll_var icon color ?size ?label ?margin-left]
+  (box :class "usage-circle-container"
+       :orientation "v"
+       :space-evenly false
+       :halign "center"
+       :valign "center"
+    (box :class "usage-overlay-wrapper"
+         :style "min-width: ${size ?: 24}px; min-height: ${size ?: 24}px;"
+         :orientation "v"
+      (overlay
+        (circular-progress :value "${poll_var ?: 0}"
+                          :class "usage-progress"
+                          :style "color: ${color};"
+                          :thickness 3
+                          :start-at 75
+                          :clockwise true)
+        (box :class "usage-icon-box"
+             :orientation "v"
+             :space-evenly false
+             :halign "center"
+             :valign "center"
+             :style "margin-left: ${margin-left ?: 0}px;"
+          (label :class "usage-icon"
+                 :style "color: ${color}; font-size: 24px;"
+                 :text icon)
+        )
+      )
+    )
+  )
+)
