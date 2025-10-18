@@ -36,30 +36,6 @@ local function print_error()
   ))
 end
 
---- @return nil
-local function send_notification()
-  local brightness_str, _ = utils.execute_command("brightnessctl info | grep -oP '(?<=\\()\\d+(?=%)'")
-
-  -- Clean the string and ensure it's valid
-  if brightness_str then
-    brightness_str = brightness_str:gsub('%s+', '')
-    brightness_str = brightness_str:match('%d+')
-  end
-
-  local brightness = tonumber(brightness_str) or 0
-
-  local brightinfo, _ = utils.execute_command("brightnessctl info | awk -F \"'\" '/Device/ {print $2}'")
-  brightinfo = brightinfo:gsub('%s+', '')
-
-  local angle = math.floor(((brightness + 2) / 5)) * 5
-  local ico = os.getenv('HOME') .. '/.config/dunst/icons/vol/vol-' .. angle .. '.svg'
-
-  local bar_length = math.floor(brightness / 15)
-  local bar = string.rep('.', bar_length)
-
-  utils.notify(brightness .. bar, brightinfo, 'normal', '-a "t2" -r 91190 -t 800 -i "' .. ico .. '"')
-end
-
 --- @return number
 local function get_brightness()
   local brightness_str, _ = utils.execute_command("brightnessctl -m | grep -o '[0-9]\\+%' | head -c-2")
@@ -88,7 +64,6 @@ if action == 'i' or action == '-i' then
   end
 
   os.execute('brightnessctl set +' .. step .. '%')
-  send_notification()
 elseif action == 'd' or action == '-d' then
   -- decrease the backlight
   local current_brightness = get_brightness()
@@ -112,8 +87,6 @@ elseif action == 'd' or action == '-d' then
     end
     os.execute('brightnessctl set ' .. step .. '%-')
   end
-
-  send_notification()
 else
   -- print error
   print_error()
