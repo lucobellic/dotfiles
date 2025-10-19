@@ -36,7 +36,7 @@ in
 
   imports = [
     ./fish.nix
-    # ./ghostty.nix
+    ./ghostty.nix
     ./kitty.nix
     ./starship.nix
     ./wezterm.nix

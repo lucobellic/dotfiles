@@ -1,10 +1,6 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 
 {
-  # home.packages = with pkgs; [
-  #   opencode
-  # ];
-
   home.sessionVariables = {
     OPENCODE_CONFIG = "~/.config/opencode/opencode.jsonc";
   };

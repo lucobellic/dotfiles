@@ -1,0 +1,65 @@
+config-file = "keybindings.conf"
+
+font-family = DMMono Nerd Font Medium
+font-size = 12
+
+font-feature = ss09
+font-feature = cv25
+font-feature = cv26
+font-feature = cv27
+font-feature = cv29
+font-feature = cv30
+font-feature = cv31
+font-feature = cv32
+
+font-synthetic-style = true
+
+adjust-underline-position = 2
+adjust-cell-height = 2
+
+cursor-style = bar
+cursor-style-blink = false
+cursor-opacity = 1
+
+copy-on-select = clipboard
+
+window-padding-x = 1
+window-padding-y = 0
+
+background-opacity = 0.70
+background = #0f131a
+foreground = #bfbdb6
+
+cursor-color = #DFC318
+cursor-text = #131417
+
+palette = 0=#0b0e14
+palette = 1=#f26d78
+palette = 2=#aad94c
+palette = 3=#ffb454
+palette = 4=#39bae6
+palette = 5=#d2a6ff
+palette = 6=#73b8ff
+palette = 7=#bfbdb6
+palette = 8=#0b0e14
+palette = 9=#f26d78
+palette = 10=#aad94c
+palette = 11=#ffb454
+palette = 12=#39bae6
+palette = 13=#d2a6ff
+palette = 14=#73b8ff
+palette = 15=#bfbdb6
+
+
+command = fish
+shell-integration = detect
+
+unfocused-split-opacity = 0.8
+
+window-decoration = none
+window-titlebar-background = #0f131a
+window-titlebar-foreground = #bfbdb6
+gtk-tabs-location = bottom
+clipboard-read = allow
+clipboard-write = allow
+
