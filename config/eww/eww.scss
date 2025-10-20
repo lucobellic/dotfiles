@@ -1,16 +1,42 @@
+$black: #0b0e14;
+$red: #f26d78;
+$green: #aad94c;
+$yellow: #ffb454;
+$blue: #39bae6;
+$magenta: #d2a6ff;
+$cyan: #73b8ff;
+$white: #bfbdb6;
+
+$color-white: $white;
+$color-primary: $blue;
+
+$color-bg-transparent: transparent;
+$color-bg-overlay: rgba(255, 255, 255, 0.1);
+$color-text-muted: rgba(255, 255, 255, 0.7);
+
+$opacity-icon: 0.8;
+
+$font-primary: "Poppins", sans-serif;
+$font-display: "Anurati", sans-serif;
+
+$border-radius: 5px;
+
+$shadow-text-strong: 2px 2px 4px rgba(0, 0, 0, 0.8);
+$shadow-text-medium: 1px 1px 3px black, 0 0 10px black;
+
+$spacing-base: 20px;
+$letter-spacing-wide: 17px;
+$letter-spacing-normal: 3px;
+
 * {
   all: unset;
 }
 
 window {
-  background-color: transparent;
+  background-color: $color-bg-transparent;
 }
 
-@import "./styles/modern-clock.scss";
-@import "./styles/usage-circle.scss";
-@import "./styles/audio.scss";
-@import "./styles/cpu-temp-bar.scss";
-
-.system-monitors-container {
-  background-color: transparent;
-}
+@import "./widgets/modern-clock/eww.scss";
+@import "./widgets/system-tray/eww.scss";
+@import "./widgets/audio/eww.scss";
+@import "./widgets/cpu-cores-monitor/eww.scss";

@@ -6,6 +6,7 @@
        :valign "center"
     (box :class "usage-overlay-wrapper"
          :style "min-width: ${size ?: 24}px; min-height: ${size ?: 24}px;"
+         :tooltip "${poll_var ?: 0}%"
          :orientation "v"
       (overlay
         (circular-progress :value "${poll_var ?: 0}"

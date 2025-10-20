@@ -1,0 +1,84 @@
+;(include "./widgets/usage-circle/eww.yuck")
+(include "./widgets/usage-scale/eww.yuck")
+
+(defpoll cpu_usage :interval "2s"
+  "scripts/cpu-usage.rs")
+
+(defpoll disk_usage :interval "5s"
+  "scripts/disk-usage.rs")
+
+(defpoll gpu_usage :interval "2s"
+  "scripts/gpu-usage.rs")
+
+(defpoll gpu_mem_usage :interval "3s"
+  "scripts/gpu-usage.rs --mem")
+
+(defpoll igpu_usage :interval "2s"
+  "scripts/integrated-gpu-usage.rs")
+
+(defpoll ram_usage :interval "3s"
+  "scripts/ram-usage.rs")
+
+(defpoll battery_usage :interval "10s"
+  "scripts/battery-usage.rs")
+
+(defvar speaker-muted "󰖁")
+(defvar speaker-zero "󰕿")
+(defvar speaker-low "󰖀")
+(defvar speaker-high "󰕾")
+
+(defvar mic-muted "󰍭")
+(defvar mic-zero "󰍬")
+(defvar mic-low "󰍬")
+(defvar mic-high "󰍬")
+
+(defvar blue "rgba(57, 186, 230, 0.8)")
+(defvar green "rgba(170, 217, 76, 0.8)")
+(defvar red "rgba(247, 140, 108, 0.8)")
+
+(defvar spacing 10)
+(defvar size 48)
+(defvar margin -8)
+
+(defwidget system-monitors []
+  (box :class "system-monitors-container"
+       :orientation "v"
+       :space-evenly true
+       :spacing spacing
+       :halign "center"
+       :valign "center"
+    (box :orientation "h" :space-evenly true :spacing spacing
+      (usage-scale :poll_var cpu_usage :size size :icon "" :margin-left margin :color blue)
+      (usage-scale :poll_var gpu_usage :size size :icon "" :margin-left margin :color green)
+      (usage-scale :poll_var igpu_usage :size size :icon "" :margin-left margin :color red)
+    )
+    (box :orientation "h" :space-evenly true :spacing spacing
+      (usage-scale :poll_var ram_usage :size size :icon "" :margin-left -3 :color blue)
+      (usage-scale :poll_var gpu_mem_usage :size size :icon "" :margin-left -3 :color green)
+      (usage-scale :poll_var disk_usage :size size :icon "" :color red)
+    )
+    (box :orientation "h" :space-evenly true :spacing spacing
+      (eventbox :onscroll "scripts/audio.rs set-volume {}"
+                :onclick "scripts/audio.rs toggle-mute"
+        (usage-scale :poll_var {speaker_data.volume}
+                     :tooltip {speaker_data["output"]}
+                     :size size
+                     :icon {speaker_data.muted == "true" ? speaker-muted :
+                            speaker_data.volume == 0 ? speaker-zero :
+                            speaker_data.volume < 50 ? speaker-low : speaker-high}
+                     :color blue)
+      )
+      (eventbox :onscroll "scripts/audio.rs set-mic-volume {}"
+                :onclick "scripts/audio.rs toggle-mic-mute"
+        (usage-scale :poll_var {mic_data.volume}
+                     :tooltip {mic_data["input"]}
+                     :size size
+                     :icon {mic_data.muted == "true" ? mic-muted :
+                            mic_data.volume == 0 ? mic-zero :
+                            mic_data.volume < 50 ? mic-low : mic-high}
+                     :color green)
+      )
+      (usage-scale :poll_var battery_usage :size size :icon "󰂎" :color red)
+    )
+  )
+)

@@ -1,6 +1,6 @@
-(include "./widgets/cpu-temp-bar.yuck")
+(include "./widgets/cpu-temp-bar/eww.yuck")
 
-(defpoll cpu_cores :interval "500ms"
+(defpoll cpu_cores :interval "1s"
   :initial "[]"
   "scripts/cpu-cores.rs")
 

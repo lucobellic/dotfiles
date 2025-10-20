@@ -1,15 +1,14 @@
-(include "./widgets/modern-clock.yuck")
+(include "./widgets/modern-clock/eww.yuck")
+(include "./widgets/system-tray/eww.yuck")
+(include "./widgets/audio/eww.yuck")
+(include "./widgets/cpu-cores-monitor/eww.yuck")
 
-(include "./widgets/system-tray.yuck")
-(include "./widgets/audio.yuck")
-(include "./widgets/cpu-cores-monitor.yuck")
-
-(defwindow modern-clock
-  :monitor 0
+(defwindow modern-clock [?screen ?stacking]
+  :monitor {screen ?: 0}
   :geometry (geometry :x "0%"
-                      :y "5%"
+                      :y "2%"
                       :anchor "center top")
-  :stacking "bottom"
+  :stacking {stacking ?: "bottom"}
   :windowtype "desktop"
   :wm-ignore true
   :decorated false
@@ -23,12 +22,12 @@
   )
 )
 
-(defwindow microphone
-  :monitor 0
+(defwindow microphone [?screen ?stacking]
+  :monitor {screen ?: 0}
   :geometry (geometry :x "1%"
                       :y "10px"
-                      :anchor "bottom left")
-  :stacking "bottom"
+                      :anchor "bottom right")
+  :stacking {stacking ?: "bottom"}
   :windowtype "desktop"
   :wm-ignore true
   :decorated false
@@ -36,12 +35,12 @@
   (microphone-widget)
 )
 
-(defwindow speaker
-  :monitor 0
+(defwindow speaker [?screen ?stacking]
+  :monitor {screen ?: 0}
   :geometry (geometry :x "1%"
                       :y "38px"
-                      :anchor "bottom left")
-  :stacking "bottom"
+                      :anchor "bottom right")
+  :stacking {stacking ?: "bottom"}
   :windowtype "desktop"
   :wm-ignore true
   :decorated false
@@ -49,28 +48,28 @@
   (speaker-widget)
 )
 
-(defwindow cpu-cores
-  :monitor 0
+(defwindow cpu-cores [?screen ?stacking]
+  :monitor {screen ?: 0}
   :geometry (geometry :x "0%"
-                      :y "10px"
+                      :y "13px"
                       :anchor "bottom center")
-  :stacking "bottom"
+  :stacking {stacking ?: "bottom"}
   :windowtype "desktop"
-  :wm-ignore false
+  :wm-ignore true
   :decorated false
   :transparent true
   (cpu-cores-monitor
-   :display_usage false
+   :display_usage true
    :display_temperature true
   )
 )
 
-(defwindow system-tray
-  :monitor 0
+(defwindow system-tray [?screen ?stacking]
+  :monitor {screen ?: 0}
   :geometry (geometry :x "1%"
                       :y "13px"
-                      :anchor "bottom right")
-  :stacking "bottom"
+                      :anchor "bottom left")
+  :stacking {stacking ?: "bottom"}
   :windowtype "desktop"
   :wm-ignore false
   :decorated false

@@ -1,0 +1,25 @@
+.modern-clock-container {
+  background-color: $color-bg-transparent;
+  padding: $spacing-base;
+}
+
+.day label {
+  font-family: $font-display;
+  letter-spacing: $letter-spacing-wide;
+  color: $color-white;
+  text-shadow: $shadow-text-strong;
+}
+
+.date label {
+  font-family: $font-primary;
+  letter-spacing: $letter-spacing-normal;
+  color: $color-white;
+  text-shadow: $shadow-text-medium;
+}
+
+.time label {
+  font-family: $font-primary;
+  letter-spacing: $letter-spacing-normal;
+  color: $color-white;
+  text-shadow: $shadow-text-medium;
+}

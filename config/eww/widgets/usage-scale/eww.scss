@@ -1,0 +1,24 @@
+.usage-scale-container {
+  background-color: $color-bg-transparent;
+}
+
+.usage-scale {
+}
+
+.usage-scale trough {
+  all: unset;
+  background-color: $color-bg-overlay;
+  border-radius: $border-radius;
+  min-width: 30px;
+}
+
+.usage-scale highlight {
+  all: unset;
+  background-color: currentColor;
+  border-radius: $border-radius;
+  min-height: 5px;
+}
+
+.usage-icon {
+  font-family: $font-primary;
+}

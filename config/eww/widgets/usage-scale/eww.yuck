@@ -1,0 +1,22 @@
+(defwidget usage-scale [poll_var icon color ?tooltip ?size ?margin-left]
+  (box :class "usage-scale-container"
+       :orientation "v"
+       :spacing 5
+       :space-evenly false
+       :halign "center"
+       :valign "center"
+       :tooltip {tooltip ?: poll_var + "%"}
+    (label :class "usage-icon"
+           :style "color: ${color}; font-size: 24px; margin-left: ${margin-left ?: 0}px;"
+           :text icon)
+    (scale :class "usage-scale"
+           :value "${poll_var ?: 0}"
+           :width "${size ?: 48}px"
+           :min 0
+           :max 100
+           :orientation "h"
+           :active false
+           :style "color: ${color};"
+    )
+  )
+)

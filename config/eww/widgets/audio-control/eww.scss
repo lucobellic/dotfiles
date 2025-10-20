@@ -1,0 +1,31 @@
+.audio-widget-container {
+}
+
+.audio-control {
+}
+
+.audio-icon {
+  font-family: $font-primary;
+  color: $color-white;
+  opacity: $opacity-icon;
+}
+
+.audio-slider {
+}
+
+.audio-slider trough {
+  background-color: $color-bg-overlay;
+  border-radius: $border-radius;
+  min-height: 5px;
+}
+
+.audio-slider highlight {
+  background-color: $color-primary;
+  border-radius: $border-radius;
+}
+
+.audio-device-text {
+  font-family: $font-primary;
+  color: $color-text-muted;
+  text-shadow: $shadow-text-strong;
+}

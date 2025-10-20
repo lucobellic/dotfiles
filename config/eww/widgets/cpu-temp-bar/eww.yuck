@@ -10,6 +10,7 @@
          :visible display_usage
       (scale :class "cpu-temp-scale"
              :value usage
+             :tooltip "${usage}%"
              :min 0
              :max 100
              :orientation "h"
@@ -27,6 +28,7 @@
          :visible display_temperature
       (scale :class "cpu-temp-scale"
              :value temp
+             :tooltip "${temp}°"
              :min 40
              :max 100
              :orientation "h"
@@ -35,7 +37,8 @@
                             : temp < 70 ? '#95e6cb'
                             : temp < 80 ? '#ffcc66'
                             : temp < 90 ? '#ffb454'
-                            : '#f78c6c'};")
+                            : '#f78c6c'};"
+      )
     )
   )
 )

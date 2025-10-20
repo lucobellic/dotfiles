@@ -1,4 +1,4 @@
-(include "./widgets/audio-control.yuck")
+(include "./widgets/audio-control/eww.yuck")
 
 (defpoll speaker_data :interval "500ms"
   :initial "{\"volume\": 0, \"muted\": false, \"output\": \"Unknown\"}"
