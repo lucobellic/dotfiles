@@ -4,10 +4,10 @@
 rec {
   home.username = "lhussonn";
   home.homeDirectory = "/home/" + home.username;
-  programs.git.userName = "Ludovic Hussonnois";
-  programs.git.userEmail = "ludovic.hussonnois@easymile.com";
+  programs.git.settings.user = {
+    name = "Ludovic Hussonnois";
+    email = "ludovic.hussonnois@easymile.com";
+  };
 
-  imports = [
-    ./nix/common.nix
-  ];
+  imports = [ ./nix/common.nix ];
 }
