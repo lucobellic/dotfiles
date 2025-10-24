@@ -29,6 +29,7 @@
     # ../quickshell.nix
     ./bongocat.nix
     ./hyde.nix
+    ./ags.nix
     # ./caelestia.nix
     # ./end4.nix
   ];
