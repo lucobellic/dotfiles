@@ -1,0 +1,119 @@
+$fg-color: #bfbdb6;
+$bg-color: #{"@theme_bg_color"};
+$color-bg-overlay: rgba(255, 255, 255, 0.1);
+$border-radius: 6px;
+
+tooltip {
+  background: transparent;
+  color: $fg-color;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+  border: none;
+}
+
+tooltip label {
+  color: $fg-color;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+}
+
+.cpu-usage-graph,
+.cpu-temp-graph {
+  background-color: transparent;
+  border-radius: $border-radius;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+window.CpuCores {
+  background: transparent;
+  color: $fg-color;
+
+  .cpu-cores-container {
+  }
+
+  .cpu-core {
+  }
+
+  .cpu-usage-bar,
+  .cpu-temp-bar {
+    border-radius: $border-radius;
+  }
+
+  .cpu-usage-bar levelbar,
+  .cpu-temp-bar levelbar {
+    min-width: 30px;
+    min-height: 5px;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    border-radius: $border-radius;
+  }
+
+  .cpu-usage-bar levelbar trough,
+  .cpu-temp-bar levelbar trough {
+    background-color: $color-bg-overlay;
+    border-radius: $border-radius;
+    border: none;
+    outline: none;
+    box-shadow: none;
+  }
+
+  .cpu-usage-bar levelbar trough block.empty,
+  .cpu-temp-bar levelbar trough block.empty {
+    background-color: $color-bg-overlay;
+    background-image: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+  }
+
+  .cpu-usage-bar levelbar trough block.filled,
+  .cpu-temp-bar levelbar trough block.filled {
+    background-image: none;
+    border: none;
+    border-radius: $border-radius;
+    outline: none;
+    box-shadow: none;
+  }
+
+  levelbar.usage-0 trough block.filled {
+    background-color: #39bae6;
+  }
+  levelbar.usage-1 trough block.filled {
+    background-color: #95e6cb;
+  }
+  levelbar.usage-2 trough block.filled {
+    background-color: #ffcc66;
+  }
+  levelbar.usage-3 trough block.filled {
+    background-color: #ffb454;
+  }
+  levelbar.usage-4 trough block.filled {
+    background-color: #f78c6c;
+  }
+  levelbar.usage-5 trough block.filled {
+    background-color: #f78c6c;
+  }
+
+  levelbar.temp-0 trough block.filled {
+    background-color: #39bae6;
+  }
+  levelbar.temp-1 trough block.filled {
+    background-color: #39bae6;
+  }
+  levelbar.temp-2 trough block.filled {
+    background-color: #95e6cb;
+  }
+  levelbar.temp-3 trough block.filled {
+    background-color: #ffcc66;
+  }
+  levelbar.temp-4 trough block.filled {
+    background-color: #ffb454;
+  }
+  levelbar.temp-5 trough block.filled {
+    background-color: #f78c6c;
+  }
+  levelbar.temp-6 trough block.filled {
+    background-color: #f78c6c;
+  }
+}

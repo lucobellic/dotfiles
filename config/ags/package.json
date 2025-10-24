@@ -1,0 +1,7 @@
+{
+    "name": "astal-shell",
+    "dependencies": {
+        "astal": "/nix/store/gb52fi9hcg51aw0i3qinlsv51v4jz0n9-astal-gjs-0-unstable-2025-08-29/share/astal/gjs",
+        "chroma-js": "^3.1.2"
+    }
+}

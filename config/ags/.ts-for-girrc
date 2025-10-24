@@ -1,0 +1,41 @@
+{
+  "modules": [
+    "Astal-4.0",
+    "AstalIO-0.1",
+    "AstalApps-0.1",
+    "AstalAuth-0.1",
+    "AstalBattery-0.1",
+    "AstalBluetooth-0.1",
+    "AstalCava-0.1",
+    "AstalGreet-0.1",
+    "AstalHyprland-0.1",
+    "AstalMpris-0.1",
+    "AstalNotifd-0.1",
+    "AstalPowerProfiles-0.1",
+    "AstalRiver-0.1",
+    "AstalTray-0.1",
+    "AstalWp-0.1",
+    "Gtk-4.0",
+    "Gdk-4.0",
+    "GdkPixbuf-2.0",
+    "Pango-1.0",
+    "HarfBuzz-0.0",
+    "Graphene-1.0",
+    "GObject-2.0",
+    "GLib-2.0",
+    "Gio-2.0",
+    "cairo-1.0"
+  ],
+  "girDirectories": [
+    "~/.nix-profile/share/gir-1.0"
+  ],
+  "ignore": [
+    "St-*",
+    "Shew-*",
+    "Clutter-*",
+    "Cinnamon-*",
+    "Mutter-*"
+  ],
+  "outdir": "@girs",
+  "ignoreVersionConflicts": "true"
+}
