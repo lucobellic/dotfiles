@@ -7,9 +7,14 @@ edition = "2024"
 opt-level = 3
 
 [dependencies]
+anyhow = "1.0"
 clap = { version = "4", features = ["derive"] }
+sha1 = "0.10"
 ---
+use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
+use sha1::{Digest, Sha1};
+use std::ffi::OsStr;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
@@ -69,32 +74,48 @@ fn get_wallpaper_dir() -> PathBuf {
     .unwrap_or(hyde_theme_dir)
 }
 
-fn hash_file(path: &Path) -> Option<String> {
+// fn hash_file(path: &Path) -> Option<String> {
+//   let data = fs::read(path).ok()?;
+//   let hash = Sha1::digest(&data);
+//   Some(format!("{:x}", hash))
+// }
+
+fn hash_file(path: &PathBuf) -> Option<String> {
   Command::new("sha1sum")
     .arg(path)
     .output()
     .ok()
     .and_then(|o| String::from_utf8(o.stdout).ok())
     .and_then(|s| s.split_whitespace().next().map(String::from))
+    .map(|hash| hash)
+}
+
+fn is_supported_image(path: &Path) -> bool {
+  match path.extension().and_then(OsStr::to_str) {
+    Some(ext) => matches!(ext.to_lowercase().as_str(), "gif" | "jpg" | "jpeg" | "png"),
+    None => false,
+  }
+}
+
+fn try_find_wallpapers(dir: &Path) -> Result<Vec<(PathBuf, String)>> {
+  let files = fs::read_dir(dir)
+    .context(format!("No such file or directory {:#?}", dir))?
+    .flatten()
+    .map(|entry| entry.path())
+    .filter(|path| path.is_file() && is_supported_image(path));
+
+  let images_with_hash = files
+    .filter_map(|path| {
+      let hash = Sha1::digest(fs::read(&path).ok()?);
+      Some((path, format!("{:x}", hash)))
+    })
+    .collect();
+
+  Ok(images_with_hash)
 }
 
 fn find_wallpapers(dir: &Path) -> Vec<(PathBuf, String)> {
-  fs::read_dir(dir)
-    .ok()
-    .into_iter()
-    .flatten()
-    .flatten()
-    .map(|e| e.path())
-    .filter(|p| {
-      p.is_file()
-        && p
-          .extension()
-          .and_then(|e| e.to_str())
-          .map(|e| matches!(e.to_lowercase().as_str(), "gif" | "jpg" | "jpeg" | "png"))
-          .unwrap_or(false)
-    })
-    .filter_map(|p| hash_file(&p).map(|h| (p, h)))
-    .collect()
+  try_find_wallpapers(dir).unwrap()
 }
 
 fn create_lock() -> Option<LockGuard> {
@@ -108,7 +129,7 @@ fn create_lock() -> Option<LockGuard> {
   let lock_path = PathBuf::from(format!("{}{}swwwallpaper.lock", LOCK_FILE_BASE, uid));
 
   if lock_path.exists() {
-    eprintln!("An instance of the script is already running...");
+    eprintln!("Lock file exists: {}", lock_path.display());
     return None;
   }
 
@@ -152,21 +173,6 @@ fn cache_wall(wall_path: &Path, hash: &str, scr_dir: &Path, theme_dir: &Path, ca
   );
 }
 
-fn ensure_swww_daemon() {
-  if Command::new("swww")
-    .arg("query")
-    .output()
-    .map(|o| !o.status.success())
-    .unwrap_or(true)
-  {
-    let _ = Command::new("swww-daemon")
-      .args(["--format", "xrgb"])
-      .spawn();
-    std::thread::sleep(std::time::Duration::from_millis(500));
-    let _ = Command::new("swww").arg("restore").spawn();
-  }
-}
-
 fn apply_wallpaper(wall_path: &Path, transition: &str) {
   let cursor_pos = Command::new("hyprctl")
     .arg("cursorpos")
@@ -176,17 +182,10 @@ fn apply_wallpaper(wall_path: &Path, transition: &str) {
     .and_then(|s| s.lines().next().map(String::from))
     .unwrap_or_else(|| "0,0".to_string());
 
-  println!(":: applying wall :: \"{}\"", wall_path.display());
-
-  let _ = Command::new("swww")
-    .arg("img")
-    .arg(wall_path)
-    .args(["--transition-bezier", ".43,1.19,1,.4"])
-    .args(["--transition-type", transition])
-    .args(["--transition-duration", "0.4"])
-    .args(["--transition-fps", "60"])
-    .arg("--invert-y")
-    .args(["--transition-pos", &cursor_pos])
+  let _ = Command::new("hyprctl")
+    .arg("hyprpaper")
+    .arg("reload")
+    .arg(format!(",{}", wall_path.display()))
     .spawn();
 }
 
@@ -257,6 +256,5 @@ fn main() {
   });
 
   cache_wall(&wall_path, &hash, &scr_dir, &theme_dir, &cache_dir);
-  ensure_swww_daemon();
   apply_wallpaper(&wall_path, transition);
 }

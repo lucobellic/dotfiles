@@ -7,9 +7,14 @@ edition = "2024"
 opt-level = 3
 
 [dependencies]
+anyhow = "1.0"
 serde_json = "1.0"
+sha1 = "0.10"
 ---
+use anyhow::{Context, Result};
+use sha1::{Digest, Sha1};
 use std::env;
+use std::ffi::OsStr;
 use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
@@ -22,69 +27,74 @@ fn get_config_dir() -> PathBuf {
 }
 
 fn get_wallpaper_dir() -> PathBuf {
-  let hyde_theme_dir = get_config_dir().join("hyde/themes");
-  if hyde_theme_dir.join("wall.set").exists() {
-    return hyde_theme_dir;
-  }
-  fs::read_to_string(get_config_dir().join("hyde/store.txt"))
-    .ok()
-    .and_then(|c| {
-      c.lines()
-        .find(|l| l.starts_with("hydeTheme="))
-        .map(|l| l[10..].trim().to_string())
-    })
-    .map(|theme| get_config_dir().join(format!("hyde/themes/{}", theme)))
-    .unwrap_or_else(|| hyde_theme_dir)
+  // PathBuf::from("/home/lhussonn/Pictures/wallpapers")
+  get_config_dir().join("hyde/themes")
 }
 
-fn get_monitor_info() -> (i32, i32) {
-  Command::new("hyprctl")
-    .args(["-j", "monitors"])
+// fn hash_file(path: &Path) -> Option<String> {
+//   let data = fs::read(path).ok()?;
+//   let hash = Sha1::digest(&data);
+//   Some(format!("{:x}", hash))
+// }
+
+fn hash_file(path: PathBuf) -> Option<(PathBuf, String)> {
+  Command::new("sha1sum")
+    .arg(&path)
     .output()
     .ok()
     .and_then(|o| String::from_utf8(o.stdout).ok())
-    .and_then(|s| serde_json::from_str::<serde_json::Value>(&s).ok())
-    .and_then(|m| {
-      m.as_array()?.iter().find_map(|mon| {
-        mon["focused"].as_bool().filter(|&f| f).and_then(|_| {
-          Some((
-            mon["width"].as_i64()? as i32,
-            (mon["scale"].as_f64()? * 100.0) as i32,
-          ))
-        })
-      })
+    .and_then(|s| s.split_whitespace().next().map(String::from))
+    .map(|hash| (path, hash))
+}
+
+fn try_get_monitor_info() -> Result<(i32, i32)> {
+  let stdout = Command::new("hyprctl")
+    .args(["-j", "monitors"])
+    .output()?
+    .stdout;
+
+  let monitors = serde_json::from_str::<serde_json::Value>(&String::from_utf8(stdout)?)?;
+  let focused_monitor = monitors
+    .as_array()
+    .and_then(|arr| {
+      arr
+        .iter()
+        .find(|mon| mon["focused"].as_bool().unwrap_or(false))
     })
-    .unwrap_or((1920, 100))
+    .context("No focused monitor found")?;
+
+  Ok((
+    focused_monitor["width"].as_i64().context("Missing width")? as i32,
+    (focused_monitor["scale"].as_f64().context("Missing scale")? * 100.0) as i32,
+  ))
+}
+
+fn get_monitor_info() -> (i32, i32) {
+  try_get_monitor_info().unwrap_or((1920, 100))
+}
+
+fn is_supported_image(path: &Path) -> bool {
+  match path.extension().and_then(OsStr::to_str) {
+    Some(ext) => matches!(ext.to_lowercase().as_str(), "gif" | "jpg" | "jpeg" | "png"),
+    None => false,
+  }
+}
+
+fn try_find_wallpapers(dir: &Path) -> Result<Vec<(PathBuf, String)>> {
+  let files = fs::read_dir(dir)
+    .context(format!("No such file or directory {:#?}", dir))?
+    .flatten()
+    .map(|entry| entry.path())
+    .filter(|path| path.is_file() && is_supported_image(path));
+
+  Ok(files.filter_map(|path| hash_file(path)).collect())
 }
 
 fn find_wallpapers(dir: &Path) -> Vec<(PathBuf, String)> {
-  fs::read_dir(dir)
-    .ok()
-    .into_iter()
-    .flatten()
-    .flatten()
-    .map(|e| e.path())
-    .filter(|p| {
-      p.is_file()
-        && p
-          .extension()
-          .and_then(|e| e.to_str())
-          .map(|e| matches!(e.to_lowercase().as_str(), "gif" | "jpg" | "jpeg" | "png"))
-          .unwrap_or(false)
-    })
-    .filter_map(|p| {
-      Command::new("sha1sum")
-        .arg(&p)
-        .output()
-        .ok()
-        .and_then(|o| String::from_utf8(o.stdout).ok())
-        .and_then(|s| s.split_whitespace().next().map(String::from))
-        .map(|h| (p, h))
-    })
-    .collect()
+  try_find_wallpapers(dir).unwrap()
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
   let conf_dir = get_config_dir();
   let theme_dir = get_wallpaper_dir();
   let thumb_dir = PathBuf::from(env::var("HOME").unwrap_or_default()).join(".cache/hyde/thumbs");
@@ -93,6 +103,7 @@ fn main() {
     .ok()
     .and_then(|s| s.parse().ok())
     .unwrap_or(10);
+
   let elem_border = env::var("HYPR_BORDER")
     .ok()
     .and_then(|s| s.parse::<i32>().ok())
@@ -103,23 +114,20 @@ fn main() {
   let col_count = (mon_x_res * 100 / mon_scale - 4 * rofi_scale) / ((28 + 8 + 5) * rofi_scale);
 
   let wallpapers = find_wallpapers(&theme_dir);
+  println!("Found {} wallpapers", wallpapers.len());
   let entries: String = wallpapers
     .iter()
-    .filter_map(|(p, h)| {
+    .filter_map(|(path, hash)| {
       Some(format!(
         "{}\0icon\x1f{}/{}.sqre\n",
-        p.file_name()?.to_string_lossy(),
+        path.file_name()?.to_string_lossy(),
         thumb_dir.display(),
-        h
+        hash
       ))
     })
     .collect();
 
-  let _current = fs::read_link(theme_dir.join("wall.set"))
-    .ok()
-    .and_then(|p| p.file_name().map(|f| f.to_string_lossy().to_string()));
-
-  if let Ok(mut rofi) = Command::new("rofi")
+  let rofi_command = Command::new("rofi")
     .args([
       "-dmenu",
       "-theme-str",
@@ -131,27 +139,52 @@ fn main() {
     ])
     .stdin(Stdio::piped())
     .stdout(Stdio::piped())
-    .spawn()
-  {
-    if let Some(mut stdin) = rofi.stdin.take() {
-      let _ = stdin.write_all(entries.as_bytes());
-    }
+    .spawn();
 
-    if let Ok(output) = rofi.wait_with_output() {
-      if let Ok(selection) = String::from_utf8(output.stdout) {
-        let selection = selection.trim();
-        if !selection.is_empty() {
-          if let Some((p, h)) = wallpapers
-            .iter()
-            .find(|(p, _)| p.file_name().map(|f| f.to_string_lossy() == selection).unwrap_or(false))
-          {
-            let _ = Command::new("swwwallpaper.rs").args(["set", p.to_str().unwrap_or("")]).spawn();
-            let _ = Command::new("notify-send")
-              .args(["-a", "t1", "-i", &format!("{}/{}.sqre", thumb_dir.display(), h), &format!(" {}", selection)])
-              .spawn();
-          }
-        }
+  if let Ok(mut rofi) = rofi_command {
+    rofi
+      .stdin
+      .take()
+      .map(|mut stdin| stdin.write_all(entries.as_bytes()));
+
+    let selection = String::from_utf8(rofi.wait_with_output()?.stdout)?
+      .trim()
+      .to_string();
+
+    if !selection.is_empty() {
+      let wallpaper = wallpapers.iter().find(|(path, _)| {
+        path
+          .file_name()
+          .map(|f| f.to_string_lossy() == selection)
+          .unwrap_or(false)
+      });
+
+      if let Some((path, hash)) = wallpaper {
+        match Command::new("swwwallpaper.rs")
+          .args(["set", path.to_str().unwrap_or("")])
+          .spawn()
+        {
+          Ok(_) => Command::new("notify-send")
+            .args([
+              "-a",
+              "t1",
+              "-i",
+              &format!("{}/{}.sqre", thumb_dir.display(), hash),
+              &format!(" {}", selection),
+            ])
+            .spawn()?,
+          Err(e) => Command::new("notify-send")
+            .args([
+              "-a",
+              "t1",
+              "-i",
+              &format!("{}/{}.sqre", thumb_dir.display(), hash),
+              &format!("Unable to set wallpaper: {}", e),
+            ])
+            .spawn()?,
+        };
       }
     }
   }
+  Ok(())
 }
