@@ -9,10 +9,6 @@
                       :y "2%"
                       :anchor "center top")
   :stacking {stacking ?: "bottom"}
-  :windowtype "desktop"
-  :wm-ignore true
-  :decorated false
-  :transparent true
   (modern-clock
     :show_day true
     :show_date true
@@ -28,10 +24,6 @@
                       :y "10px"
                       :anchor "bottom right")
   :stacking {stacking ?: "bottom"}
-  :windowtype "desktop"
-  :wm-ignore true
-  :decorated false
-  :transparent true
   (microphone-widget)
 )
 
@@ -41,10 +33,6 @@
                       :y "38px"
                       :anchor "bottom right")
   :stacking {stacking ?: "bottom"}
-  :windowtype "desktop"
-  :wm-ignore true
-  :decorated false
-  :transparent true
   (speaker-widget)
 )
 
@@ -54,10 +42,6 @@
                       :y "13px"
                       :anchor "bottom center")
   :stacking {stacking ?: "bottom"}
-  :windowtype "desktop"
-  :wm-ignore true
-  :decorated false
-  :transparent true
   (cpu-cores-monitor
    :display_usage true
    :display_temperature true
@@ -70,9 +54,5 @@
                       :y "13px"
                       :anchor "bottom left")
   :stacking {stacking ?: "bottom"}
-  :windowtype "desktop"
-  :wm-ignore false
-  :decorated false
-  :transparent true
   (system-monitors)
 )
