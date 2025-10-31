@@ -13,12 +13,12 @@ confDir="${XDG_CONFIG_HOME:-$HOME/.config}"
 keyconfDir="$confDir/hypr"
 kb_hint_conf=("$keyconfDir/hyprland.conf" "$keyconfDir/keybindings.conf" "$keyconfDir/userprefs.conf" )
 tmpMapDir="/tmp"
-tmpMap="$tmpMapDir/hyde-keybinds.jq"
-keycodeFile="${hydeConfDir}/keycode.kb"
-modmaskFile="${hydeConfDir}/modmask.kb"
-keyFile="${hydeConfDir}/key.kb"
-categoryFile="${hydeConfDir}/category.kb"
-dispatcherFile="${hydeConfDir}/dispatcher.kb"
+tmpMap="$tmpMapDir/theme-keybinds.jq"
+keycodeFile="${themeConfDir}/keycode.kb"
+modmaskFile="${themeConfDir}/modmask.kb"
+keyFile="${themeConfDir}/key.kb"
+categoryFile="${themeConfDir}/category.kb"
+dispatcherFile="${themeConfDir}/dispatcher.kb"
 
 roDir="$confDir/rofi"
 roconf="$roDir/clipboard.rasi"
@@ -36,7 +36,7 @@ Options:
     --help Display this help message
 Example:
  $(basename "$0") -j -p -d '>' -f custom_file.txt -w 80 -h 90"
-Users can also add a global overrides inside ${hydeConfDir}/hyde.conf
+Users can also add a global overrides inside ${themeConfDir}/theme.conf
   Available overrides:
 
     kb_hint_delim=">"                         ﯦ add a custom custom delimiter
@@ -45,7 +45,7 @@ Users can also add a global overrides inside ${hydeConfDir}/hyde.conf
     kb_hint_height="35em"                     ﯦ custom height supports [ 'em' '%' 'px' ]
     kb_hint_line=13                           ﯦ adjust how many lines are listed
 
-Users can also add a key overrides inside ${hydeConfDir}
+Users can also add a key overrides inside ${themeConfDir}
 List of file override:
 ${keycodeFile} => keycode 
 ${modmaskFile} => modmask   
@@ -150,7 +150,7 @@ comments=$(substitute_vars "$initialized_comments" | awk -F'#' \
 # echo "$comments"
 
 cat <<OVERRIDES >$tmpMap
-# hyde-keybinds.jq
+# theme-keybinds.jq
 #! This is Our Translator for some binds  #🦆
 def executables_mapping: {  #? Derived from .args to parse scripts to be Readable
 #? Auto Generated Comment Conversion
@@ -258,7 +258,7 @@ OVERRIDES
 #? Basically we are using jq to handle json data and outputs a pretty and friendly output
 jsonData="$(
   hyprctl binds -j | jq -L "$tmpMapDir" -c '
-include "hyde-keybinds";
+include "theme-keybinds";
 
   #? Functions to Convert modmask into Keys, There should be a better math for this but Im lazy
   #? Also we can just map it manually too

@@ -17,11 +17,11 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-const LOCK_FILE_BASE: &str = "/tmp/hyde";
+const LOCK_FILE_BASE: &str = "/tmp/theme";
 
 #[derive(Parser)]
 #[command(name = "set_wallpaper")]
-#[command(about = "Hyde wallpaper manager", long_about = None)]
+#[command(about = "Wallpaper manager", long_about = None)]
 struct Cli {
   #[command(subcommand)]
   command: Commands,
@@ -54,11 +54,11 @@ fn get_config_dir() -> PathBuf {
 }
 
 fn get_cache_dir() -> PathBuf {
-  PathBuf::from(std::env::var("HOME").unwrap_or_default()).join(".cache/hyde")
+  PathBuf::from(std::env::var("HOME").unwrap_or_default()).join(".cache/theme")
 }
 
 fn get_wallpaper_dir() -> PathBuf {
-  get_config_dir().join("hyde/themes")
+  get_config_dir().join("theme/themes")
 }
 
 fn is_supported_image(path: &Path) -> bool {
@@ -108,7 +108,7 @@ fn generate_thumbnails(wall_path: &Path, wall_name: &str, cache_dir: &Path) -> R
   let _ = Command::new("notify-send")
     .args([
       "-a",
-      "Hyde",
+      "Wallpaper",
       "-i",
       "image-loading",
       "Wallpaper Cache",
@@ -197,7 +197,7 @@ fn generate_thumbnails(wall_path: &Path, wall_name: &str, cache_dir: &Path) -> R
   let _ = Command::new("notify-send")
     .args([
       "-a",
-      "Hyde",
+      "Wallpaper",
       "-i",
       "image-x-generic",
       "Wallpaper Cache",
@@ -314,7 +314,7 @@ fn main() {
       let _ = Command::new("notify-send")
         .args([
           "-a",
-          "Hyde",
+          "Wallpaper",
           "-i",
           "image-loading",
           "Wallpaper Cache",
@@ -353,7 +353,7 @@ fn main() {
       let _ = Command::new("notify-send")
         .args([
           "-a",
-          "Hyde",
+          "Wallpaper",
           "-i",
           "image-x-generic",
           "Wallpaper Cache",

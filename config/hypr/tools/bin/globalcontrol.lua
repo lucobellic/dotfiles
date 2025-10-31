@@ -6,18 +6,18 @@ local utils = require('utils')
 
 --- @class GlobalControl
 --- @field conf_dir string
---- @field hyde_conf_dir string
+--- @field theme_conf_dir string
 --- @field cache_dir string
 --- @field thmb_dir string
 --- @field dcol_dir string
 --- @field hash_mech string
---- @field hyde_theme string
---- @field hyde_theme_dir string
+--- @field theme_theme string
+--- @field theme_theme_dir string
 --- @field wallbash_dir string
 --- @field enable_wall_dcol number
 --- @field hypr_border number
 --- @field hypr_width number
---- @field hyde table
+--- @field theme table
 local GlobalControl = {}
 GlobalControl.__index = GlobalControl
 
@@ -33,20 +33,20 @@ GlobalControl.__index = GlobalControl
 --- Initialize GlobalControl instance
 --- @return GlobalControl
 function GlobalControl.new()
-  -- Hyde environment variables
+  -- Global environment variables
   local home = os.getenv('HOME')
   local xdg_config = os.getenv('XDG_CONFIG_HOME')
 
   self = setmetatable({
     conf_dir = xdg_config or (home .. '/.config'),
-    hyde_conf_dir = (xdg_config or (home .. '/.config')) .. '/hyde',
-    cache_dir = home .. '/.cache/hyde',
-    thmb_dir = home .. '/.cache/hyde/thumbs',
-    dcol_dir = home .. '/.cache/hyde/dcols',
+    theme_conf_dir = (xdg_config or (home .. '/.config')) .. '/theme',
+    cache_dir = home .. '/.cache/theme',
+    thmb_dir = home .. '/.cache/theme/thumbs',
+    dcol_dir = home .. '/.cache/theme/dcols',
     hash_mech = 'sha1sum',
     hypr_border = 0,
     hypr_width = 0,
-    hyde = {},
+    theme = {},
     enable_wall_dcol = 0,
   }, GlobalControl)
 
@@ -118,7 +118,7 @@ function GlobalControl:get_themes(verbose)
   local thm_wall_s = {}
 
   -- Find theme directories
-  local theme_dirs = utils.find_files(self.hyde_conf_dir .. '/themes', '-mindepth 1 -maxdepth 1 -type d')
+  local theme_dirs = utils.find_files(self.theme_conf_dir .. '/themes', '-mindepth 1 -maxdepth 1 -type d')
 
   for _, thm_dir in ipairs(theme_dirs) do
     if thm_dir and thm_dir ~= '' then
@@ -205,9 +205,9 @@ function GlobalControl:get_themes(verbose)
   return { thm_sort = thm_sort, thm_list = thm_list, thm_wall = thm_wall }
 end
 
---- Load configuration from hyde.conf and set environment variables
+--- Load configuration from theme.conf and set environment variables
 function GlobalControl:load_config()
-  local config_file = self.hyde_conf_dir .. '/hyde.conf'
+  local config_file = self.theme_conf_dir .. '/theme.conf'
   if utils.file_exists(config_file) then
     local config_lines = utils.read_file_lines(config_file)
     for _, line in ipairs(config_lines) do
@@ -218,7 +218,7 @@ function GlobalControl:load_config()
           -- Remove quotes if present
           value = value:gsub('^"(.*)"$', '%1')
 
-          self.hyde[key] = value
+          self.theme[key] = value
 
           -- Handle specific configuration values for internal use
           if key == 'enableWallDcol' then
@@ -226,8 +226,8 @@ function GlobalControl:load_config()
             if num and num >= 0 and num <= 3 then
               self.enable_wall_dcol = num
             end
-          elseif key == 'hydeTheme' then
-            self.hyde_theme = value
+          elseif key == 'theme' then
+            self.theme_theme = value
           end
         end
       end
@@ -309,7 +309,7 @@ end
 --- @param var_name string
 --- @param var_data string
 function GlobalControl:set_conf(var_name, var_data)
-  local config_file = self.hyde_conf_dir .. '/hyde.conf'
+  local config_file = self.theme_conf_dir .. '/theme.conf'
 
   -- Ensure file exists
   local touch_cmd = string.format('touch "%s"', config_file)
@@ -350,18 +350,18 @@ function GlobalControl:initialize()
   end
 
   -- Set theme if not valid
-  if not self.hyde_theme or not utils.file_exists(self.hyde_conf_dir .. '/themes/' .. self.hyde_theme) then
+  if not self.theme_theme or not utils.file_exists(self.theme_conf_dir .. '/themes/' .. self.theme_theme) then
     local themes = self:get_themes()
     if #themes.thm_list > 0 then
-      self.hyde_theme = themes.thm_list[1]
+      self.theme_theme = themes.thm_list[1]
     end
   end
 
   -- Set derived paths
-  if self.hyde_theme then
-    self.hyde_theme_dir = self.hyde_conf_dir .. '/themes/' .. self.hyde_theme
+  if self.theme_theme then
+    self.theme_theme_dir = self.theme_conf_dir .. '/themes/' .. self.theme_theme
   end
-  self.wallbash_dir = self.hyde_conf_dir .. '/wallbash'
+  self.wallbash_dir = self.theme_conf_dir .. '/wallbash'
 
   -- Initialize Hyprland variables
   self:init_hypr_vars()

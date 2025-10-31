@@ -25,7 +25,7 @@ fn get_config_dir() -> PathBuf {
 }
 
 fn get_wallpaper_dir() -> PathBuf {
-  get_config_dir().join("hyde/themes")
+  get_config_dir().join("theme/themes")
 }
 
 fn try_get_monitor_info() -> Result<(i32, i32)> {
@@ -78,7 +78,7 @@ fn find_wallpapers(dir: &Path) -> Vec<PathBuf> {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
   let conf_dir = get_config_dir();
   let theme_dir = get_wallpaper_dir();
-  let thumb_dir = PathBuf::from(env::var("HOME").unwrap_or_default()).join(".cache/hyde/thumbs");
+  let thumb_dir = PathBuf::from(env::var("HOME").unwrap_or_default()).join(".cache/theme/thumbs");
 
   let rofi_scale = env::var("ROFI_SCALE")
     .ok()
