@@ -34,7 +34,6 @@
     parallel
     rofi
     udiskie
-    waybar
     wl-clipboard
     wl-gammarelay-rs
     wlogout
