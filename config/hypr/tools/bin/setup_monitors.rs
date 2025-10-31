@@ -175,9 +175,5 @@ async fn main() -> anyhow::Result<()> {
     }
   }
 
-  Command::new("swww").arg("kill").status()?;
-  dispatch!(Exec, "swww-daemon")?;
-  dispatch!(Exec, "swww restore")?;
-
   Ok(())
 }

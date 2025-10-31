@@ -7,12 +7,10 @@ export hydeConfDir="${confDir}/hyde"
 export cacheDir="$HOME/.cache/hyde"
 export thmbDir="${cacheDir}/thumbs"
 export dcolDir="${cacheDir}/dcols"
-export hashMech="sha1sum"
 
 
 get_hashmap()
 {
-    unset wallHash
     unset wallList
     unset skipStrays
     unset verboseMap
@@ -22,16 +20,15 @@ get_hashmap()
         [ "${wallSource}" == "--skipstrays" ] && skipStrays=1 && continue
         [ "${wallSource}" == "--verbose" ] && verboseMap=1 && continue
 
-        hashMap=$(find "${wallSource}" -type f \( -iname "*.gif" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -exec "${hashMech}" {} + | sort -k2)
-        if [ -z "${hashMap}" ] ; then
+        wallMap=$(find "${wallSource}" -type f \( -iname "*.gif" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | sort)
+        if [ -z "${wallMap}" ] ; then
             echo "WARNING: No image found in \"${wallSource}\""
             continue
         fi
 
-        while read -r hash image ; do
-            wallHash+=("${hash}")
+        while read -r image ; do
             wallList+=("${image}")
-        done <<< "${hashMap}"
+        done <<< "${wallMap}"
     done
 
     if [ -z "${#wallList[@]}" ] || [[ "${#wallList[@]}" -eq 0 ]] ; then
@@ -44,9 +41,9 @@ get_hashmap()
     fi
 
     if [[ "${verboseMap}" -eq 1 ]] ; then
-        echo "// Hash Map //"
-        for indx in "${!wallHash[@]}" ; do
-            echo ":: \${wallHash[${indx}]}=\"${wallHash[indx]}\" :: \${wallList[${indx}]}=\"${wallList[indx]}\""
+        echo "// Wall Map //"
+        for indx in "${!wallList[@]}" ; do
+            echo ":: \${wallList[${indx}]}=\"${wallList[indx]}\""
         done
     fi
 }
@@ -168,11 +165,5 @@ set_conf()
     else
         echo "${varName}=\"${varData}\"" >> "${hydeConfDir}/hyde.conf"
     fi
-}
-
-set_hash()
-{
-    local hashImage="${1}"
-    "${hashMech}" "${hashImage}" | awk '{print $1}'
 }
 

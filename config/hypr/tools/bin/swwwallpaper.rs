@@ -9,11 +9,9 @@ opt-level = 3
 [dependencies]
 anyhow = "1.0"
 clap = { version = "4", features = ["derive"] }
-sha1 = "0.10"
 ---
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
-use sha1::{Digest, Sha1};
 use std::ffi::OsStr;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -37,6 +35,8 @@ enum Commands {
   Previous,
   #[command(about = "Set specific wallpaper")]
   Set { path: PathBuf },
+  #[command(about = "Generate cache for all wallpapers")]
+  CacheAll,
 }
 
 struct LockGuard(PathBuf);
@@ -58,36 +58,7 @@ fn get_cache_dir() -> PathBuf {
 }
 
 fn get_wallpaper_dir() -> PathBuf {
-  let conf_dir = get_config_dir();
-  let hyde_theme_dir = conf_dir.join("hyde/themes");
-  if hyde_theme_dir.join("wall.set").exists() {
-    return hyde_theme_dir;
-  }
-  fs::read_to_string(conf_dir.join("hyde/store.txt"))
-    .ok()
-    .and_then(|c| {
-      c.lines()
-        .find(|l| l.starts_with("hydeTheme="))
-        .map(|l| l[10..].trim().to_string())
-    })
-    .map(|theme| conf_dir.join(format!("hyde/themes/{}", theme)))
-    .unwrap_or(hyde_theme_dir)
-}
-
-// fn hash_file(path: &Path) -> Option<String> {
-//   let data = fs::read(path).ok()?;
-//   let hash = Sha1::digest(&data);
-//   Some(format!("{:x}", hash))
-// }
-
-fn hash_file(path: &PathBuf) -> Option<String> {
-  Command::new("sha1sum")
-    .arg(path)
-    .output()
-    .ok()
-    .and_then(|o| String::from_utf8(o.stdout).ok())
-    .and_then(|s| s.split_whitespace().next().map(String::from))
-    .map(|hash| hash)
+  get_config_dir().join("hyde/themes")
 }
 
 fn is_supported_image(path: &Path) -> bool {
@@ -97,25 +68,144 @@ fn is_supported_image(path: &Path) -> bool {
   }
 }
 
-fn try_find_wallpapers(dir: &Path) -> Result<Vec<(PathBuf, String)>> {
+fn try_find_wallpapers(dir: &Path) -> Result<Vec<PathBuf>> {
   let files = fs::read_dir(dir)
     .context(format!("No such file or directory {:#?}", dir))?
     .flatten()
     .map(|entry| entry.path())
-    .filter(|path| path.is_file() && is_supported_image(path));
-
-  let images_with_hash = files
-    .filter_map(|path| {
-      let hash = Sha1::digest(fs::read(&path).ok()?);
-      Some((path, format!("{:x}", hash)))
-    })
+    .filter(|path| path.is_file() && is_supported_image(path))
     .collect();
 
-  Ok(images_with_hash)
+  Ok(files)
 }
 
-fn find_wallpapers(dir: &Path) -> Vec<(PathBuf, String)> {
-  try_find_wallpapers(dir).unwrap()
+fn find_wallpapers(dir: &Path) -> Vec<PathBuf> {
+  try_find_wallpapers(dir).unwrap_or_default()
+}
+
+fn is_cache_valid(wall_name: &str, cache_dir: &Path) -> bool {
+  let thumb_dir = cache_dir.join("thumbs");
+
+  // Check all required thumbnail files exist
+  for ext in ["thmb", "sqre", "blur", "quad"] {
+    if !thumb_dir.join(format!("{}.{}", wall_name, ext)).exists() {
+      return false;
+    }
+  }
+  true
+}
+
+fn generate_thumbnails(wall_path: &Path, wall_name: &str, cache_dir: &Path) -> Result<()> {
+  let thumb_dir = cache_dir.join("thumbs");
+  fs::create_dir_all(&thumb_dir).context("Failed to create thumbs directory")?;
+
+  let base_path = thumb_dir.join(wall_name);
+  let wall_path_str = wall_path.to_str().context("Invalid wall path")?;
+
+  println!("Generating thumbnails for {}", wall_name);
+
+  // Notify user that cache generation has started
+  let _ = Command::new("notify-send")
+    .args([
+      "-a",
+      "Hyde",
+      "-i",
+      "image-loading",
+      "Wallpaper Cache",
+      &format!("Generating thumbnails for {}", wall_name),
+    ])
+    .spawn();
+
+  // 1. Generate .thmb (1000x1000)
+  Command::new("magick")
+    .args([
+      &format!("{}[0]", wall_path_str),
+      "-strip",
+      "-resize",
+      "1000",
+      "-gravity",
+      "center",
+      "-extent",
+      "1000",
+      "-quality",
+      "90",
+      &format!("{}.thmb", base_path.display()),
+    ])
+    .output()
+    .context("Failed to generate .thmb")?;
+
+  // 2. Generate .sqre (500x500)
+  Command::new("magick")
+    .args([
+      &format!("{}[0]", wall_path_str),
+      "-strip",
+      "-thumbnail",
+      "500x500^",
+      "-gravity",
+      "center",
+      "-extent",
+      "500x500",
+      &format!("{}.sqre", base_path.display()),
+    ])
+    .output()
+    .context("Failed to generate .sqre")?;
+
+  // 3. Generate .blur
+  Command::new("magick")
+    .args([
+      &format!("{}[0]", wall_path_str),
+      "-strip",
+      "-scale",
+      "10%",
+      "-blur",
+      "0x3",
+      "-resize",
+      "100%",
+      &format!("{}.blur", base_path.display()),
+    ])
+    .output()
+    .context("Failed to generate .blur")?;
+
+  // 4. Generate .quad (complex composite)
+  Command::new("magick")
+    .args([
+      &format!("{}.sqre", base_path.display()),
+      "(",
+      "-size",
+      "500x500",
+      "xc:white",
+      "-fill",
+      "rgba(0,0,0,0.7)",
+      "-draw",
+      "polygon 400,500 500,500 500,0 450,0",
+      "-fill",
+      "black",
+      "-draw",
+      "polygon 500,500 500,0 450,500",
+      ")",
+      "-alpha",
+      "Off",
+      "-compose",
+      "CopyOpacity",
+      "-composite",
+      &format!("{}.quad", base_path.display()),
+    ])
+    .output()
+    .context("Failed to generate .quad")?;
+
+  // Notify user that cache generation is complete
+  let _ = Command::new("notify-send")
+    .args([
+      "-a",
+      "Hyde",
+      "-i",
+      "image-x-generic",
+      "Wallpaper Cache",
+      &format!("Thumbnails generated for {}", wall_name),
+    ])
+    .spawn();
+
+  Ok(())
 }
 
 fn create_lock() -> Option<LockGuard> {
@@ -137,21 +227,24 @@ fn create_lock() -> Option<LockGuard> {
   Some(LockGuard(lock_path))
 }
 
-fn cache_wall(wall_path: &Path, hash: &str, scr_dir: &Path, theme_dir: &Path, cache_dir: &Path) {
+fn cache_wall(wall_path: &Path, theme_dir: &Path, cache_dir: &Path) {
   let thumb_dir = cache_dir.join("thumbs");
-  let dcol_dir = cache_dir.join("dcols");
+  let wall_name = wall_path.file_name().unwrap_or_default().to_string_lossy();
 
   let _ = fs::remove_file(theme_dir.join("wall.set"));
   let _ = std::os::unix::fs::symlink(wall_path, theme_dir.join("wall.set"));
   let _ = fs::remove_file(cache_dir.join("wall.set"));
   let _ = std::os::unix::fs::symlink(wall_path, cache_dir.join("wall.set"));
 
-  let _ = Command::new(scr_dir.join("swwwallcache.sh"))
-    .args(["-w", wall_path.to_str().unwrap_or("")])
-    .output();
-  let _ = Command::new(scr_dir.join("swwwallbash.sh"))
-    .arg(wall_path)
-    .spawn();
+  // Only generate thumbnails if cache doesn't exist
+  if !is_cache_valid(&wall_name, cache_dir) {
+    println!("Generating thumbnail cache for {}", wall_path.display());
+    if let Err(e) = generate_thumbnails(wall_path, &wall_name, cache_dir) {
+      eprintln!("Warning: Failed to generate thumbnails: {}", e);
+    }
+  } else {
+    println!("Using existing thumbnail cache for {}", wall_path.display());
+  }
 
   for (link, ext) in [
     ("wall.sqre", "sqre"),
@@ -161,27 +254,13 @@ fn cache_wall(wall_path: &Path, hash: &str, scr_dir: &Path, theme_dir: &Path, ca
   ] {
     let _ = fs::remove_file(cache_dir.join(link));
     let _ = std::os::unix::fs::symlink(
-      thumb_dir.join(format!("{}.{}", hash, ext)),
+      thumb_dir.join(format!("{}.{}", wall_name, ext)),
       cache_dir.join(link),
     );
   }
-
-  let _ = fs::remove_file(cache_dir.join("wall.dcol"));
-  let _ = std::os::unix::fs::symlink(
-    dcol_dir.join(format!("{}.dcol", hash)),
-    cache_dir.join("wall.dcol"),
-  );
 }
 
-fn apply_wallpaper(wall_path: &Path, transition: &str) {
-  let cursor_pos = Command::new("hyprctl")
-    .arg("cursorpos")
-    .output()
-    .ok()
-    .and_then(|o| String::from_utf8(o.stdout).ok())
-    .and_then(|s| s.lines().next().map(String::from))
-    .unwrap_or_else(|| "0,0".to_string());
-
+fn apply_wallpaper(wall_path: &Path) {
   let _ = Command::new("hyprctl")
     .arg("hyprpaper")
     .arg("reload")
@@ -197,7 +276,7 @@ fn main() {
     None => return,
   };
 
-  let scr_dir = std::env::current_exe()
+  let _scr_dir = std::env::current_exe()
     .ok()
     .and_then(|p| p.parent().map(|p| p.to_path_buf()))
     .unwrap_or_else(|| PathBuf::from("."));
@@ -219,42 +298,116 @@ fn main() {
     && !wallpapers.is_empty()
   {
     eprintln!("fixing link :: {}", wall_set.display());
-    let _ = std::os::unix::fs::symlink(&wallpapers[0].0, &wall_set);
+    let _ = std::os::unix::fs::symlink(&wallpapers[0], &wall_set);
   }
 
-  let (wall_path, hash, transition) = match cli.command {
-    Commands::Set { path } => {
-      if !path.is_file() {
-        eprintln!("Error: \"{}\" is not a valid file", path.display());
-        std::process::exit(1);
+  match cli.command {
+    Commands::CacheAll => {
+      if wallpapers.is_empty() {
+        eprintln!("No wallpapers found in {}", theme_dir.display());
+        return;
       }
-      hash_file(&path).map(|h| (path, h, "grow"))
+
+      let total = wallpapers.len();
+      println!("Found {} wallpapers to process", total);
+
+      let _ = Command::new("notify-send")
+        .args([
+          "-a",
+          "Hyde",
+          "-i",
+          "image-loading",
+          "Wallpaper Cache",
+          &format!("Starting cache generation for {} wallpapers", total),
+        ])
+        .spawn();
+
+      let mut cached = 0;
+      let mut generated = 0;
+
+      for (idx, wallpaper) in wallpapers.iter().enumerate() {
+        let wall_name = wallpaper.file_name().unwrap_or_default().to_string_lossy();
+        println!(
+          "Processing [{}/{}]: {}",
+          idx + 1,
+          total,
+          wallpaper.display()
+        );
+
+        if is_cache_valid(&wall_name, &cache_dir) {
+          println!("  Cache already exists, skipping");
+          cached += 1;
+        } else {
+          match generate_thumbnails(wallpaper, &wall_name, &cache_dir) {
+            Ok(_) => {
+              println!("  Generated thumbnails");
+              generated += 1;
+            }
+            Err(e) => {
+              eprintln!("  Failed to generate thumbnails: {}", e);
+            }
+          }
+        }
+      }
+
+      let _ = Command::new("notify-send")
+        .args([
+          "-a",
+          "Hyde",
+          "-i",
+          "image-x-generic",
+          "Wallpaper Cache",
+          &format!(
+            "Complete! Generated: {}, Already cached: {}, Total: {}",
+            generated, cached, total
+          ),
+        ])
+        .spawn();
+
+      println!("\nCache generation complete!");
+      println!("  Generated: {}", generated);
+      println!("  Already cached: {}", cached);
+      println!("  Total processed: {}", total);
     }
-    Commands::Next | Commands::Previous => {
-      let current_hash = fs::read_link(&wall_set).ok().and_then(|p| hash_file(&p));
-      current_hash.and_then(|cur_hash| {
-        let idx = wallpapers.iter().position(|(_, h)| h == &cur_hash)?;
-        let new_idx = match (&cli.command, idx) {
-          (Commands::Next, _) => (idx + 1) % wallpapers.len(),
-          (Commands::Previous, _idx @ 0) => wallpapers.len() - 1,
-          (Commands::Previous, idx) => idx - 1,
-          _ => unreachable!(),
-        };
-        let (path, hash) = wallpapers.get(new_idx)?;
-        let transition = match cli.command {
-          Commands::Next => "grow",
-          Commands::Previous => "outer",
-          _ => unreachable!(),
-        };
-        Some((path.clone(), hash.clone(), transition))
-      })
+    _ => {
+      let (wall_path, _transition) = match cli.command {
+        Commands::Set { path } => {
+          if !path.is_file() {
+            eprintln!("Error: \"{}\" is not a valid file", path.display());
+            std::process::exit(1);
+          }
+          Some((path, "grow"))
+        }
+        Commands::Next | Commands::Previous => {
+          let current_path = fs::read_link(&wall_set)
+            .ok()
+            .and_then(|p| p.canonicalize().ok());
+          current_path.and_then(|cur_path| {
+            let idx = wallpapers.iter().position(|p| p == &cur_path)?;
+            let new_idx = match (&cli.command, idx) {
+              (Commands::Next, _) => (idx + 1) % wallpapers.len(),
+              (Commands::Previous, _idx @ 0) => wallpapers.len() - 1,
+              (Commands::Previous, idx) => idx - 1,
+              _ => unreachable!(),
+            };
+            let path = wallpapers.get(new_idx)?;
+            let transition = match cli.command {
+              Commands::Next => "grow",
+              Commands::Previous => "outer",
+              _ => unreachable!(),
+            };
+            Some((path.clone(), transition))
+          })
+        }
+        _ => unreachable!(),
+      }
+      .unwrap_or_else(|| {
+        eprintln!("Failed to determine wallpaper");
+        std::process::exit(1);
+      });
+
+      cache_wall(&wall_path, &theme_dir, &cache_dir);
+      apply_wallpaper(&wall_path);
     }
   }
-  .unwrap_or_else(|| {
-    eprintln!("Failed to determine wallpaper");
-    std::process::exit(1);
-  });
-
-  cache_wall(&wall_path, &hash, &scr_dir, &theme_dir, &cache_dir);
-  apply_wallpaper(&wall_path, transition);
 }

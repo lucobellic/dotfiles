@@ -9,10 +9,8 @@ opt-level = 3
 [dependencies]
 anyhow = "1.0"
 serde_json = "1.0"
-sha1 = "0.10"
 ---
 use anyhow::{Context, Result};
-use sha1::{Digest, Sha1};
 use std::env;
 use std::ffi::OsStr;
 use std::fs;
@@ -27,24 +25,7 @@ fn get_config_dir() -> PathBuf {
 }
 
 fn get_wallpaper_dir() -> PathBuf {
-  // PathBuf::from("/home/lhussonn/Pictures/wallpapers")
   get_config_dir().join("hyde/themes")
-}
-
-// fn hash_file(path: &Path) -> Option<String> {
-//   let data = fs::read(path).ok()?;
-//   let hash = Sha1::digest(&data);
-//   Some(format!("{:x}", hash))
-// }
-
-fn hash_file(path: PathBuf) -> Option<(PathBuf, String)> {
-  Command::new("sha1sum")
-    .arg(&path)
-    .output()
-    .ok()
-    .and_then(|o| String::from_utf8(o.stdout).ok())
-    .and_then(|s| s.split_whitespace().next().map(String::from))
-    .map(|hash| (path, hash))
 }
 
 fn try_get_monitor_info() -> Result<(i32, i32)> {
@@ -80,17 +61,17 @@ fn is_supported_image(path: &Path) -> bool {
   }
 }
 
-fn try_find_wallpapers(dir: &Path) -> Result<Vec<(PathBuf, String)>> {
+fn try_find_wallpapers(dir: &Path) -> Result<Vec<PathBuf>> {
   let files = fs::read_dir(dir)
     .context(format!("No such file or directory {:#?}", dir))?
     .flatten()
     .map(|entry| entry.path())
     .filter(|path| path.is_file() && is_supported_image(path));
 
-  Ok(files.filter_map(|path| hash_file(path)).collect())
+  Ok(files.collect())
 }
 
-fn find_wallpapers(dir: &Path) -> Vec<(PathBuf, String)> {
+fn find_wallpapers(dir: &Path) -> Vec<PathBuf> {
   try_find_wallpapers(dir).unwrap()
 }
 
@@ -117,12 +98,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
   println!("Found {} wallpapers", wallpapers.len());
   let entries: String = wallpapers
     .iter()
-    .filter_map(|(path, hash)| {
+    .filter_map(|path| {
+      let filename = path.file_name()?.to_string_lossy();
       Some(format!(
         "{}\0icon\x1f{}/{}.sqre\n",
-        path.file_name()?.to_string_lossy(),
+        filename,
         thumb_dir.display(),
-        hash
+        filename
       ))
     })
     .collect();
@@ -152,14 +134,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
       .to_string();
 
     if !selection.is_empty() {
-      let wallpaper = wallpapers.iter().find(|(path, _)| {
+      let wallpaper = wallpapers.iter().find(|path| {
         path
           .file_name()
           .map(|f| f.to_string_lossy() == selection)
           .unwrap_or(false)
       });
 
-      if let Some((path, hash)) = wallpaper {
+      if let Some(path) = wallpaper {
         match Command::new("swwwallpaper.rs")
           .args(["set", path.to_str().unwrap_or("")])
           .spawn()
@@ -169,7 +151,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
               "-a",
               "t1",
               "-i",
-              &format!("{}/{}.sqre", thumb_dir.display(), hash),
+              &format!("{}/{}.sqre", thumb_dir.display(), selection),
               &format!(" {}", selection),
             ])
             .spawn()?,
@@ -178,7 +160,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
               "-a",
               "t1",
               "-i",
-              &format!("{}/{}.sqre", thumb_dir.display(), hash),
+              &format!("{}/{}.sqre", thumb_dir.display(), selection),
               &format!("Unable to set wallpaper: {}", e),
             ])
             .spawn()?,
