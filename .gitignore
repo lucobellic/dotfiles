@@ -4,3 +4,5 @@ home.nix
 .aider.tags.cache.v3
 .env
 .opencode
+
+target/**
