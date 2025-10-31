@@ -93,6 +93,7 @@ end
 function RofiLauncher:show_help()
   local script_name = utils.get_script_name(arg[0])
   print(string.format('%s [action]', script_name))
+  print('r :  run mode')
   print('d :  drun mode')
   print('w :  window mode')
   print('f :  filebrowser mode')
@@ -102,6 +103,8 @@ end
 local function main()
   local launcher = RofiLauncher.new()
   local actions = {
+    ['r'] = function() launcher:launch('run') end,
+    ['--run'] = function() launcher:launch('run') end,
     ['d'] = function() launcher:launch('drun') end,
     ['--drun'] = function() launcher:launch('drun') end,
     ['w'] = function() launcher:launch('window') end,
