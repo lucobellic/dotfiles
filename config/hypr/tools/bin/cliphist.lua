@@ -2,20 +2,15 @@
 
 local script_path = debug.getinfo(1, 'S').source:sub(2):match('(.*/)')
 package.path = package.path .. ';' .. script_path .. '?.lua'
-local global = require('globalcontrol')
 local utils = require('utils')
 
 local conf_dir = os.getenv('HOME') .. '/.config'
 local rofi_scale = 10
-local hypr_border = global.config.hypr_border
-local hypr_width = global.config.hypr_width
 
 local roconf = conf_dir .. '/rofi/clipboard.rasi'
 local favorites_file = os.getenv('HOME') .. '/.cliphist_favorites'
 
 local r_scale = string.format('configuration {font: \\"JetBrainsMono Nerd Font %d\\";}', rofi_scale)
-local wind_border = math.floor(hypr_border * 3 / 2)
-local elem_border = hypr_border == 0 and 5 or hypr_border
 
 --- @return boolean, string|nil
 local function validate_config()
@@ -30,66 +25,15 @@ local function validate_config()
   return true, nil
 end
 
---- @return string
-local function get_window_positioning()
-  local cursor_pos_output, _ = utils.execute_command('hyprctl cursorpos -j')
-  local monitors_output, _ = utils.execute_command('hyprctl monitors -j')
-
-  local cur_x = tonumber(utils.parse_json_value(cursor_pos_output, 'x')) or 0
-  local cur_y = tonumber(utils.parse_json_value(cursor_pos_output, 'y')) or 0
-
-  local mon_width = tonumber(monitors_output:match('"width":%s*(%d+)')) or 1920
-  local mon_height = tonumber(monitors_output:match('"height":%s*(%d+)')) or 1080
-  local mon_x = tonumber(monitors_output:match('"x":%s*(%-?%d+)')) or 0
-  local mon_y = tonumber(monitors_output:match('"y":%s*(%-?%d+)')) or 0
-
-  local rel_x = cur_x - mon_x
-  local rel_y = cur_y - mon_y
-
-  local x_pos, y_pos, x_off, y_off
-
-  if rel_x >= (mon_width / 2) then
-    x_pos = 'east'
-    x_off = -(mon_width - rel_x)
-  else
-    x_pos = 'west'
-    x_off = rel_x
-  end
-
-  if rel_y >= (mon_height / 2) then
-    y_pos = 'south'
-    y_off = -(mon_height - rel_y)
-  else
-    y_pos = 'north'
-    y_off = rel_y
-  end
-
-  return string.format(
-    'window{location:%s %s;anchor:%s %s;x-offset:%dpx;y-offset:%dpx;border:%dpx;border-radius:%dpx;} wallbox{border-radius:%dpx;} element{border-radius:%dpx;}',
-    x_pos,
-    y_pos,
-    x_pos,
-    y_pos,
-    x_off,
-    y_off,
-    hypr_width,
-    wind_border,
-    elem_border,
-    elem_border
-  )
-end
-
 --- @param options string
 --- @param placeholder string
 --- @return string
 local function show_rofi_menu(options, placeholder)
-  local r_override = get_window_positioning()
   local cmd = string.format(
-    'echo -e "%s" | rofi -dmenu -theme-str "entry { placeholder: \\"%s\\";}" -theme-str "%s" -theme-str "%s" -config "%s"',
+    'echo -e "%s" | rofi -dmenu -theme-str "entry { placeholder: \\"%s\\";}" -theme-str "%s" -config "%s"',
     options,
     placeholder,
     r_scale,
-    r_override,
     roconf
   )
   local result, _ = utils.execute_command(cmd)
@@ -159,12 +103,9 @@ local function handle_history_action()
     return
   end
 
-  local r_override = get_window_positioning()
   local selected_item, _ = utils.execute_command(
     'cliphist list | rofi -dmenu -theme-str "entry { placeholder: \\"History...\\";}" -theme-str "'
       .. r_scale
-      .. '" -theme-str "'
-      .. r_override
       .. '" -config "'
       .. roconf
       .. '"'
@@ -187,12 +128,9 @@ local function handle_delete_action()
     return
   end
 
-  local r_override = get_window_positioning()
   local selected_item, _ = utils.execute_command(
     'cliphist list | rofi -dmenu -theme-str "entry { placeholder: \\"Delete...\\";}" -theme-str "'
       .. r_scale
-      .. '" -theme-str "'
-      .. r_override
       .. '" -config "'
       .. roconf
       .. '"'
@@ -243,12 +181,9 @@ local function handle_manage_favorites_action()
     show_rofi_menu('Add to Favorites\\nDelete from Favorites\\nClear All Favorites', 'Manage Favorites')
 
   if manage_action == 'Add to Favorites' then
-    local r_override = get_window_positioning()
     local item, _ = utils.execute_command(
       'cliphist list | rofi -dmenu -theme-str "entry { placeholder: \\"Add to Favorites...\\";}" -theme-str "'
         .. r_scale
-        .. '" -theme-str "'
-        .. r_override
         .. '" -config "'
         .. roconf
         .. '"'
