@@ -20,7 +20,7 @@ use std::process::Command;
 const LOCK_FILE_BASE: &str = "/tmp/hyde";
 
 #[derive(Parser)]
-#[command(name = "swwwallpaper")]
+#[command(name = "set_wallpaper")]
 #[command(about = "Hyde wallpaper manager", long_about = None)]
 struct Cli {
   #[command(subcommand)]
@@ -216,7 +216,7 @@ fn create_lock() -> Option<LockGuard> {
     .and_then(|o| String::from_utf8(o.stdout).ok())
     .and_then(|s| s.trim().parse::<u32>().ok())
     .unwrap_or(1000);
-  let lock_path = PathBuf::from(format!("{}{}swwwallpaper.lock", LOCK_FILE_BASE, uid));
+  let lock_path = PathBuf::from(format!("{}{}wallpaper.lock", LOCK_FILE_BASE, uid));
 
   if lock_path.exists() {
     eprintln!("Lock file exists: {}", lock_path.display());

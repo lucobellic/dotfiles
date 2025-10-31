@@ -142,7 +142,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
       });
 
       if let Some(path) = wallpaper {
-        match Command::new("swwwallpaper.rs")
+        match Command::new("set_wallpaper.rs")
           .args(["set", path.to_str().unwrap_or("")])
           .spawn()
         {
