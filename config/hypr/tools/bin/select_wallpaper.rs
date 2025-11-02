@@ -92,7 +92,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     * 3;
 
   let (mon_x_res, mon_scale) = get_monitor_info();
-  let col_count = (mon_x_res * 100 / mon_scale - 4 * rofi_scale) / ((28 + 8 + 5) * rofi_scale);
+  let width = 30;
+  let col_count = (mon_x_res * 100 / mon_scale - 4 * rofi_scale) / (width * rofi_scale);
 
   let wallpapers = find_wallpapers(&theme_dir);
   println!("Found {} wallpapers", wallpapers.len());
@@ -113,9 +114,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     .args([
       "-dmenu",
       "-theme-str",
-      &format!("configuration {{font: \"JetBrainsMono Nerd Font {}\";}}", rofi_scale),
+      &format!(
+        "configuration {{ font: 'JetBrainsMono Nerd Font {}'; }}",
+        rofi_scale
+      ),
       "-theme-str",
-      &format!("window{{width:100%;}} listview{{columns:{};spacing:5em;}} element{{border-radius:{}px;orientation:vertical;}} element-icon{{size:28em;border-radius:0em;}} element-text{{padding:1em;}}", col_count, elem_border),
+      &format!(
+        "window {{ width: 100%; }} \
+            listview {{ columns: {}; spacing: 2em; }} \
+            element {{ border-radius: {}px; orientation: vertical; }} \
+            element-icon {{ size: {}em; border-radius: 0em; }} \
+            element-text {{ padding: 1em; }}",
+        col_count, elem_border, width
+      ),
       "-config",
       &conf_dir.join("rofi/selector.rasi").display().to_string(),
     ])

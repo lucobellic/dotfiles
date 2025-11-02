@@ -61,29 +61,13 @@ end
 function RofiLauncher:launch(mode)
   local roconf = self:get_rofi_config()
 
-  -- Calculate border values
-  local wind_border = self.hypr_border * 3
-  local elem_border = self.hypr_border == 0 and 10 or (self.hypr_border * 2)
-
   -- Build theme strings
   local r_scale = string.format('configuration {font: \\"JetBrainsMono Nerd Font %d\\";}', self.rofi_scale)
-  local r_override = string.format(
-    'window {border: %dpx; border-radius: %dpx;} element {border-radius: %dpx;}',
-    self.hypr_width,
-    wind_border,
-    elem_border
-  )
   local i_override = string.format('configuration {icon-theme: \\"%s\\";}', self:get_icon_theme())
 
   -- Build and execute rofi command
-  local cmd = string.format(
-    'rofi -show "%s" -theme-str "%s" -theme-str "%s" -theme-str "%s" -config "%s"',
-    mode,
-    r_scale,
-    r_override,
-    i_override,
-    roconf
-  )
+  local cmd =
+    string.format('rofi -show "%s" -theme-str "%s" -theme-str "%s" -config "%s"', mode, r_scale, i_override, roconf)
   print('Executing command:', cmd)
 
   os.execute(cmd)
