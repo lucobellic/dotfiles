@@ -84,6 +84,7 @@
   xdg.configFile.dunst.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/dunst;
   xdg.configFile.eww.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/eww;
   xdg.configFile.hypr.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/hypr;
+  xdg.configFile.hyprpanel.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/hyprpanel;
   xdg.configFile.rofi.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/rofi;
   xdg.configFile.swaylock.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/swaylock;
   xdg.configFile.walker.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/walker;
