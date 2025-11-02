@@ -94,4 +94,12 @@
     source = ~/.config/home-manager/config/hypr/tools/bin;
   };
 
+  # Desktop Entries
+
+  xdg.dataFile."applications/logout.desktop".source =
+    config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/desktop-entry/logout.desktop;
+
+  xdg.dataFile."applications/poweroff.desktop".source =
+    config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/desktop-entry/poweroff.desktop;
+
 }

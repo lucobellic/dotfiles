@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Poweroff
+GenericName=Power Off System
+Comment=Shut down the system
+Exec=poweroff
+Icon=system-shutdown
+Type=Application
+Categories=System;
+NoDisplay=false

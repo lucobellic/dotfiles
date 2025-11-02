@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Logout
+GenericName=Logout Session
+Comment=Terminate current session
+Exec=logout
+Icon=system-log-out
+Type=Application
+Categories=System;
+NoDisplay=false
