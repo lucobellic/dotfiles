@@ -60,7 +60,7 @@ a {
 				<key>selectionBorder</key>
 				<string>#192B37</string>
 				<key>shadow</key>
-				<string>#00000010</string>
+				<string>#0b0e1410</string>
 				<key>stackGuide</key>
 				<string>#20272C</string>
 			</dict>
@@ -415,7 +415,7 @@ a {
 				<key>background</key>
 				<string>#FF7733</string>
 				<key>foreground</key>
-				<string>#FFFFFF</string>
+				<string>#bfbdb6</string>
 			</dict>
 		</dict>
 		<dict>
@@ -930,7 +930,7 @@ a {
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>#FFFFFF</string>
+				<string>#bfbdb6</string>
 			</dict>
 		</dict>
 		<dict>
@@ -943,7 +943,7 @@ a {
 				<key>background</key>
 				<string>#39BAE6</string>
 				<key>foreground</key>
-				<string>#FFFFFF</string>
+				<string>#bfbdb6</string>
 			</dict>
 		</dict>
 		<dict>
@@ -956,7 +956,7 @@ a {
 				<key>background</key>
 				<string>#C2D94C</string>
 				<key>foreground</key>
-				<string>#FFFFFF</string>
+				<string>#bfbdb6</string>
 			</dict>
 		</dict>
 		<dict>
@@ -969,7 +969,7 @@ a {
 				<key>background</key>
 				<string>#FF7733</string>
 				<key>foreground</key>
-				<string>#FFFFFF</string>
+				<string>#bfbdb6</string>
 			</dict>
 		</dict>
 		<dict>
@@ -982,7 +982,7 @@ a {
 				<key>background</key>
 				<string>#F07178</string>
 				<key>foreground</key>
-				<string>#FFFFFF</string>
+				<string>#bfbdb6</string>
 			</dict>
 		</dict>
 		<dict>
@@ -1004,7 +1004,7 @@ a {
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>#FFFFFF</string>
+				<string>#bfbdb6</string>
 			</dict>
 		</dict>
 		<dict>

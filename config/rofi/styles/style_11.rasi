@@ -34,7 +34,7 @@ mainbox {
     padding:                     0.8em;
     orientation:                 horizontal;
     children:                    [ "inputbar" , "listbox" ];
-    background-color:            #00000003;
+    background-color:            #0b0e1403;
 }
 
 

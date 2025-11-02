@@ -14,8 +14,8 @@
    xmlns:svg="http://www.w3.org/2000/svg"><defs
    id="defs23" /><sodipodi:namedview
    id="namedview21"
-   pagecolor="#ffffff"
-   bordercolor="#000000"
+   pagecolor="#bfbdb6"
+   bordercolor="#0b0e14"
    borderopacity="0.25"
    inkscape:showpageshadow="2"
    inkscape:pageopacity="0.0"
@@ -57,7 +57,7 @@
 <g
    id="g3198"
    inkscape:label="main"><circle
-     style="display:none;fill:#000000;fill-opacity:0;stroke-width:1.584"
+     style="display:none;fill:#0b0e14;fill-opacity:0;stroke-width:1.584"
      cx="207.30357"
      cy="279.45218"
      r="221.76001"
