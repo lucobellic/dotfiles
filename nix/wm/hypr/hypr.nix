@@ -8,6 +8,7 @@ in
   imports = [
     ./ags.nix
     ./hyprlock.nix
+    # ./xdg-desktop-portal.nix
   ];
 
   home.packages = with pkgs; [
@@ -15,6 +16,9 @@ in
     # cliphist
     # swaylock
     # pavucontrol
+    # hyprland
+    # xdg-desktop-portal-hyprland
+    # xdg-desktop-portal-gtk
 
     (config.lib.nixGL.wrap baobab)
     brightnessctl
@@ -35,6 +39,8 @@ in
     (config.lib.nixGL.wrap hyprpanel)
 
     swappy
+    grim
+    slurp
     grimblast
     imagemagick
     kdePackages.ffmpegthumbs

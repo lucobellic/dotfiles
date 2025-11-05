@@ -19,7 +19,7 @@ RofiLauncher.__index = RofiLauncher
 function RofiLauncher.new()
   local self = setmetatable({
     conf_dir = global.config.conf_dir,
-    rofi_style = global.config.theme['rofiStyle'] or '1',
+    rofi_style = global.config.theme['rofiStyle'] or '10',
     rofi_scale = utils.get_env_number('rofiScale', 10),
     hypr_border = global.config.hypr_border,
     hypr_width = global.config.hypr_width,

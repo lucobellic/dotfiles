@@ -208,7 +208,7 @@ local function fn_status()
 
 		local now = os.time()
 		if state.prev_status ~= "Full" or (now - state.lt >= (config.notify * 60)) then
-			fn_notify("-t 5000 -r 54321", "CRITICAL", "Battery Full", "Please unplug your Charger")
+			fn_notify("-t 5000 -r 54321", "CRITICAL", "Battery Full", "Battery full")
 			state.prev_status = state.battery_status
 			state.lt = now
 			utils.execute_async(config.execute_charging, config.verbose)
