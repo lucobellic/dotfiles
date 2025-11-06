@@ -55,11 +55,7 @@ in {
     wlr-randr
 
     # Launchers
-    (config.lib.nixGL.wrap onagre)
-    (config.lib.nixGL.wrapOffload walker)
-    # elephant
     rofi
-    wofi
   ];
 
   xdg.configFile.dunst.source = mkConfigSymlink "dunst";
