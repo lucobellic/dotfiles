@@ -62,7 +62,7 @@ function RofiLauncher:launch(mode)
   local roconf = self:get_rofi_config()
 
   -- Build theme strings
-  local r_scale = string.format('configuration {font: \\"JetBrainsMono Nerd Font %d\\";}', self.rofi_scale)
+  local r_scale = string.format('configuration {font: \\"DM Mono Medium %d\\";}', self.rofi_scale)
   local i_override = string.format('configuration {icon-theme: \\"%s\\";}', self:get_icon_theme())
 
   -- Build and execute rofi command

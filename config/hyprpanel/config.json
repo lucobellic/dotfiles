@@ -1,5 +1,7 @@
 {
-  "bar.customModules.storage.paths": ["/"],
+  "bar.customModules.storage.paths": [
+    "/"
+  ],
   "theme.font.name": "Droid Sans Fallback",
   "theme.font.label": "Droid Sans Fallback Bold",
   "theme.font.weight": 400,
@@ -12,7 +14,12 @@
   "theme.bar.border.location": "none",
   "bar.layouts": {
     "*": {
-      "left": ["media", "systray", "network", "bluetooth"],
+      "left": [
+        "media",
+        "systray",
+        "network",
+        "bluetooth"
+      ],
       "middle": [
         "workspaces",
         "dashboard",
@@ -20,7 +27,14 @@
         "windowtitle",
         "notifications"
       ],
-      "right": ["ram", "cpu", "hyprsunset", "microphone", "volume", "battery"]
+      "right": [
+        "ram",
+        "cpu",
+        "hyprsunset",
+        "microphone",
+        "volume",
+        "battery"
+      ]
     }
   },
   "theme.bar.menus.menu.notifications.scrollbar.color": "#bfbdb6",
