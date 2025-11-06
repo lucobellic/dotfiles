@@ -3,8 +3,7 @@
 let
   mkConfigSymlink = path:
     config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/${path};
-in
-{
+in {
   imports = [
     ./ags.nix
     ./hyprlock.nix
@@ -27,6 +26,10 @@ in
     hyprcursor
 
     (config.lib.nixGL.wrap eww)
+    hyprsysteminfo
+
+    # polkit authentication daemon required for GUI applications to request elevated privileges
+    hyprpolkitagent
 
     # wallpaper
     hyprpaper
@@ -73,6 +76,10 @@ in
     recursive = true;
     source = ~/.config/home-manager/config/hypr/tools/bin;
   };
+
+  xdg.configFile."xdg-desktop-portal/hyprland-portals.conf".source =
+    config.lib.file.mkOutOfStoreSymlink
+    ~/.config/home-manager/config/xdg-desktop-portal/hyprland-portals.conf;
 
   # Desktop Entries
 
