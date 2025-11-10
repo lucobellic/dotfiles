@@ -48,11 +48,20 @@
   )
 )
 
-(defwindow system-tray [?screen ?stacking]
+(defwindow left-infos [?screen ?stacking]
   :monitor {screen ?: 0}
   :geometry (geometry :x "1%"
                       :y "13px"
                       :anchor "bottom left")
   :stacking {stacking ?: "bottom"}
-  (system-monitors)
+  (left-tray)
+)
+
+(defwindow right-infos [?screen ?stacking]
+  :monitor {screen ?: 0}
+  :geometry (geometry :x "1%"
+                      :y "13px"
+                      :anchor "bottom right")
+  :stacking {stacking ?: "bottom"}
+  (right-tray)
 )

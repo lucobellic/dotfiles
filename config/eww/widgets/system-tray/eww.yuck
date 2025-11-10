@@ -40,7 +40,7 @@
 (defvar size 48)
 (defvar margin -8)
 
-(defwidget system-monitors []
+(defwidget left-tray []
   (box :class "system-monitors-container"
        :orientation "v"
        :space-evenly true
@@ -57,6 +57,16 @@
       (usage-scale :poll_var gpu_mem_usage :size size :icon "" :margin-left -3 :color green)
       (usage-scale :poll_var disk_usage :size size :icon "" :color red)
     )
+  )
+)
+
+(defwidget right-tray []
+  (box :class "system-monitors-container"
+       :orientation "v"
+       :space-evenly true
+       :spacing spacing
+       :halign "center"
+       :valign "center"
     (box :orientation "h" :space-evenly true :spacing spacing
       (eventbox :onscroll "scripts/audio.rs set-volume {}"
                 :onclick "scripts/audio.rs toggle-mute"
