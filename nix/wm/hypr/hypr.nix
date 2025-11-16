@@ -1,5 +1,4 @@
 { config, pkgs, ... }:
-
 let
   mkConfigSymlink = path:
     config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/${path};
@@ -20,7 +19,6 @@ in {
     # xdg-desktop-portal-gtk
 
     (config.lib.nixGL.wrap baobab)
-    brightnessctl
     dunst
     fastfetch
     hyprcursor
@@ -38,7 +36,7 @@ in {
     hyprpicker # color picker
     hyprutils
     hyprshade
-    # hyprsunset hyprland v0.45
+    hyprsunset
     (config.lib.nixGL.wrap hyprpanel)
 
     swappy
@@ -50,8 +48,8 @@ in {
     libnotify # for notifications
     parallel
     udiskie
-    wl-clipboard
-    wl-gammarelay-rs
+    wf-recorder # screen recorder
+    wl-clipboard # clipboard manager
     wlr-randr
 
     # Launchers

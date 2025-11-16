@@ -485,5 +485,6 @@
   "theme.bar.menus.menu.notifications.scaling": 80,
   "theme.bar.menus.menu.power.scaling": 80,
   "theme.tooltip.scaling": 80,
-  "theme.bar.menus.popover.scaling": 80
+  "theme.bar.menus.popover.scaling": 80,
+  "bar.customModules.ram.labelType": "used/total"
 }
