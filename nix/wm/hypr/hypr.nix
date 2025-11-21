@@ -9,6 +9,13 @@ in {
     # ./xdg-desktop-portal.nix
   ];
 
+  programs = {
+    # TODO: to be tested and constumized
+    # mcp = {enable = true; };bled =}
+    # vicinae = { enable = true; };
+    bluetuith = { enable = true; };
+  };
+
   home.packages = with pkgs; [
     # Install from package manager:
     # cliphist
@@ -30,7 +37,7 @@ in {
     hyprpolkitagent
 
     # wallpaper
-    hyprpaper
+    (config.lib.nixGL.wrap hyprpaper)
     matugen
 
     hyprpicker # color picker
