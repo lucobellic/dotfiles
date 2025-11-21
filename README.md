@@ -12,14 +12,21 @@ sh <(curl -L https://nixos.org/nix/install) --daemon
 
 ```sh
 nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
-nix-channel --add https://github.com/nix-community/nixGL/archive/main.tar.gz nixgl 
+nix-channel --add https://github.com/nix-community/nixGL/archive/main.tar.gz nixgl
 nix-channel --update
 nix-shell '<home-manager>' -A install
 ```
 
 #### Nvidia
 
-Add `{ allowUnfree = true; }` to `~/.config/nixpkgs/config.nix`
+Update `~/.config/nixpkgs/config.nix` with:
+
+```nix
+{
+  allowUnfree = true;
+  nvidia.acceptLicense = true;
+}
+```
 
 ### Setup
 

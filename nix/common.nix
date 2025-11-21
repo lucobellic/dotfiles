@@ -15,12 +15,9 @@
 
   programs.bash.enable = true;
   xdg.enable = true;
-  nixpkgs.config = { allowUnfree = true; };
   services.ssh-agent.enable = true;
 
-  home.packages = [
-    pkgs.curl
-  ];
+  home.packages = [ pkgs.curl ];
 
   home.sessionVariables = {
     PATH = "/nix/var/nix/profiles/default/bin:$HOME/.nix-profile/bin:$PATH";
