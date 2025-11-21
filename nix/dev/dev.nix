@@ -1,10 +1,13 @@
 { pkgs, lib, ... }:
 
 {
+  imports = [
+    ./cocoindex.nix
+  ];
+
   home.packages = with pkgs; [
     (python3.withPackages
-      (ps: with ps; [ requests numpy pandas pyyaml typer scapy awscli ]))
-    uv
+      (ps: with ps; [ requests numpy pandas pyyaml typer scapy awscli uv ]))
 
     rustup
 
