@@ -65,8 +65,8 @@ impl ScreenConfig {
     Keyword::set(
       "workspace",
       format!(
-        "{}, name:{}, monitor:desc:{}",
-        self.workspace, self.name, self.description
+        "{}, monitor:desc:{}, default:true",
+        self.workspace, self.description
       ),
     )?;
     Ok(())
@@ -94,12 +94,12 @@ async fn setup_home() -> anyhow::Result<()> {
   let cursor_path = home.join(".local/bin/Cursor.AppImage");
   let cursor_cmd = format!("pgrep Cursor || {}", cursor_path.display());
 
-  Keyword::set("windowrule", "workspace 2, ^([Ss]lack)$")?;
-  Keyword::set("windowrule", "workspace 2, kitty-logs")?;
-  Keyword::set("windowrule", "workspace 2, ^([Cc]ursor)$")?;
-  Keyword::set("windowrule", "workspace 2, kitty-dev")?;
-  Keyword::set("windowrule", "workspace 3, ^([Oo]pera)$")?;
-  Keyword::set("windowrule", "workspace 3, ^([Zz]en)$")?;
+  Keyword::set("windowrule", "workspace 2, class:^([Ss]lack)$")?;
+  Keyword::set("windowrule", "workspace 2, class:kitty-logs")?;
+  Keyword::set("windowrule", "workspace 2, class:^([Cc]ursor)$")?;
+  Keyword::set("windowrule", "workspace 2, class:kitty-dev")?;
+  Keyword::set("windowrule", "workspace 3, class:^([Oo]pera)$")?;
+  Keyword::set("windowrule", "workspace 3, class:^([Zz]en)$")?;
 
   try_join!(
     dispatch!(async; Exec, "pgrep zen    || zen"),
@@ -116,11 +116,11 @@ async fn setup_work() -> anyhow::Result<()> {
   let cursor_path = home.join(".local/bin/Cursor.AppImage");
   let cursor_cmd = format!("pgrep Cursor || {}", cursor_path.display());
 
-  Keyword::set("windowrule", "workspace 3, kitty-dev")?;
-  Keyword::set("windowrule", "workspace 2, ^([Ss]lack)$")?;
-  Keyword::set("windowrule", "workspace 1, ^([Zz]en)$")?;
-  Keyword::set("windowrule", "workspace 4, ^([Cc]ursor)$")?;
-  Keyword::set("windowrule", "workspace 4, kitty-logs")?;
+  Keyword::set("windowrule", "workspace 3, class:kitty-dev")?;
+  Keyword::set("windowrule", "workspace 2, class:^([Ss]lack)$")?;
+  Keyword::set("windowrule", "workspace 1, class:^([Zz]en)$")?;
+  Keyword::set("windowrule", "workspace 4, class:^([Cc]ursor)$")?;
+  Keyword::set("windowrule", "workspace 4, class:kitty-logs")?;
 
   try_join!(
     dispatch!(async; Exec, "pgrep zen    || zen"),
