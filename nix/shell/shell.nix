@@ -23,7 +23,7 @@ in
   ];
 
 
-  xdg.configFile.yazi.source = ../../config/yazi;
+  xdg.configFile.yazi.source = config.lib.file.mkOutOfStoreSymlink ../../config/yazi;
   home.file.".aider.conf.yml".source = config.lib.file.mkOutOfStoreSymlink ../../config/.aider.conf.yml;
 
   home.activation.customMessage = lib.mkAfter ''
