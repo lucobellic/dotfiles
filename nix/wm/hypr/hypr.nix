@@ -37,7 +37,6 @@ in {
     hyprpolkitagent
 
     # wallpaper
-    (config.lib.nixGL.wrap hyprpaper)
     matugen
 
     hyprpicker # color picker
