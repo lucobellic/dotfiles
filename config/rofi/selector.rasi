@@ -4,6 +4,17 @@ configuration {
     show-icons:                  true;
     drun-display-format:         "{name}";
     font:                        "JetBrainsMono Nerd Font 10";
+
+    /* Wrap selection at list boundaries */
+    cycle:                       true;
+
+    /* Make Left/Right move between entries (and wrap via `cycle`) */
+    kb-element-next:             "Right,Tab";
+    kb-element-prev:             "Left,ISO_Left_Tab";
+
+    /* Keep Left/Right from being treated as cursor movement */
+    kb-move-char-forward:        "Control+f";
+    kb-move-char-back:           "Control+b";
 }
 
 @theme "~/.config/rofi/theme.rasi"

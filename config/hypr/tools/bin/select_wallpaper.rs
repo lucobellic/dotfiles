@@ -95,7 +95,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
   let width = 30;
   let col_count = (mon_x_res * 100 / mon_scale - 4 * rofi_scale) / (width * rofi_scale);
 
-  let wallpapers = find_wallpapers(&theme_dir);
+  let mut wallpapers = find_wallpapers(&theme_dir);
+  wallpapers.sort();
   println!("Found {} wallpapers", wallpapers.len());
   let entries: String = wallpapers
     .iter()
@@ -113,6 +114,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
   let rofi_command = Command::new("rofi")
     .args([
       "-dmenu",
+      "-cycle",
       "-theme-str",
       &format!(
         "configuration {{ font: 'JetBrainsMono Nerd Font {}'; }}",
