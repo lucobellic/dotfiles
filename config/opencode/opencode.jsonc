@@ -25,6 +25,9 @@
     },
   },
   "lsp": {
+    "pyright": {
+      "disabled": true,
+    },
     "lua_ls": {
       "command": ["lua-language-server"],
       "extensions": [".lua"],
@@ -46,6 +49,10 @@
         "2",
       ],
       "extensions": [".c", ".cpp", ".ipp", ".h", ".hpp", ".cu", ".cuh"],
+    },
+    "ruff": {
+      "command": ["ruff", "server", "--preview"],
+      "extensions": [".py", ".pyi"],
     },
   },
 }
