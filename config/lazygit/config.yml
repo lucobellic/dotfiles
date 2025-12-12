@@ -1,0 +1,89 @@
+customCommands:
+- command: echo https=//easymile.atlassian.net/browse/{{.SelectedLocalBranch.Name}}
+    | grep -o ".*/[A-Z]{2}-[0-9]*" | xargs xdg-open
+  context: localBranches
+  description: Open Jira ticket
+  key: <c-j>
+- command: glab mr view -w {{.SelectedLocalBranch.UpstreamBranch}}
+  context: localBranches
+  description: Go to MR in gitlab
+  key: G
+  output: log
+- command: git worktree add ../rapidash-worktrees/{{.SelectedLocalBranch.Name}}/rapidash
+    origin/{{.SelectedLocalBranch.Name}}
+  context: localBranches
+  description: Create worktree
+  key: <c-n>
+- command: git worktree add ../rapidash-worktrees/{{.SelectedRemoteBranch.Name}}/rapidash
+    origin/{{.SelectedRemoteBranch.Name}}
+  context: remoteBranches
+  description: Create worktree
+  key: <c-n>
+- command: git restore --ours {{.SelectedFile.Name | quote}}
+  context: mergeConflicts
+  key: <c-o>
+  output: terminal
+- command: git restore --theirs {{.SelectedFile.Name | quote}}
+  context: mergeConflicts
+  key: <c-t>
+  output: terminal
+git:
+  allBranchesLogCmds:
+  - git
+  - log
+  - --graph
+  - --all
+  - --color=always
+  - --abbrev-commit
+  - --decorate
+  - --date=relative
+  - --pretty=medium
+  autoFetch: true
+  autoForwardBranches: none
+  disableForcePushing: true
+  log:
+    order: topo-order
+    showGraph: always
+    showWholeGraph: false
+  overrideGpg: true
+  pagers:
+    - colorArg: always
+    - pager: delta --hyperlinks --dark --paging=never
+gui:
+  border: single
+  commandLogSize: 8
+  commitLength:
+    show: true
+  enlargedSideViewLocation: top
+  expandFocusedSidePanel: false
+  language: auto
+  localBranchSortOrder: recency
+  mainPanelSplitMode: flexible
+  mouseEvents: true
+  nerdFontsVersion: '3'
+  remoteBranchSortOrder: recency
+  scrollHeight: 2
+  scrollPastBottom: true
+  showFileTree: true
+  showIcons: true
+  showListFooter: true
+  showRandomTip: true
+  sidePanelWidth: 0.3333
+  skipRewordInEditorWarning: false
+  skipStashWarning: false
+  skipUpdateNotification: true
+  splitDiff: auto
+  theme:
+    inactiveBorderColor:
+    - '#1B2733'
+    selectedLineBgColor:
+    - '#1b3a5a'
+    - bold
+    timeFormat: '"02 Jan 06 15=04 MST"'
+    windowSize: normal
+  useHunkModeInStagingView: true
+os:
+  editPreset: nvim-remote
+promptToReturnFromSubprocess: false
+services:
+  '"gitlab.easymile.com"': gitlab=gitlab.easymile.com

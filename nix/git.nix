@@ -1,6 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
+
+  home.packages = with pkgs; [ lazygit ];
+
+  xdg.configFile.lazygit.source =
+    config.lib.file.mkOutOfStoreSymlink ../config/lazygit;
+
   programs = {
     git = {
       enable = true;
@@ -44,127 +50,6 @@
           merge-conflict-theirs-diff-header-decoration-style = "ul ol";
         };
         interactive = { keep-plus-minus-markers = false; };
-      };
-    };
-
-    lazygit = {
-      enable = true;
-      settings = {
-        git = {
-          allBranchesLogCmds = [
-            "git"
-            "log"
-            "--graph"
-            "--all"
-            "--color=always"
-            "--abbrev-commit"
-            "--decorate"
-            "--date=relative"
-            "--pretty=medium"
-          ];
-          autoForwardBranches = "none";
-          autoFetch = true;
-          disableForcePushing = true;
-          log = {
-            order =
-              "topo-order"; # one of 'topo-order' | 'date-order' | 'author-date-order'
-            showGraph = "always"; # one of 'never' | 'always' | ...
-            showWholeGraph = false;
-          };
-          paging = {
-            colorArg = "always";
-            pager = "delta --hyperlinks --dark --paging=never";
-          };
-          overrideGpg = true;
-        };
-        gui = {
-          skipUpdateNotification = true;
-          border = "single"; # one of 'single' | 'double' | 'rounded
-          commandLogSize = 8;
-          commitLength = { show = true; };
-          enlargedSideViewLocation = "top";
-          expandFocusedSidePanel = false;
-          language =
-            "auto"; # one of 'auto' | 'en' | 'zh' | 'pl' | 'nl' | 'ja' | 'ko'
-          localBranchSortOrder = "recency";
-          mainPanelSplitMode =
-            "flexible"; # one of 'horizontal' | 'flexible' | 'vertical'
-          mouseEvents = true;
-          nerdFontsVersion =
-            "3"; # nerd fonts version to use ("2" or "3"); empty means don't show nerd font icons
-          remoteBranchSortOrder = "recency";
-          scrollHeight = 2; # how many lines you scroll by
-          scrollPastBottom =
-            true; # enable scrolling past the bottom  showBottomLine= true # for hiding the bottom information line (unless it has important information to tell you)  showCommandLog= false
-          showFileTree = true; # for rendering changes files in a tree format
-          showIcons = true;
-          showListFooter =
-            true; # for seeing the '5 of 20' message in list panels
-          showRandomTip = true;
-          sidePanelWidth = 0.3333; # number from 0 to 1
-          skipRewordInEditorWarning =
-            false; # for skipping the confirmation before
-          skipStashWarning = false;
-          splitDiff = "auto"; # one of 'auto' | 'always'
-          theme = {
-            inactiveBorderColor = [ "#1B2733" ];
-            selectedLineBgColor = [ "#1b3a5a" "bold" ];
-            timeFormat =
-              ''"02 Jan 06 15=04 MST"''; # https=//pkg.go.dev/time#Time.Format
-            windowSize =
-              "normal"; # one of 'normal' | 'half' | 'full' default is 'normal'
-          };
-          useHunkModeInStagingView = true;
-        };
-        os = { editPreset = "nvim-remote"; };
-        promptToReturnFromSubprocess =
-          false; # display confirmation when subprocess terminates
-        services = {
-          "\"gitlab.easymile.com\"" = "gitlab=gitlab.easymile.com";
-        };
-        customCommands = [
-          {
-            key = "<c-j>";
-            context = "localBranches";
-            description = "Open Jira ticket";
-            command = ''
-              echo https=//easymile.atlassian.net/browse/{{.SelectedLocalBranch.Name}} | grep -o ".*/[A-Z]{2}-[0-9]*" | xargs xdg-open'';
-          }
-          {
-            key = "G";
-            command = "glab mr view -w {{.SelectedLocalBranch.UpstreamBranch}}";
-            context = "localBranches";
-            description = "Go to MR in gitlab";
-            output = "log";
-          }
-          {
-            key = "<c-n>";
-            description = "Create worktree";
-            context = "localBranches";
-            command =
-              "git worktree add ../rapidash-worktrees/{{.SelectedLocalBranch.Name}}/rapidash origin/{{.SelectedLocalBranch.Name}}";
-          }
-          {
-            key = "<c-n>";
-            description = "Create worktree";
-            context = "remoteBranches";
-            command =
-              "git worktree add ../rapidash-worktrees/{{.SelectedRemoteBranch.Name}}/rapidash origin/{{.SelectedRemoteBranch.Name}}";
-          }
-          # Merge conflicts
-          {
-            key = "<c-o>";
-            context = "mergeConflicts";
-            command = "git restore --ours {{.SelectedFile.Name | quote}}";
-            output = "terminal";
-          }
-          {
-            key = "<c-t>";
-            context = "mergeConflicts";
-            command = "git restore --theirs {{.SelectedFile.Name | quote}}";
-            output = "terminal";
-          }
-        ];
       };
     };
   };
