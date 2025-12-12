@@ -8,7 +8,7 @@
     pkgs.dracula-qt5-theme
     pkgs.dracula-theme
     pkgs.libsForQt5.qt5ct
-    pkgs.qt6ct
+    pkgs.qt6Packages.qt6ct
   ];
 
   home.activation.cloneDraculaIcons = lib.hm.dag.entryAfter ["writeBoundary"] ''
