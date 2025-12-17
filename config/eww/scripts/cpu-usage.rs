@@ -1,7 +1,4 @@
 #!/usr/bin/env -S cargo +nightly -Zscript
----
-[dependencies]
----
 use std::fs;
 
 const STATE_FILE: &str = "/tmp/cpu_prev";

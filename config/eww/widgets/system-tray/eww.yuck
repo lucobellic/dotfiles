@@ -22,6 +22,14 @@
 (defpoll battery_usage :interval "10s"
   "scripts/battery-usage.rs")
 
+(defpoll hyprsunset_temperature :interval "3s"
+  :initial "6000"
+  "hyprctl hyprsunset temperature 2>/dev/null || echo 6000")
+
+(defpoll hyprsunset_gamma :interval "3s"
+  :initial "1.0"
+  "hyprctl hyprsunset gamma 2>/dev/null || echo 1.0")
+
 (defvar speaker-muted "󰖁")
 (defvar speaker-zero "󰕿")
 (defvar speaker-low "󰖀")
@@ -76,7 +84,7 @@
                      :icon {speaker_data.muted == "true" ? speaker-muted :
                             speaker_data.volume == 0 ? speaker-zero :
                             speaker_data.volume < 50 ? speaker-low : speaker-high}
-                     :color blue)
+                     :color red)
       )
       (eventbox :onscroll "scripts/audio.rs set-mic-volume {}"
                 :onclick "scripts/audio.rs toggle-mic-mute"
@@ -86,9 +94,25 @@
                      :icon {mic_data.muted == "true" ? mic-muted :
                             mic_data.volume == 0 ? mic-zero :
                             mic_data.volume < 50 ? mic-low : mic-high}
+                     :color red)
+      )
+      (eventbox :onscroll "scripts/hyprsunset.rs temp {}"
+        (usage-scale :poll_var {round(hyprsunset_temperature / 200, 0)}
+                     :size size
+                     :icon ""
+                     :tooltip "Temperature: ${round(hyprsunset_temperature, 0)}K"
+                     :margin-left -12
                      :color green)
       )
-      (usage-scale :poll_var battery_usage :size size :icon "󰂎" :color red)
+      (eventbox :onscroll "scripts/hyprsunset.rs gamma {}"
+        (usage-scale :poll_var {round(hyprsunset_gamma / 2, 0)}
+                     :size size
+                     :icon "󰖚"
+                     :tooltip "Gamma: ${round(hyprsunset_gamma, 2)}"
+                     :margin-left -4
+                     :color green)
+      )
+      (usage-scale :poll_var battery_usage :size size :icon "󰂎" :color blue)
     )
   )
 )

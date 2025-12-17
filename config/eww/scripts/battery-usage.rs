@@ -1,7 +1,4 @@
 #!/usr/bin/env -S cargo +nightly -Zscript
----
-[dependencies]
----
 use std::fs;
 use std::process::Command;
 
