@@ -9,7 +9,7 @@
   "tear": false,
   "theme.bar.floating": true,
   "theme.bar.location": "top",
-  "bar.autoHide": "never",
+  "bar.autoHide": "single-window",
   "theme.bar.buttons.enableBorders": false,
   "theme.bar.border.location": "none",
   "bar.layouts": {
@@ -486,5 +486,6 @@
   "theme.bar.menus.menu.power.scaling": 80,
   "theme.tooltip.scaling": 80,
   "theme.bar.menus.popover.scaling": 80,
-  "bar.customModules.ram.labelType": "used/total"
+  "bar.customModules.ram.labelType": "used/total",
+  "bar.notifications.hideCountWhenZero": true
 }
