@@ -36,20 +36,5 @@
         WantedBy = [ "default.target" ];
       };
     };
-
-    qdrant-compose = {
-      Unit = {
-        Description = "Qdrant Docker Compose";
-        After = [ "network.target" ];
-      };
-      Service = {
-        ExecStart = "${pkgs.docker-compose}/bin/docker-compose -f %h/.config/home-manager/config/qdrant/docker-compose.yml up";
-        WorkingDirectory = "%h/.config/home-manager/config/qdrant";
-        Restart = "always";
-      };
-      Install = {
-        WantedBy = [ "default.target" ];
-      };
-    };
   };
 }
