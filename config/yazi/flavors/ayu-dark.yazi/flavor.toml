@@ -23,7 +23,7 @@ count_cut = { fg = "#BFBDB6", bg = "#F26D78" }
 count_selected = { fg = "#0B0E14", bg = "#FF8F40" }
 
 # Border
-border_symbol = " "
+border_symbol = "│"
 border_style = { fg = "#1B2733" }
 
 # : }}}
@@ -32,8 +32,8 @@ border_style = { fg = "#1B2733" }
 # : Tabs {{{
 
 [tabs]
-active = { fg = "#0B0E14", bg = "#FFCC66", bold = true }
-inactive = { fg = "#BFBDB6", bg = "#1B2733" }
+active = { fg = "#0F131A", bg = "#FFCC66", bold = true }
+inactive = { fg = "#BFBDB6", bg = "#0F131A" }
 sep_inner = { open = "", close = "" }
 sep_outer = { open = "", close = "" }
 
@@ -45,8 +45,12 @@ sep_outer = { open = "", close = "" }
 [mode]
 normal_main = { fg = "#0F131A", bg = "#FFB454", bold = true }
 normal_alt = { fg = "#FFB454", bg = "#0F131A" }
+
+# Select mode
 select_main = { fg = "#0F131A", bg = "#95E6CB", bold = true }
 select_alt = { fg = "#95E6CB", bg = "#0F131A" }
+
+# Unset mode
 unset_main = { fg = "#0F131A", bg = "#F26D78", bold = true }
 unset_alt = { fg = "#F26D78", bg = "#0F131A" }
 
