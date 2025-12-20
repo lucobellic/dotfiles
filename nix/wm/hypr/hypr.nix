@@ -43,6 +43,7 @@ in {
     hyprutils
     hyprshade
     hyprsunset
+    hypridle # idle daemon for screen lock and power management
     (config.lib.nixGL.wrap hyprpanel)
 
     swappy
