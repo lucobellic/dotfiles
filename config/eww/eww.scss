@@ -1,4 +1,6 @@
 $black: #0b0e14;
+$dark_grey: #273747;
+$grey: #70809b;
 $red: #f26d78;
 $green: #aad94c;
 $yellow: #ffb454;
@@ -40,3 +42,4 @@ window {
 @import "./widgets/system-tray/eww.scss";
 @import "./widgets/audio/eww.scss";
 @import "./widgets/cpu-cores-monitor/eww.scss";
+@import "./widgets/hyprland-workspaces/eww.scss";

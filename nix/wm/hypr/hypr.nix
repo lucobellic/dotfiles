@@ -38,7 +38,7 @@ in {
 
     # wallpaper
     matugen
-
+    hyprland-workspaces
     hyprpicker # color picker
     hyprutils
     hyprshade

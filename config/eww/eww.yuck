@@ -1,12 +1,13 @@
 (include "./widgets/modern-clock/eww.yuck")
 (include "./widgets/system-tray/eww.yuck")
 (include "./widgets/audio/eww.yuck")
+(include "./widgets/hyprland-workspaces/eww.yuck")
 (include "./widgets/cpu-cores-monitor/eww.yuck")
 
 (defwindow modern-clock [?screen ?stacking]
   :monitor {screen ?: 0}
   :geometry (geometry :x "0%"
-                      :y "2%"
+                      :y "1%"
                       :anchor "center top")
   :stacking {stacking ?: "bottom"}
   (modern-clock
@@ -39,7 +40,7 @@
 (defwindow cpu-cores [?screen ?stacking]
   :monitor {screen ?: 0}
   :geometry (geometry :x "0%"
-                      :y "13px"
+                      :y "1%"
                       :anchor "bottom center")
   :stacking {stacking ?: "bottom"}
   (cpu-cores-monitor
@@ -51,7 +52,7 @@
 (defwindow left-infos [?screen ?stacking]
   :monitor {screen ?: 0}
   :geometry (geometry :x "1%"
-                      :y "13px"
+                      :y "1%"
                       :anchor "bottom left")
   :stacking {stacking ?: "bottom"}
   (left-tray)
@@ -60,8 +61,17 @@
 (defwindow right-infos [?screen ?stacking]
   :monitor {screen ?: 0}
   :geometry (geometry :x "1%"
-                      :y "13px"
+                      :y "1%"
                       :anchor "bottom right")
   :stacking {stacking ?: "bottom"}
   (right-tray)
+)
+
+(defwindow workspaces [?screen ?monitor ?stacking]
+  :monitor {screen ?: 0}
+  :geometry (geometry :x "1%"
+                      :y "1%"
+                      :anchor "top center")
+  :stacking {stacking ?: "bottom"}
+  (hyprland-workspaces :monitor {monitor ?: 0})
 )
