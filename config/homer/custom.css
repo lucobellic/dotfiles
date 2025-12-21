@@ -1,0 +1,118 @@
+/* Modern Clock Widget - Inspired by eww modern-clock */
+
+/* Load local fonts */
+@font-face {
+  font-family: 'Anurati';
+  src: url('fonts/Anurati.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Clock container */
+.modern-clock-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Day display - large uppercase text */
+.modern-clock-container .modern-clock-day {
+  font-family: 'Anurati', 'Orbitron', 'Rajdhani', sans-serif !important;
+  font-size: 64px !important;
+  font-weight: 600 !important;
+  letter-spacing: 4px !important;
+  color: var(--text-title) !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+  text-transform: uppercase !important;
+  margin-bottom: 5px !important;
+  line-height: 1.1 !important;
+}
+
+/* Date display */
+.modern-clock-container .modern-clock-date {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 19px !important;
+  font-weight: 400 !important;
+  letter-spacing: 3px !important;
+  color: var(--text-subtitle) !important;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2) !important;
+  text-transform: uppercase !important;
+  margin-bottom: 20px !important;
+}
+
+/* Hide the message card styling to make clock float freely */
+.message {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.message .message-header {
+  display: none !important;
+}
+
+.message .message-body {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+/* Hide the entire header/navbar completely */
+/* body #bighead { */
+/*   display: none !important; */
+/*   height: 0 !important; */
+/*   margin: 0 !important; */
+/*   padding: 0 !important; */
+/* } */
+
+/* Remove top gap left by header */
+body .container,
+body .section {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Dark mode adjustments */
+body.is-dark .modern-clock-container .modern-clock-day {
+  color: #fafafa !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+}
+
+body.is-dark .modern-clock-container .modern-clock-date {
+  color: #f5f5f5 !important;
+  text-shadow: 1px 1px 3px black, 0 0 10px black !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .modern-clock-container .modern-clock-day {
+    font-size: 36px !important;
+    letter-spacing: 8px !important;
+  }
+
+  .modern-clock-container .modern-clock-date {
+    font-size: 14px !important;
+    letter-spacing: 2px !important;
+  }
+
+  .custom-search-wrapper {
+    max-width: 90% !important;
+  }
+
+  .custom-search-input {
+    font-size: 14px !important;
+    padding: 10px 16px !important;
+  }
+}

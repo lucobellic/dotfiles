@@ -34,6 +34,7 @@ in {
     ./btop.nix
     ./dev/dev.nix
     ./dev/docker.nix
+    ./dev/homer.nix
     ./git.nix
     ./neovim.nix
     ./nix.nix

@@ -8,6 +8,7 @@
     rustup
 
     go
+
     gopls
     delve
   ];

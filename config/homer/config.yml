@@ -1,0 +1,126 @@
+---
+title: "Dashboard"
+subtitle: "Homer"
+logo: "logo.png"
+
+header: false
+footer: false
+
+columns: "auto"
+connectivityCheck: true
+
+# Keyboard shortcut for search
+hotkey:
+  search: "/"
+
+theme: default
+
+# Custom stylesheet for modern clock
+stylesheet:
+  - "assets/custom.css"
+
+colors:
+  light:
+    highlight-primary: "#3367d6"
+    highlight-secondary: "#4285f4"
+    highlight-hover: "#5a95f5"
+    background: "#f5f5f5"
+    card-background: "#ffffff"
+    text: "#363636"
+    text-header: "#ffffff"
+    text-title: "#303030"
+    text-subtitle: "#424242"
+    card-shadow: rgba(0, 0, 0, 0.1)
+    link: "#3273dc"
+    link-hover: "#363636"
+  dark:
+    highlight-primary: "#3367d6"
+    highlight-secondary: "#4285f4"
+    highlight-hover: "#5a95f5"
+    background: "#131313"
+    card-background: "#2b2b2b"
+    text: "#eaeaea"
+    text-header: "#ffffff"
+    text-title: "#fafafa"
+    text-subtitle: "#f5f5f5"
+    card-shadow: rgba(0, 0, 0, 0.4)
+    link: "#3273dc"
+    link-hover: "#ffdd57"
+
+services:
+  - name: "Office"
+    icon: "fas fa-building"
+    items:
+      - name: "Gmail"
+        logo: "https://ssl.gstatic.com/ui/v1/icons/mail/images/favicon5.ico"
+        url: "https://mail.google.com/mail"
+
+      - name: "Google Drive"
+        logo: "https://www.google.com/drive/static/images/drive/logo-drive.png"
+        url: "https://drive.google.com/drive/home"
+
+      - name: "Google Calendar"
+        logo: "https://ssl.gstatic.com/calendar/images/dynamiclogo_2020q4/calendar_31_2x.png"
+        url: "https://calendar.google.com/calendar"
+
+      - name: "Absences"
+        url: "https://easymile.ilucca.net/timmi-absences/leave-request"
+
+      - name: "Timesheet"
+        url: "https://easymile.ilucca.net/timmi-timesheet"
+
+  - name: "Work"
+    icon: "fas fa-briefcase"
+    items:
+      - name: "Jira"
+        logo: "https://cdn.worldvectorlogo.com/logos/jira-3.svg"
+        subtitle: "Dashboard"
+        url: "https://easymile.atlassian.net/jira/software/c/projects/NAV/boards/3524"
+
+      - name: "Confluence"
+        logo: "https://cdn.worldvectorlogo.com/logos/confluence-1.svg"
+        subtitle: "Navigation"
+        url: "https://easymile.atlassian.net/jira/software/c/projects/NAV/boards/3524"
+
+      - name: "Gitlab"
+        logo: "https://cdn.worldvectorlogo.com/logos/gitlab.svg"
+        subtitle: "Merge Requests"
+        url: "https://gitlab.easymile.com/dashboard/merge_requests/search?assignee_username=ludovic.hussonnois"
+
+      - name: "Gitlab"
+        logo: "https://cdn.worldvectorlogo.com/logos/gitlab.svg"
+        subtitle: "Reviews"
+        url: "https://gitlab.easymile.com/dashboard/merge_requests/search?scope=all&state=opened&reviewer_username=ludovic.hussonnois"
+
+      - name: "Internal Doc"
+        logo: ""
+        subtitle: "Documentation"
+        url: "https://internal-docs.easymile.private/rapidash/latest/rapidash-dev/index.html"
+
+  - name: "State Machines"
+    icon: "fas fa-cogs"
+    items:
+      - name: "Automatic State Machine"
+        logo: ""
+        subtitle: ""
+        url: "https://internal-docs.easymile.private/rapidash/latest/rapidash-dev/_images/plantuml-220ccb3ee79e5980f7848b9e3a0b8a6ef2bb21f6.svg"
+        tag: "state machine"
+
+      - name: "State Machine"
+        logo: ""
+        subtitle: ""
+        url: "https://internal-docs.easymile.private/rapidash/latest/rapidash-dev/_images/plantuml-220ccb3ee79e5980f7848b9e3a0b8a6ef2bb21f6.svg"
+        tag: "state machine"
+
+  - name: "Applications"
+    icon: "fas fa-rocket"
+    items:
+      - name: "Portainer"
+        logo: "https://downloads.portainer.io/assets/portainer-p-logo-280x280.png"
+        subtitle: "Docker management"
+        url: "https://localhost:9443"
+
+      - name: "n8n"
+        logo: "https://n8n.io/favicon.ico"
+        subtitle: "Workflow automation"
+        url: "http://localhost:5678"
