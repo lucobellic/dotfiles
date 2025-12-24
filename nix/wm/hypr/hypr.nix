@@ -5,8 +5,6 @@ let
 in {
   imports = [
     ./ags.nix
-    ./hyprlock.nix
-    # ./xdg-desktop-portal.nix
   ];
 
   programs = {
