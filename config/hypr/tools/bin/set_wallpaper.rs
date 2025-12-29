@@ -15,7 +15,7 @@ use clap::{Parser, Subcommand};
 use std::ffi::OsStr;
 use std::fs;
 use std::path::{Path, PathBuf};
-use std::process::Command;
+use std::process::{Command, Stdio};
 
 const LOCK_FILE_BASE: &str = "/tmp/theme";
 
@@ -261,11 +261,20 @@ fn cache_wall(wall_path: &Path, theme_dir: &Path, cache_dir: &Path) {
 }
 
 fn apply_wallpaper(wall_path: &Path) {
-  let _ = Command::new("hyprctl")
+  // restart hyprpaper until hyprctl with hyprpaper is fixed
+  let _ = Command::new("pkill").arg("hyprpaper").status();
+  // Use setsid to fully detach the process from the parent session
+  let _ = Command::new("setsid")
     .arg("hyprpaper")
-    .arg("reload")
-    .arg(format!(",{}", wall_path.display()))
+    .stdin(Stdio::null())
+    .stdout(Stdio::null())
+    .stderr(Stdio::null())
     .spawn();
+  // let _ = Command::new("hyprctl")
+  //   .arg("hyprpaper")
+  //   .arg("reload")
+  //   .arg(format!(",{}", wall_path.display()))
+  //   .spawn();
 }
 
 fn main() {
