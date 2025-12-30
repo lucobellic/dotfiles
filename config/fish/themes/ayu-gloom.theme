@@ -1,0 +1,40 @@
+# name: 'ayu-gloom'
+# preferred_background: 0a0e14
+
+fish_color_autosuggestion 6F7F9B --theme=ayu-gloom
+fish_color_cancel --reverse --theme=ayu-gloom
+fish_color_command 39BAE6 --theme=ayu-gloom
+fish_color_comment 6F7F9B --theme=ayu-gloom
+fish_color_cwd 59C2FF --theme=ayu-gloom
+fish_color_cwd_root red --theme=ayu-gloom
+fish_color_end F29668 --theme=ayu-gloom
+fish_color_error F26D78 --theme=ayu-gloom
+fish_color_escape 95E6CB --theme=ayu-gloom
+fish_color_history_current --bold --theme=ayu-gloom
+fish_color_host normal --theme=ayu-gloom
+fish_color_host_remote --theme=ayu-gloom
+fish_color_keyword --theme=ayu-gloom
+fish_color_match F07178 --theme=ayu-gloom
+fish_color_normal BFBDB6 --theme=ayu-gloom
+fish_color_operator FF8F40 --theme=ayu-gloom
+fish_color_option --theme=ayu-gloom
+fish_color_param D2A6FF --theme=ayu-gloom
+fish_color_quote AAD94C --theme=ayu-gloom
+fish_color_redirection FFEE99 --theme=ayu-gloom
+fish_color_search_match --background=2D4965 --theme=ayu-gloom
+fish_color_selection --background=152538 --theme=ayu-gloom
+fish_color_user brgreen --theme=ayu-gloom
+fish_color_valid_path D2A6FF --theme=ayu-gloom
+fish_pager_color_background
+fish_pager_color_completion normal --theme=ayu-gloom
+fish_pager_color_description 95E6CB --theme=ayu-gloom
+fish_pager_color_prefix normal --bold --theme=ayu-gloom
+fish_pager_color_progress brwhite --background=cyan --theme=ayu-gloom
+fish_pager_color_secondary_background
+fish_pager_color_secondary_completion
+fish_pager_color_secondary_description
+fish_pager_color_secondary_prefix
+fish_pager_color_selected_background --background=152538 --theme=ayu-gloom
+fish_pager_color_selected_completion
+fish_pager_color_selected_description
+fish_pager_color_selected_prefix

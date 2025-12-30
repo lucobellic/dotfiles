@@ -2,6 +2,8 @@
 
 {
   home.packages = with pkgs; [
+    nixfmt-rfc-style
+
     (python3.withPackages
       (ps: with ps; [ requests numpy pandas pyyaml typer scapy awscli uv ]))
 
