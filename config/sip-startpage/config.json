@@ -1,0 +1,116 @@
+{
+  "categories": [
+    { "id": "office", "name": "Office", "icon": "fa-solid fa-building" },
+    { "id": "work", "name": "Work", "icon": "fa-solid fa-briefcase" },
+    {
+      "id": "state-machines",
+      "name": "State Machines",
+      "icon": "fa-solid fa-gears"
+    },
+    {
+      "id": "applications",
+      "name": "Applications",
+      "icon": "fa-solid fa-rocket"
+    }
+  ],
+  "links": {
+    "office": [
+      {
+        "name": "Gmail",
+        "url": "https://mail.google.com/mail",
+        "icon": "fa-solid fa-envelope"
+      },
+      {
+        "name": "Google Drive",
+        "url": "https://drive.google.com/drive/home",
+        "icon": "fa-brands fa-google-drive"
+      },
+      {
+        "name": "Google Calendar",
+        "url": "https://calendar.google.com/calendar",
+        "icon": "fa-solid fa-calendar"
+      },
+      {
+        "name": "Absences",
+        "url": "https://easymile.ilucca.net/timmi-absences/leave-request",
+        "icon": "fa-solid fa-calendar-minus"
+      },
+      {
+        "name": "Timesheet",
+        "url": "https://easymile.ilucca.net/timmi-timesheet",
+        "icon": "fa-solid fa-clock"
+      }
+    ],
+    "work": [
+      {
+        "name": "Jira",
+        "url": "https://easymile.atlassian.net/jira/software/c/projects/NAV/boards/3524",
+        "icon": "fa-brands fa-jira"
+      },
+      {
+        "name": "Confluence",
+        "url": "https://easymile.atlassian.net/jira/software/c/projects/NAV/boards/3524",
+        "icon": "fa-brands fa-confluence"
+      },
+      {
+        "name": "GitLab MRs",
+        "url": "https://gitlab.easymile.com/dashboard/merge_requests/search?assignee_username=ludovic.hussonnois",
+        "icon": "fa-brands fa-gitlab"
+      },
+      {
+        "name": "GitLab Reviews",
+        "url": "https://gitlab.easymile.com/dashboard/merge_requests/search?scope=all&state=opened&reviewer_username=ludovic.hussonnois",
+        "icon": "fa-brands fa-gitlab"
+      },
+      {
+        "name": "Internal Doc",
+        "url": "https://internal-docs.easymile.private/rapidash/latest/rapidash-dev/index.html",
+        "icon": "fa-solid fa-book"
+      }
+    ],
+    "state-machines": [
+      {
+        "name": "Automatic State Machine",
+        "url": "https://internal-docs.easymile.private/rapidash/latest/rapidash-dev/_images/plantuml-220ccb3ee79e5980f7848b9e3a0b8a6ef2bb21f6.svg",
+        "icon": "fa-solid fa-diagram-project"
+      },
+      {
+        "name": "Mission State Machine",
+        "url": "https://internal-docs.easymile.private/rapidash/latest/rapidash-dev/_images/plantuml-220ccb3ee79e5980f7848b9e3a0b8a6ef2bb21f6.svg",
+        "icon": "fa-solid fa-diagram-project"
+      }
+    ],
+    "applications": [
+      {
+        "name": "Portainer",
+        "url": "https://localhost:9443",
+        "icon": "fa-brands fa-docker"
+      },
+      {
+        "name": "n8n",
+        "url": "http://localhost:5678",
+        "icon": "fa-solid fa-project-diagram"
+      }
+    ]
+  },
+  "settings": {
+    "userName": "",
+    "colorScheme": "Ayu",
+    "theme": "dark",
+    "colorMode": "multi",
+    "timeFormat": "24",
+    "showSeconds": "false",
+    "tempUnit": "C",
+    "showQuotes": null,
+    "enabledEngines": ["duckduckgo", "github"],
+    "preferredEngine": "duckduckgo",
+    "weatherLocation": "Toulouse,FR",
+    "openWeatherApiKey": null,
+    "linkBehavior": "new-tab",
+    "showKeyboardHints": "true",
+    "footerLeft": "blank",
+    "footerCenter": "blank",
+    "footerRight": "quotes"
+  }
+}
+

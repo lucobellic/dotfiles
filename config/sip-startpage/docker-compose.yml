@@ -1,0 +1,18 @@
+services:
+  sip-startpage:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sip-startpage
+    restart: unless-stopped
+    ports:
+      - "${SIP_PORT:-7426}:80"
+    volumes:
+      - ./init-config.js:/usr/share/nginx/html/init-config.js:ro
+      - ./config.json:/usr/share/nginx/html/config.json:ro
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
