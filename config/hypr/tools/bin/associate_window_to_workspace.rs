@@ -66,7 +66,7 @@ async fn main() -> anyhow::Result<()> {
     // Create a window rule to bind this window to the current workspace
     // Using class and title for precise matching
     let rule = format!(
-        "workspace {} silent, class:^({})$, title:^({})$",
+        "workspace {} silent, match:class ^({})$, match:title ^({})$",
         workspace_id, escaped_class, escaped_title
     );
 

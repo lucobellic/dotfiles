@@ -94,12 +94,12 @@ async fn setup_home() -> anyhow::Result<()> {
   let cursor_path = home.join(".local/bin/Cursor.AppImage");
   let cursor_cmd = format!("pgrep Cursor || {}", cursor_path.display());
 
-  Keyword::set("windowrule", "workspace 2, class:^([Ss]lack)$")?;
-  Keyword::set("windowrule", "workspace 2, class:kitty-logs")?;
-  Keyword::set("windowrule", "workspace 2, class:^([Cc]ursor)$")?;
-  Keyword::set("windowrule", "workspace 2, class:kitty-dev")?;
-  Keyword::set("windowrule", "workspace 3, class:^([Oo]pera)$")?;
-  Keyword::set("windowrule", "workspace 3, class:^([Zz]en)$")?;
+  Keyword::set("windowrule", "workspace 2, match:class ^([Ss]lack)$")?;
+  Keyword::set("windowrule", "workspace 2, match:class kitty-logs")?;
+  Keyword::set("windowrule", "workspace 2, match:class ^([Cc]ursor)$")?;
+  Keyword::set("windowrule", "workspace 2, match:class kitty-dev")?;
+  Keyword::set("windowrule", "workspace 3, match:class ^([Oo]pera)$")?;
+  Keyword::set("windowrule", "workspace 3, match:class ^([Zz]en)$")?;
 
   try_join!(
     dispatch!(async; Exec, "pgrep zen    || zen"),
@@ -116,11 +116,11 @@ async fn setup_work() -> anyhow::Result<()> {
   let cursor_path = home.join(".local/bin/Cursor.AppImage");
   let cursor_cmd = format!("pgrep Cursor || {}", cursor_path.display());
 
-  Keyword::set("windowrule", "workspace 3, class:kitty-dev")?;
-  Keyword::set("windowrule", "workspace 2, class:^([Ss]lack)$")?;
-  Keyword::set("windowrule", "workspace 1, class:^([Zz]en)$")?;
-  Keyword::set("windowrule", "workspace 4, class:^([Cc]ursor)$")?;
-  Keyword::set("windowrule", "workspace 4, class:kitty-logs")?;
+  Keyword::set("windowrule", "workspace 3, match:class kitty-dev")?;
+  Keyword::set("windowrule", "workspace 2, match:class ^([Ss]lack)$")?;
+  Keyword::set("windowrule", "workspace 1, match:class ^([Zz]en)$")?;
+  Keyword::set("windowrule", "workspace 4, match:class ^([Cc]ursor)$")?;
+  Keyword::set("windowrule", "workspace 4, match:class kitty-logs")?;
 
   try_join!(
     dispatch!(async; Exec, "pgrep zen    || zen"),
