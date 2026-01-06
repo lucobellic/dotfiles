@@ -39,7 +39,7 @@ palette = 2=#aad94c
 palette = 3=#ffb454
 palette = 4=#39bae6
 palette = 5=#d2a6ff
-palette = 6=#73b8ff
+palette = 6=#95e6cb
 palette = 7=#bfbdb6
 palette = 8=#0b0e14
 palette = 9=#f26d78
@@ -47,7 +47,7 @@ palette = 10=#aad94c
 palette = 11=#ffb454
 palette = 12=#39bae6
 palette = 13=#d2a6ff
-palette = 14=#73b8ff
+palette = 14=#c7fffc
 palette = 15=#bfbdb6
 
 
@@ -60,6 +60,9 @@ window-decoration = none
 window-titlebar-background = #0f131a
 window-titlebar-foreground = #bfbdb6
 gtk-tabs-location = bottom
+gtk-wide-tabs = false
+gtk-custom-css = ~/.config/ghostty/gtk.css
+
 clipboard-read = allow
 clipboard-write = allow
 
