@@ -15,7 +15,7 @@ hyprland = "0.4.0-beta.3"
 use anyhow::{Result, bail};
 use hyprland::data::{Monitor, Monitors};
 use hyprland::shared::HyprData;
-use std::process::{Command, Output};
+use std::process::Command;
 
 /// Sends a desktop notification with the given urgency and message.
 fn notify(urgency: &str, message: &str) -> Result<()> {
@@ -89,12 +89,12 @@ fn setup_timer(monitors: &[Monitor], stacking: &str, delay_secs: u64) -> Result<
 }
 
 /// Opens eww workspace widgets on all specified monitors.
-fn open_workspaces(monitors: &[Monitor], stacking: &str) -> Result<Output> {
-  let mut cmd = Command::new("eww");
-  cmd.arg("open-many");
+fn open_workspaces(monitors: &[Monitor], stacking: &str) {
   for &Monitor { id, .. } in monitors {
     let wid = window_id(id, stacking);
+    let mut cmd = Command::new("eww");
     cmd.args([
+      "open-many",
       &format!("workspaces:{wid}"),
       "--arg",
       &format!("{wid}:screen={id}"),
@@ -103,8 +103,16 @@ fn open_workspaces(monitors: &[Monitor], stacking: &str) -> Result<Output> {
       "--arg",
       &format!("{wid}:stacking={stacking}"),
     ]);
+
+    if let Err(e) = cmd.output().and_then(|o| {
+      o.status
+        .success()
+        .then_some(o.clone())
+        .ok_or_else(|| std::io::Error::other(String::from_utf8_lossy(&o.stderr)))
+    }) {
+      let _ = notify("critical", &format!("Failed to open workspaces: {e}"));
+    }
   }
-  Ok(cmd.output()?)
 }
 
 fn main() -> Result<()> {
@@ -112,23 +120,16 @@ fn main() -> Result<()> {
   let stacking = args.get(1).map_or("bottom", String::as_str);
   let close_delay: Option<u64> = args.get(2).and_then(|s| s.parse().ok());
 
-  let monitors: Vec<Monitor> = Monitors::get()?.into_iter().collect();
+  let monitors: Vec<Monitor> = Monitors::get()?
+    .into_iter()
+    .filter(|m| !m.disabled)
+    .collect();
   if monitors.is_empty() {
     notify("critical", "No monitors detected")?;
     return Ok(());
   }
 
-  let output = open_workspaces(&monitors, stacking)?;
-  if !output.status.success() {
-    notify(
-      "critical",
-      &format!(
-        "Failed to open workspaces: {}",
-        String::from_utf8_lossy(&output.stderr)
-      ),
-    )?;
-    return Ok(());
-  }
+  open_workspaces(&monitors, stacking);
 
   if let Some(delay) = close_delay {
     setup_timer(&monitors, stacking, delay)?;
