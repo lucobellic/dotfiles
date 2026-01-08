@@ -1,17 +1,20 @@
 { config, pkgs, ... }:
 let
-  mkConfigSymlink = path:
-    config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/${path};
-in {
+  mkConfigSymlink = path: config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/${path};
+in
+{
   imports = [
     ./ags.nix
+    ./awww.nix
   ];
 
   programs = {
     # TODO: to be tested and constumized
     # mcp = {enable = true; };bled =}
     # vicinae = { enable = true; };
-    bluetuith = { enable = true; };
+    bluetuith = {
+      enable = true;
+    };
   };
 
   home.packages = with pkgs; [
@@ -77,13 +80,11 @@ in {
   };
 
   xdg.configFile."xdg-desktop-portal/hyprland-portals.conf".source =
-    config.lib.file.mkOutOfStoreSymlink
-    ~/.config/home-manager/config/xdg-desktop-portal/hyprland-portals.conf;
+    config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/xdg-desktop-portal/hyprland-portals.conf;
 
   # Desktop Entries
 
-  xdg.dataFile."applications/logout.desktop".source =
-    mkConfigSymlink "desktop-entry/logout.desktop";
+  xdg.dataFile."applications/logout.desktop".source = mkConfigSymlink "desktop-entry/logout.desktop";
 
   xdg.dataFile."applications/poweroff.desktop".source =
     mkConfigSymlink "desktop-entry/poweroff.desktop";

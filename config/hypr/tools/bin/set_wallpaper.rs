@@ -260,7 +260,20 @@ fn cache_wall(wall_path: &Path, theme_dir: &Path, cache_dir: &Path) {
   }
 }
 
-fn apply_wallpaper(wall_path: &Path) {
+fn apply_awww_wallpaper(wall_path: &Path) {
+  let _ = Command::new("awww")
+    .args([
+      "img",
+      &format!("{}", wall_path.display()),
+      "--resize",
+      "crop",
+      "--transition-type",
+      "none",
+    ])
+    .spawn();
+}
+
+fn apply_hyprpaper_wallpaper(_wall_path: &Path) {
   // restart hyprpaper until hyprctl with hyprpaper is fixed
   let _ = Command::new("pkill").arg("hyprpaper").status();
   // Use setsid to fully detach the process from the parent session
@@ -416,7 +429,8 @@ fn main() {
       });
 
       cache_wall(&wall_path, &theme_dir, &cache_dir);
-      apply_wallpaper(&wall_path);
+      // apply_hyprpaper_wallpaper(&wall_path);
+      apply_awww_wallpaper(&wall_path);
     }
   }
 }
