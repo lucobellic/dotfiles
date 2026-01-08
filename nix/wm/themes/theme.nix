@@ -1,7 +1,10 @@
 { pkgs, lib, ... }:
 
 {
-  imports = [ ./cursor.nix ./fonts.nix ];
+  imports = [
+    ./cursor.nix
+    ./fonts.nix
+  ];
 
   home.packages = [
     pkgs.nwg-look
@@ -11,7 +14,7 @@
     pkgs.qt6Packages.qt6ct
   ];
 
-  home.activation.cloneDraculaIcons = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  home.activation.cloneDraculaIcons = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     if [ ! -d "$HOME/.icons/dracula-icons" ]; then
       ${pkgs.git}/bin/git clone https://github.com/m4thewz/dracula-icons "$HOME/.icons/dracula-icons"
     fi

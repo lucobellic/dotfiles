@@ -16,7 +16,7 @@
   ];
 
   # Create symlink for xdg-open-host-listener script
-  home.file."bin/xdg-open-host-listener".source =
+  home.file.".local/bin/xdg-open-host-listener".source =
     config.lib.file.mkOutOfStoreSymlink
     "${config.home.homeDirectory}/.config/home-manager/config/xdg-open-host-listener.sh";
 
@@ -85,7 +85,7 @@
     Service = {
       Type = "simple";
       ExecStart =
-        "${pkgs.bash}/bin/bash ${config.home.homeDirectory}/bin/xdg-open-host-listener";
+        "${pkgs.bash}/.bin/bash ${config.home.homeDirectory}/.local/bin/xdg-open-host-listener";
       Restart = "on-failure";
       RestartSec = 5;
       # Import environment variables needed for GUI applications

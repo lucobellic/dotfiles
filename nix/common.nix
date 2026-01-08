@@ -1,9 +1,9 @@
 { pkgs, ... }:
 
 let
-  local_hyprland_path =
-    "$HOME/Development/tools/hyprland-conan/install/Release";
-in {
+  local_hyprland_path = "$HOME/Development/tools/hyprland-conan/install/Release";
+in
+{
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new Home Manager release introduces backwards
