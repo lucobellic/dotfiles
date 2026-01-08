@@ -2,6 +2,7 @@
   "categories": [
     { "id": "office", "name": "Office", "icon": "fa-solid fa-building" },
     { "id": "work", "name": "Work", "icon": "fa-solid fa-briefcase" },
+    { "id": "personal", "name": "Personal", "icon": "fa-solid fa-user" },
     {
       "id": "state-machines",
       "name": "State Machines",
@@ -68,6 +69,28 @@
         "icon": "fa-solid fa-book"
       }
     ],
+    "personal": [
+      {
+        "name": "GitHub",
+        "url": "https://github.com/",
+        "icon": "fa-brands fa-github"
+      },
+      {
+        "name": "MyNixOS",
+        "url": "https://mynixos.com/",
+        "icon": "fa-solid fa-snowflake"
+      },
+      {
+        "name": "Hyprland Wiki",
+        "url": "https://wiki.hypr.land/",
+        "icon": "fa-solid fa-book-open"
+      },
+      {
+        "name": "HyprPanel Docs",
+        "url": "https://hyprpanel.com/getting_started/hyprpanel.html",
+        "icon": "fa-solid fa-sliders"
+      }
+    ],
     "state-machines": [
       {
         "name": "Automatic State Machine",
@@ -113,4 +136,3 @@
     "footerRight": "quotes"
   }
 }
-
