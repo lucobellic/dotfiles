@@ -15,7 +15,7 @@ clap = { version = "4", features = ["derive"] }
 
 use anyhow::{Context, Result};
 use clap::Parser;
-use hyprland::data::{Client, Clients, Monitors};
+use hyprland::data::{Client, Clients, Monitors, Transforms};
 use hyprland::dispatch::{Dispatch, DispatchType, WindowIdentifier};
 use hyprland::shared::{Address, HyprData};
 use std::process::Command;
@@ -105,13 +105,23 @@ fn parse_dimension(arg: &str, monitor_size: i16) -> i16 {
     .unwrap_or_else(|| arg.parse::<i16>().unwrap_or(monitor_size))
 }
 
-/// Get the focused monitor's dimensions
+/// Get the focused monitor's dimensions (accounting for transform/rotation)
 fn get_focused_monitor_dimensions() -> Result<(i16, i16)> {
   Monitors::get()
     .context("Failed to get monitors")?
     .into_iter()
     .find(|m| m.focused)
-    .map(|m| (m.width as i16, m.height as i16))
+    .map(|m| {
+      let (w, h) = (m.width as i16, m.height as i16);
+      // 90° and 270° rotations swap width and height
+      match m.transform {
+        Transforms::Normal90
+        | Transforms::Normal270
+        | Transforms::Flipped90
+        | Transforms::Flipped270 => (h, w),
+        _ => (w, h),
+      }
+    })
     .context("No focused monitor found")
 }
 
