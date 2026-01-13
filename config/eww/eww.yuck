@@ -67,11 +67,11 @@
   (right-tray)
 )
 
-(defwindow workspaces [?screen ?monitor ?stacking]
+(defwindow workspaces [?screen ?stacking]
   :monitor {screen ?: 0}
   :geometry (geometry :x "1%"
                       :y "1%"
                       :anchor "top center")
   :stacking {stacking ?: "bottom"}
-  (hyprland-workspaces :monitor {monitor ?: 0})
+  (hyprland-workspaces :monitor {screen ?: 0})
 )

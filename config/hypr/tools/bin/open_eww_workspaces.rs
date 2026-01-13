@@ -90,16 +90,14 @@ fn setup_timer(monitors: &[Monitor], stacking: &str, delay_secs: u64) -> Result<
 
 /// Opens eww workspace widgets on all specified monitors.
 fn open_workspaces(monitors: &[Monitor], stacking: &str) {
-  for &Monitor { id, .. } in monitors {
+  for (index, &Monitor { id, .. }) in monitors.iter().enumerate() {
     let wid = window_id(id, stacking);
     let mut cmd = Command::new("eww");
     cmd.args([
       "open-many",
       &format!("workspaces:{wid}"),
       "--arg",
-      &format!("{wid}:screen={id}"),
-      "--arg",
-      &format!("{wid}:monitor={id}"),
+      &format!("{wid}:screen={index}"),
       "--arg",
       &format!("{wid}:stacking={stacking}"),
     ]);
