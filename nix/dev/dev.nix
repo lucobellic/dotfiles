@@ -4,8 +4,18 @@
   home.packages = with pkgs; [
     nixfmt-rfc-style
 
-    (python3.withPackages
-      (ps: with ps; [ requests numpy pandas pyyaml typer scapy awscli uv ]))
+    (python3.withPackages (
+      ps: with ps; [
+        requests
+        numpy
+        pandas
+        pyyaml
+        typer
+        scapy
+        awscli
+        uv
+      ]
+    ))
 
     rustup
 
@@ -17,10 +27,11 @@
 
   # Create symlink for xdg-open-host-listener script
   home.file.".local/bin/xdg-open-host-listener".source =
-    config.lib.file.mkOutOfStoreSymlink
-    "${config.home.homeDirectory}/.config/home-manager/config/xdg-open-host-listener.sh";
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/home-manager/config/xdg-open-host-listener.sh";
 
-  programs.lazydocker = { enable = true; };
+  programs.lazydocker = {
+    enable = true;
+  };
 
   programs.obsidian = {
     enable = true;
@@ -70,8 +81,12 @@
       themes = [ ];
     };
     vaults = {
-      work = { target = "vaults/work"; };
-      personal = { target = "vaults/personal"; };
+      work = {
+        target = "vaults/work";
+      };
+      personal = {
+        target = "vaults/personal";
+      };
     };
   };
 
@@ -84,16 +99,17 @@
 
     Service = {
       Type = "simple";
-      ExecStart =
-        "${pkgs.bash}/.bin/bash ${config.home.homeDirectory}/.local/bin/xdg-open-host-listener";
+      ExecStart = "${pkgs.bash}/bin/bash ${config.home.homeDirectory}/.local/bin/xdg-open-host-listener";
       Restart = "on-failure";
       RestartSec = 5;
       # Import environment variables needed for GUI applications
       Environment = [
-        "PATH=${pkgs.xdg-utils}/bin:${pkgs.firefox}/bin:${config.home.homeDirectory}/.nix-profile/bin:/run/current-system/sw/bin"
+        "PATH=${pkgs.coreutils}/bin:${pkgs.xdg-utils}/bin:${pkgs.firefox}/bin:${config.home.homeDirectory}/.nix-profile/bin:/run/current-system/sw/bin"
       ];
     };
 
-    Install = { WantedBy = [ "default.target" ]; };
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
   };
 }
