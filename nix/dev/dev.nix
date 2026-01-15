@@ -17,7 +17,16 @@
       ]
     ))
 
-    rustup
+    # Rust toolchain with stable and nightly
+    (rust-bin.selectLatestNightlyWith (
+      toolchain:
+      toolchain.default.override {
+        extensions = [
+          "rust-src"
+          "rust-analyzer"
+        ];
+      }
+    ))
 
     go
 
