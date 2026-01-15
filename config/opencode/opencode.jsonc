@@ -9,6 +9,9 @@
     "messages_half_page_up": "ctrl+u",
     "messages_half_page_down": "ctrl+d",
   },
+  "permission": {
+    "lsp": "allow",
+  },
   "mcp": {
     "brave-search": {
       "type": "local",
@@ -33,7 +36,6 @@
       "extensions": [".lua"],
     },
     "clangd": {
-      "disabled": true,
       "command": [
         "clangd",
         "--background-index",
