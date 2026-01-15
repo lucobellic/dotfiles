@@ -95,6 +95,7 @@
     Unit = {
       Description = "XDG Open Host Listener for Container Communication";
       After = [ "graphical-session.target" ];
+      PartOf = [ "graphical-session.target" ];
     };
 
     Service = {
@@ -102,14 +103,13 @@
       ExecStart = "${pkgs.bash}/bin/bash ${config.home.homeDirectory}/.local/bin/xdg-open-host-listener";
       Restart = "on-failure";
       RestartSec = 5;
-      # Import environment variables needed for GUI applications
       Environment = [
         "PATH=${pkgs.coreutils}/bin:${pkgs.xdg-utils}/bin:${pkgs.firefox}/bin:${config.home.homeDirectory}/.nix-profile/bin:/run/current-system/sw/bin"
       ];
     };
 
     Install = {
-      WantedBy = [ "default.target" ];
+      WantedBy = [ "graphical-session.target" ];
     };
   };
 }

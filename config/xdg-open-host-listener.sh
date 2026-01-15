@@ -9,12 +9,11 @@ PIPE="$PIPE_DIR/xdg-open-pipe"
 # Ensure directory exists
 mkdir -p "$PIPE_DIR"
 
-# Clean up old pipe if it exists
-rm -rf "$PIPE"
-
-# Create named pipe
-mkfifo "$PIPE"
-chmod 664 "$PIPE"
+# Create named pipe only if it doesn't exist
+if [[ ! -p "$PIPE" ]]; then
+  mkfifo "$PIPE"
+  chmod 664 "$PIPE"
+fi
 
 echo "xdg-open listener started. Waiting for requests from container..."
 echo "Press Ctrl+C to stop."
