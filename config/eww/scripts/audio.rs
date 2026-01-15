@@ -1,4 +1,4 @@
-#!/usr/bin/env -S cargo +nightly -Zscript
+#!/usr/bin/env -S cargo -Zscript
 ---
 [dependencies]
 serde_json = "1.0"
@@ -136,7 +136,7 @@ fn set_volume(direction: &str) {
     .args(["set-volume", "-l", "1.0", "@DEFAULT_AUDIO_SINK@", delta])
     .output()
     .ok();
-  
+
   let volume = get_volume();
   let muted = get_muted();
   let output = get_output_device();
@@ -152,7 +152,7 @@ fn set_mic_volume(direction: &str) {
     .args(["set-volume", "-l", "1.0", "@DEFAULT_AUDIO_SOURCE@", delta])
     .output()
     .ok();
-  
+
   let mic_volume = get_mic_volume();
   let mic_muted = get_mic_muted();
   let input = get_input_device();
@@ -167,7 +167,7 @@ fn toggle_mute() {
     .args(["set-mute", "@DEFAULT_AUDIO_SINK@", "toggle"])
     .output()
     .ok();
-  
+
   let volume = get_volume();
   let muted = get_muted();
   let output = get_output_device();
@@ -182,7 +182,7 @@ fn toggle_mic_mute() {
     .args(["set-mute", "@DEFAULT_AUDIO_SOURCE@", "toggle"])
     .output()
     .ok();
-  
+
   let mic_volume = get_mic_volume();
   let mic_muted = get_mic_muted();
   let input = get_input_device();

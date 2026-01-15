@@ -41,9 +41,9 @@ let
       exit 0
     fi
 
-    # Check if nightly toolchain is available
-    if ! cargo +nightly --version >/dev/null 2>&1; then
-      echo -e "\033[1;33m⚠ nightly toolchain not available, skipping Rust script compilation\033[0m"
+    # Check if nightly toolchain is available (cargo -Zscript requires nightly)
+    if ! cargo -Zscript --help >/dev/null 2>&1; then
+      echo -e "\033[1;33m⚠ cargo -Zscript not available, skipping Rust script compilation\033[0m"
       exit 0
     fi
 
@@ -53,7 +53,7 @@ let
 
       # Use cargo build to produce the cached binary (not just check)
       # This populates the script cache so subsequent runs don't recompile
-      if cargo +nightly build -Zscript --manifest-path "$script" >/dev/null 2>&1; then
+      if cargo build -Zscript --manifest-path "$script" >/dev/null 2>&1; then
         echo -e "  \033[1;32m✓\033[0m $name"
         return 0
       else
