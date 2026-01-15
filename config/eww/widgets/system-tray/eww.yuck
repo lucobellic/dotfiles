@@ -13,8 +13,8 @@
 (defpoll gpu_mem_usage :interval "3s"
   "scripts/gpu-usage.rs --mem")
 
-(defpoll igpu_usage :interval "2s"
-  "scripts/integrated-gpu-usage.rs")
+;(defpoll igpu_usage :interval "2s"
+;  "scripts/integrated-gpu-usage.rs")
 
 (defpoll ram_usage :interval "3s"
   "scripts/ram-usage.rs")
@@ -57,12 +57,10 @@
        :valign "center"
     (box :orientation "h" :space-evenly true :spacing spacing
       (usage-scale :poll_var cpu_usage :size size :icon "" :margin-left margin :color blue)
-      (usage-scale :poll_var gpu_usage :size size :icon "" :margin-left margin :color green)
-      (usage-scale :poll_var igpu_usage :size size :icon "" :margin-left margin :color red)
-    )
-    (box :orientation "h" :space-evenly true :spacing spacing
       (usage-scale :poll_var ram_usage :size size :icon "" :margin-left -3 :color blue)
+      (usage-scale :poll_var gpu_usage :size size :icon "" :margin-left margin :color green)
       (usage-scale :poll_var gpu_mem_usage :size size :icon "" :margin-left -3 :color green)
+   ;   (usage-scale :poll_var igpu_usage :size size :icon "" :margin-left margin :color red)
       (usage-scale :poll_var disk_usage :size size :icon "" :color red)
     )
   )
