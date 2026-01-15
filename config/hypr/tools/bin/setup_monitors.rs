@@ -92,7 +92,7 @@ fn load_screen_configs(
 async fn setup_home() -> anyhow::Result<()> {
   let home = home_dir().context("Failed to get home directory")?;
   let cursor_path = home.join(".local/bin/Cursor.AppImage");
-  let cursor_cmd = format!("pgrep Cursor || {}", cursor_path.display());
+  let _cursor_cmd = format!("pgrep Cursor || {}", cursor_path.display());
 
   Keyword::set("windowrule", "workspace 2, match:class ^([Ss]lack)$")?;
   Keyword::set("windowrule", "workspace 2, match:class kitty-logs")?;
@@ -105,7 +105,7 @@ async fn setup_home() -> anyhow::Result<()> {
     dispatch!(async; Exec, "pgrep zen    || zen"),
     dispatch!(async; Exec, "pgrep slack  || slack"),
     dispatch!(async; Exec, "pgrep kitty  || kitty --class kitty-dev"),
-    dispatch!(async; Exec, cursor_cmd.as_str())
+    // dispatch!(async; Exec, cursor_cmd.as_str())
   )?;
 
   Ok(())
@@ -114,7 +114,7 @@ async fn setup_home() -> anyhow::Result<()> {
 async fn setup_work() -> anyhow::Result<()> {
   let home = home_dir().context("Failed to get home directory")?;
   let cursor_path = home.join(".local/bin/Cursor.AppImage");
-  let cursor_cmd = format!("pgrep Cursor || {}", cursor_path.display());
+  let _cursor_cmd = format!("pgrep Cursor || {}", cursor_path.display());
 
   Keyword::set("windowrule", "workspace 3, match:class kitty-dev")?;
   Keyword::set("windowrule", "workspace 2, match:class ^([Ss]lack)$")?;
@@ -126,7 +126,7 @@ async fn setup_work() -> anyhow::Result<()> {
     dispatch!(async; Exec, "pgrep zen    || zen"),
     dispatch!(async; Exec, "pgrep slack  || slack"),
     dispatch!(async; Exec, "pgrep kitty  || kitty --class kitty-dev"),
-    dispatch!(async; Exec, cursor_cmd.as_str())
+    // dispatch!(async; Exec, cursor_cmd.as_str())
   )?;
 
   Ok(())
