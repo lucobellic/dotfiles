@@ -67,6 +67,11 @@
         "name": "Internal Doc",
         "url": "https://internal-docs.easymile.private/rapidash/latest/rapidash-dev/index.html",
         "icon": "fa-solid fa-book"
+      },
+      {
+        "name": "Stress Test",
+        "url": "https://jenkins.eu.it.easymile.private/job/rapidash-simu-stress-test-tools/",
+        "icon": "fa-solid fa-mug-hot"
       }
     ],
     "personal": [
