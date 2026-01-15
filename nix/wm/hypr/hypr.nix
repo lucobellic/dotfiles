@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 let
   mkConfigSymlink = path: config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/${path};
 in
@@ -6,6 +10,7 @@ in
   imports = [
     ./ags.nix
     ./awww.nix
+    ./build_rust_scripts.nix
   ];
 
   programs = {
