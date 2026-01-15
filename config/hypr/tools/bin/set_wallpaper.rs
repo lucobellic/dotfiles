@@ -429,8 +429,8 @@ fn main() {
       });
 
       cache_wall(&wall_path, &theme_dir, &cache_dir);
-      // apply_hyprpaper_wallpaper(&wall_path);
-      apply_awww_wallpaper(&wall_path);
+      apply_hyprpaper_wallpaper(&wall_path);
+      // apply_awww_wallpaper(&wall_path);
     }
   }
 }
