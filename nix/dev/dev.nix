@@ -102,7 +102,12 @@
       ExecStart = "${pkgs.bash}/bin/bash ${config.home.homeDirectory}/.local/bin/xdg-open-host-listener";
       Restart = "on-failure";
       RestartSec = 5;
-      # Import environment variables needed for GUI applications
+      # Import environment variables needed for GUI applications from the graphical session
+      PassEnvironment = [
+        "DISPLAY"
+        "WAYLAND_DISPLAY"
+        "XDG_CURRENT_DESKTOP"
+      ];
       Environment = [
         "PATH=${pkgs.coreutils}/bin:${pkgs.xdg-utils}/bin:${pkgs.firefox}/bin:${config.home.homeDirectory}/.nix-profile/bin:/run/current-system/sw/bin"
       ];
