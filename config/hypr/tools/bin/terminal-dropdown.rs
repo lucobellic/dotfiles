@@ -164,21 +164,51 @@ fn window_id(address: &Address) -> WindowIdentifier<'_> {
   WindowIdentifier::Address(address.clone())
 }
 
-/// Resize a window to exact dimensions
-fn resize_window(address: &Address, width: i16, height: i16) -> Result<()> {
-  Dispatch::call(DispatchType::ResizeWindowPixel(
-    hyprland::dispatch::Position::Exact(width, height),
-    window_id(address),
-  ))
-  .context("Failed to resize window")
+/// Get the script directory path
+fn get_script_dir() -> Result<std::path::PathBuf> {
+  // Get the script path from argv[0] (the invoked script path)
+  let script_path = std::env::args()
+    .next()
+    .context("Failed to get script path from argv[0]")?;
+
+  let script_path = std::path::PathBuf::from(script_path);
+
+  // Canonicalize to resolve all symlinks and get the real path
+  let resolved_path = script_path
+    .canonicalize()
+    .context("Failed to canonicalize script path")?;
+
+  resolved_path
+    .parent()
+    .map(|p| p.to_path_buf())
+    .context("Failed to get script directory")
 }
 
-/// Center a window
-fn center_window(address: &Address) -> Result<()> {
-  Command::new("hyprctl")
-    .args(["dispatch", "centerwindow", &format!("address:{}", address)])
+/// Center a window using the center-window.rs script
+fn center_window(address: &Address, width: i16, height: i16) -> Result<()> {
+  let script_dir = get_script_dir()?;
+  let center_script = script_dir.join("center-window.rs");
+
+  let output = Command::new(&center_script)
+    .args([
+      &format!("{}", width),
+      &format!("{}", height),
+      "--address",
+      &format!("{}", address),
+    ])
     .output()
-    .context("Failed to center window")?;
+    .context(format!(
+      "Failed to execute center-window.rs at {:?}",
+      center_script
+    ))?;
+
+  if !output.status.success() {
+    anyhow::bail!(
+      "center-window.rs failed: {}",
+      String::from_utf8_lossy(&output.stderr)
+    );
+  }
+
   Ok(())
 }
 
@@ -187,11 +217,27 @@ fn focus_window(address: &Address) -> Result<()> {
   Dispatch::call(DispatchType::FocusWindow(window_id(address))).context("Failed to focus window")
 }
 
+/// Ensure window is floating
+fn ensure_floating(address: &Address) -> Result<()> {
+  // Get current window state to check if it's already floating
+  if matches!(find_window_by_address(address)?, Some(client) if !client.floating) {
+    Dispatch::call(DispatchType::ToggleFloating(Some(window_id(address))))
+      .context("Failed to set window to floating")?;
+  }
+  Ok(())
+}
+
+/// Find window by address
+fn find_window_by_address(address: &Address) -> Result<Option<Client>> {
+  Clients::get()
+    .context("Failed to get clients")
+    .map(|clients| clients.into_iter().find(|c| c.address == *address))
+}
+
 /// Resize, center, and focus a window in sequence
 fn setup_window(address: &Address, width: i16, height: i16) -> Result<()> {
-  resize_window(address, width, height)
-    .and_then(|_| center_window(address))
-    .and_then(|_| focus_window(address))
+  // center-window.rs handles both resizing and centering
+  center_window(address, width, height).and_then(|_| focus_window(address))
 }
 
 /// Move window to current workspace
@@ -217,12 +263,10 @@ fn toggle_window(window: &Client, config: &DropdownConfig) -> Result<()> {
   let is_hidden = window.workspace.name.starts_with("special:");
 
   if is_hidden {
-    show_window(&window.address)
-      .and_then(|_| {
-        thread::sleep(Duration::from_millis(100));
-        Ok(())
-      })
-      .and_then(|_| setup_window(&window.address, config.width, config.height))
+    show_window(&window.address)?;
+    focus_window(&window.address)?;
+    ensure_floating(&window.address)?;
+    setup_window(&window.address, config.width, config.height)
   } else {
     hide_window(&window.address)
   }
@@ -257,7 +301,12 @@ fn spawn_terminal(config: &DropdownConfig) -> Result<()> {
       let _ = notify("critical", "Window was not detected after spawning");
       anyhow::anyhow!("Window creation timeout")
     })
-    .and_then(|address| setup_window(&address, config.width, config.height))
+    .and_then(|address| {
+      // Ensure window is floating before setup
+      ensure_floating(&address)?;
+      thread::sleep(Duration::from_millis(100));
+      setup_window(&address, config.width, config.height)
+    })
 }
 
 /// Handle window management based on current state
