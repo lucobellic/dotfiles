@@ -23,8 +23,7 @@ in
   home.packages = [ pkgs.curl ];
 
   home.sessionVariables = {
-    PATH =
-      "/nix/var/nix/profiles/default/bin:$HOME/.nix-profile/bin:${local_hyprland_path}:$PATH";
+    PATH = "/nix/var/nix/profiles/default/bin:$HOME/.nix-profile/bin:${local_hyprland_path}:$PATH";
     OLLAMA_API_BASE = "http://127.0.0.1:11434";
     SSH_AUTH_SOCK = "/run/user/1000/ssh-agent";
   };
