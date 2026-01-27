@@ -117,10 +117,10 @@ async fn setup_work() -> anyhow::Result<()> {
   let _cursor_cmd = format!("pgrep Cursor || {}", cursor_path.display());
 
   Keyword::set("windowrule", "workspace 3, match:class kitty-dev")?;
-  Keyword::set("windowrule", "workspace 2, match:class ^([Ss]lack)$")?;
+  Keyword::set("windowrule", "workspace 4, match:class ^([Ss]lack)$")?;
   Keyword::set("windowrule", "workspace 1, match:class ^([Zz]en)$")?;
-  Keyword::set("windowrule", "workspace 4, match:class ^([Cc]ursor)$")?;
-  Keyword::set("windowrule", "workspace 4, match:class kitty-logs")?;
+  Keyword::set("windowrule", "workspace 2, match:class ^([Cc]ursor)$")?;
+  Keyword::set("windowrule", "workspace 2, match:class kitty-logs")?;
 
   try_join!(
     dispatch!(async; Exec, "pgrep zen    || zen"),

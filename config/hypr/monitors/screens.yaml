@@ -26,13 +26,13 @@ work:
 
   - name: left
     position: auto-left
-    workspace: 2
+    workspace: 4
     description: Dell Inc. DELL U2520D 70C9923
     rotation: Deg270
 
   - name: right
     position: auto-right
-    workspace: 4
+    workspace: 2
     description: Dell Inc. DELL U2518D 3C4YP9BM468L
     rotation: Deg90
 

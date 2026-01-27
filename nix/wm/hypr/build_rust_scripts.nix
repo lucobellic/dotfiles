@@ -64,7 +64,7 @@ let
     }
 
     echo ""
-    echo -e "\033[1;34m󰭻 Compiling Rust scripts...\033[0m"
+    echo -e "\033[1;34m🦀 Compiling Rust scripts...\033[0m"
 
     # Compile bin scripts
     BIN_DIR="$HOME/.local/share/bin"
