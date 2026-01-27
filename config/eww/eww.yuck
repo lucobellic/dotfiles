@@ -69,7 +69,7 @@
 
 (defwindow workspaces [?screen ?stacking]
   :monitor {screen ?: 0}
-  :geometry (geometry :x "1%"
+  :geometry (geometry :x "0%"
                       :y "1%"
                       :anchor "top center")
   :stacking {stacking ?: "bottom"}
