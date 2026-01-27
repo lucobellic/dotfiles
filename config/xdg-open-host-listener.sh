@@ -30,14 +30,14 @@ trap cleanup SIGINT SIGTERM EXIT
 # Listen for requests
 while true; do
   # Note: 'read' from a named pipe is blocking and waits for data (no active polling)
-  if read -r line <"$PIPE"; then
+  # Use a while-read loop with input redirection to avoid stdin issues
+  while IFS= read -r line; do
     if [ -n "$line" ]; then
       echo "[$(date '+%Y-%m-%d %H:%M:%S')] Opening: $line"
       # Use host's xdg-open to open the URL/file
       xdg-open "$line" &
     fi
-  else
-    # If read fails (pipe closed/broken), wait a bit before retrying
-    sleep 1
-  fi
+  done <"$PIPE"
+  # If the pipe is closed/broken, wait a bit before retrying
+  sleep 1
 done
