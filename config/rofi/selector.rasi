@@ -15,6 +15,11 @@ configuration {
     /* Keep Left/Right from being treated as cursor movement */
     kb-move-char-forward:        "Control+f";
     kb-move-char-back:           "Control+b";
+
+    /* Enable fuzzy matching */
+    matching:                    "fuzzy";
+    sort:                        true;
+    sorting-method:              "fzf";
 }
 
 @theme "~/.config/rofi/theme.rasi"
@@ -40,8 +45,33 @@ mainbox {
     background-color:            transparent;
 }
 frame {
-    children:                    [ "listview" ];
+    children:                    [ "inputbar", "listview" ];
     background-color:            transparent;
+    spacing:                     1em;
+    padding:                     0em 4em;
+}
+
+
+// Input //
+inputbar {
+    enabled:                     true;
+    spacing:                     0em;
+    padding:                     0em;
+    background-color:            transparent;
+    text-color:                  transparent;
+    border:                      0px;
+    children:                    [ "entry" ];
+}
+prompt {
+    enabled:                     false;
+}
+entry {
+    enabled:                     true;
+    background-color:            transparent;
+    text-color:                  transparent;
+    cursor:                      text;
+    placeholder:                 "";
+    placeholder-color:           transparent;
 }
 
 
@@ -49,7 +79,7 @@ frame {
 listview {
     enabled:                     true;
     spacing:                     4em;
-    padding:                     4em;
+    padding:                     2em 0em;
     columns:                     10;
     lines:                       1;
     dynamic:                     false;
@@ -78,7 +108,7 @@ element {
     expand:                      true;
 }
 element selected.normal {
-    background-color:            @select-bg;
+    background-color:            transparent;
     text-color:                  @select-fg;
     border:                      2px;
     border-color:                @select-fg;
@@ -92,7 +122,7 @@ element-icon {
     vertical-align:              0.5;
 }
 element-text {
-    enabled:                     false;
+    enabled:                     true;
     vertical-align:              0.5;
     horizontal-align:            0.5;
     cursor:                      inherit;
