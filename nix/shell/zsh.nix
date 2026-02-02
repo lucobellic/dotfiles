@@ -30,7 +30,7 @@
         neovim = "nvim --listen /tmp/neovim_server.pipe";
         astronvim = "NVIM_APPNAME=astronvim nvim";
         start-docker = ''
-          cd ~/Development/rapidash
+          cd ~/Development/work/rapidash
           if [[ "$( docker container inspect --format '{{.State.Running}}' rapidash )" == "true" ]]
           then
               ./reach docker exec --container rapidash zsh

@@ -77,7 +77,7 @@
         nvchad = "NVIM_APPNAME=nvchad nvim";
         caelestia-shell = "quickshell -c caelestia";
         start-docker = ''
-          cd ~/Development/rapidash
+          cd ~/Development/work/rapidash
           if test (docker container inspect --format '{{.State.Running}}' rapidash) = "true"
             ./reach docker exec --container rapidash zsh
           else
