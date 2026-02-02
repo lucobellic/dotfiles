@@ -48,13 +48,34 @@ let
       exit 0
     fi
 
+    # Directory to track compiled script store paths
+    CACHE_DIR="$HOME/.cache/rust-scripts"
+    mkdir -p "$CACHE_DIR"
+
     compile_script() {
       local script="$1"
       local name="$(basename "$script" .rs)"
+      local cache_file="$CACHE_DIR/$name.storepath"
+
+      # Resolve the actual nix store path (for symlinks)
+      local resolved_path
+      if [ -L "$script" ]; then
+        resolved_path="$(readlink -f "$script")"
+      else
+        resolved_path="$script"
+      fi
+
+      # Check if we already compiled this exact store path
+      if [ -f "$cache_file" ] && [ "$(cat "$cache_file")" = "$resolved_path" ]; then
+        echo -e "  \033[1;90m○\033[0m $name (cached)"
+        return 0
+      fi
 
       # Use cargo build to produce the cached binary (not just check)
       # This populates the script cache so subsequent runs don't recompile
       if cargo build -Zscript --manifest-path "$script" >/dev/null 2>&1; then
+        # Store the resolved path to track this version
+        echo "$resolved_path" > "$cache_file"
         echo -e "  \033[1;32m✓\033[0m $name"
         return 0
       else

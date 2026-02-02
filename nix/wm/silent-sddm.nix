@@ -46,14 +46,29 @@ let
       exit 0
     fi
 
+    # Directory to track compiled script hashes
+    CACHE_DIR="$HOME/.cache/rust-scripts"
+    mkdir -p "$CACHE_DIR"
+
     SCRIPT_PATH="${config.home.homeDirectory}/.config/home-manager/config/sddm/update-sddm-config.rs"
 
     if [ -f "$SCRIPT_PATH" ]; then
       echo -e "\033[1;34m🦀 Compiling SDDM Rust script...\033[0m"
-      if cargo build -Zscript --manifest-path "$SCRIPT_PATH" >/dev/null 2>&1; then
-        echo -e "  \033[1;32m✓\033[0m update-sddm-config"
+
+      CACHE_FILE="$CACHE_DIR/update-sddm-config.hash"
+      CURRENT_HASH="$(sha256sum "$SCRIPT_PATH" | cut -d' ' -f1)"
+
+      # Check if we already compiled this exact version
+      if [ -f "$CACHE_FILE" ] && [ "$(cat "$CACHE_FILE")" = "$CURRENT_HASH" ]; then
+        echo -e "  \033[1;90m○\033[0m update-sddm-config (cached)"
       else
-        echo -e "  \033[1;31m✗\033[0m update-sddm-config (compilation failed)"
+        if cargo build -Zscript --manifest-path "$SCRIPT_PATH" >/dev/null 2>&1; then
+          # Store the hash to track this version
+          echo "$CURRENT_HASH" > "$CACHE_FILE"
+          echo -e "  \033[1;32m✓\033[0m update-sddm-config"
+        else
+          echo -e "  \033[1;31m✗\033[0m update-sddm-config (compilation failed)"
+        fi
       fi
     fi
   '';
