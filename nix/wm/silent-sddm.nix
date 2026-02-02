@@ -149,12 +149,25 @@ in
       ${compileSDDMScript}
     '';
 
-    # Log the command during Home Manager activation
+    # Log the command during Home Manager activation only if the theme package changed
     home.activation.logSDDMUpdateCommand = lib.hm.dag.entryAfter [ "compileSDDMScript" ] ''
-      echo -e "\033[1;32m"
-      echo -e "Perform SilentSDDM update:"
-      echo -e "\t${sddmUpdateCommand}"
-      echo -e "\033[0m"
+      if [[ -v oldGenPath && -v newGenPath ]]; then
+        OLD_THEME=$(readlink -f "$oldGenPath/home-path/share/sddm/themes/silent" 2>/dev/null || echo "")
+        NEW_THEME=$(readlink -f "$newGenPath/home-path/share/sddm/themes/silent" 2>/dev/null || echo "")
+
+        if [[ "$OLD_THEME" != "$NEW_THEME" && -n "$NEW_THEME" ]]; then
+          echo -e "\033[1;32m"
+          echo -e "SilentSDDM theme updated. Perform update:"
+          echo -e "\t${sddmUpdateCommand}"
+          echo -e "\033[0m"
+        fi
+      else
+        # First installation
+        echo -e "\033[1;32m"
+        echo -e "SilentSDDM theme installed. Perform initial setup:"
+        echo -e "\t${sddmUpdateCommand}"
+        echo -e "\033[0m"
+      fi
     '';
   };
 }
