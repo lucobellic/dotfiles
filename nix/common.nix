@@ -31,10 +31,11 @@ in
   imports = [
     ./ai/opencode.nix
     ./btop.nix
-    ./dev/rust-overlay.nix
     ./dev/dev.nix
     ./dev/docker.nix
+    ./dev/rust-overlay.nix
     ./dev/sip-startpage.nix
+    ./dev/zathura.nix
     ./git.nix
     ./neovim.nix
     ./nix.nix
