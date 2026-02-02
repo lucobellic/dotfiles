@@ -175,5 +175,28 @@ async fn main() -> anyhow::Result<()> {
     }
   }
 
+  let eww_screen = match config_name {
+    "home" | "work" => 1,
+    _ => 0,
+  };
+
+  let _ = Command::new("pkill").arg("eww").status();
+
+  Command::new("eww")
+    .args([
+      "open-many",
+      "modern-clock",
+      "cpu-cores",
+      "left-infos",
+      "right-infos",
+      "--arg",
+      &format!("screen={eww_screen}"),
+      "--arg",
+      "stacking=bottom",
+    ])
+    .spawn()?;
+
+  Command::new("open_eww_workspaces.rs").spawn()?;
+
   Ok(())
 }
