@@ -1,5 +1,7 @@
 set selection-clipboard clipboard
+set guioptions ""
 
-set recolor true # Dark mode
+set default-bg         "#0F131A"
 set recolor-lightcolor "#0F131A"
 set recolor-darkcolor  "#BFBDB6"
+set recolor true # "Dark mode
