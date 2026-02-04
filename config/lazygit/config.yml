@@ -47,8 +47,8 @@ git:
     showWholeGraph: false
   overrideGpg: true
   pagers:
-    - colorArg: always
     - pager: delta --hyperlinks --dark --paging=never
+      colorArg: always
 gui:
   border: single
   commandLogSize: 8
@@ -57,11 +57,9 @@ gui:
   enlargedSideViewLocation: top
   expandFocusedSidePanel: false
   language: auto
-  localBranchSortOrder: recency
   mainPanelSplitMode: flexible
   mouseEvents: true
   nerdFontsVersion: '3'
-  remoteBranchSortOrder: recency
   scrollHeight: 2
   scrollPastBottom: true
   showFileTree: true
@@ -71,7 +69,6 @@ gui:
   sidePanelWidth: 0.3333
   skipRewordInEditorWarning: false
   skipStashWarning: false
-  skipUpdateNotification: true
   splitDiff: auto
   theme:
     inactiveBorderColor:
@@ -79,8 +76,6 @@ gui:
     selectedLineBgColor:
     - '#1b3a5a'
     - bold
-    timeFormat: '"02 Jan 06 15=04 MST"'
-    windowSize: normal
   useHunkModeInStagingView: true
 os:
   editPreset: nvim-remote
