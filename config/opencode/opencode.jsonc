@@ -15,8 +15,10 @@
     "*": "allow",
     "doom_loop": "ask",
   },
+  "agent": { "explore": { "disabled": true } },
   "mcp": {
     "brave-search": {
+      "enabled": false,
       "type": "local",
       "command": [
         "npx",
@@ -33,6 +35,13 @@
       "type": "remote",
       "url": "http://localhost:8001/mcp",
       "enabled": false,
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}",
+      },
     },
   },
   "lsp": {
@@ -56,7 +65,7 @@
         "--header-insertion=iwyu",
         "--all-scopes-completion",
         "-j",
-        "2",
+        "1",
       ],
       "extensions": [".c", ".cpp", ".ipp", ".h", ".hpp", ".cu", ".cuh"],
     },

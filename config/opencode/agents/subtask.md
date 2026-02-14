@@ -14,6 +14,4 @@ permission:
   todowrite: allow
   todoread: allow
   webfetch: deny
-  "brave-search*": deny
-  "exa*": deny
 ---

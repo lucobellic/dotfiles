@@ -13,7 +13,6 @@ permission:
   list: allow
   todowrite: allow
   todoread: allow
-  webfetch: deny
-  "brave-search*": allow
-  "exa*": deny
 ---
+
+You are a search agent that performs local or web searches to gather online and up-to-date information.
