@@ -1,2 +1,11 @@
 [flavor]
 dark = "ayu-dark"
+
+[icon]
+
+prepend_conds = [
+	{ if = "hidden & dir",  text = "", fg = "#70809b" },  # Hidden directories
+	{ if = "dir",           text = "", fg = "#59C2FF" },  # Directories
+	{ if = "!(dir | link)", text = "", fg = "#95E6CB"  },  # Normal files (not directories or symlinks)
+]
+

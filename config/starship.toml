@@ -426,7 +426,7 @@ added_style = "italic green"
 deleted_style = "italic red"
 only_nonzero_diffs = true
 format = "([+$added]($added_style)) ([-$deleted]($deleted_style)) "
-disabled = false
+disabled = true
 ignore_submodules = true
 
 [git_state]
@@ -457,7 +457,7 @@ staged = "+"
 untracked = "?"
 typechanged = ""
 ignore_submodules = true
-disabled = false
+disabled = true
 
 [gleam]
 format = "[$symbol($version )]($style)"

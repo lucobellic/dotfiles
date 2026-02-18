@@ -59,9 +59,9 @@ unset_alt = { fg = "#F26D78", bg = "#0F131A" }
 # : Indicator of hovered file {{{
 
 [indicator]
-parent  = { reversed = true }
-current = { reversed = true }
-preview = { underline = true }
+parent  = { bg = '#152537' }
+current = { bg = '#152537' }
+preview = { bg = '#152537' }
 # Change padding to full square
 padding = { open = "█", close = "█" }
 
