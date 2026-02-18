@@ -101,12 +101,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
   let entries: String = wallpapers
     .iter()
     .filter_map(|path| {
-      let filename = path.file_name()?.to_string_lossy();
+      let filename = path.file_stem()?.to_string_lossy();
+      let full_filename = path.file_name()?.to_string_lossy();
       Some(format!(
         "{}\0icon\x1f{}/{}.sqre\n",
         filename,
         thumb_dir.display(),
-        filename
+        full_filename
       ))
     })
     .collect();
@@ -149,9 +150,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if !selection.is_empty() {
       let wallpaper = wallpapers.iter().find(|path| {
         path
-          .file_name()
+          .file_stem()
           .map(|f| f.to_string_lossy() == selection)
           .unwrap_or(false)
+          || path
+            .file_name()
+            .map(|f| f.to_string_lossy() == selection)
+            .unwrap_or(false)
       });
 
       if let Some(path) = wallpaper {
@@ -159,24 +164,30 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
           .args(["set", path.to_str().unwrap_or("")])
           .spawn()
         {
-          Ok(_) => Command::new("notify-send")
-            .args([
-              "-a",
-              "t1",
-              "-i",
-              &format!("{}/{}.sqre", thumb_dir.display(), selection),
-              &format!(" {}", selection),
-            ])
-            .spawn()?,
-          Err(e) => Command::new("notify-send")
-            .args([
-              "-a",
-              "t1",
-              "-i",
-              &format!("{}/{}.sqre", thumb_dir.display(), selection),
-              &format!("Unable to set wallpaper: {}", e),
-            ])
-            .spawn()?,
+          Ok(_) => {
+            let full_filename = path.file_name().unwrap_or_default().to_string_lossy();
+            Command::new("notify-send")
+              .args([
+                "-a",
+                "t1",
+                "-i",
+                &format!("{}/{}.sqre", thumb_dir.display(), full_filename),
+                &format!(" {}", selection),
+              ])
+              .spawn()?
+          }
+          Err(e) => {
+            let full_filename = path.file_name().unwrap_or_default().to_string_lossy();
+            Command::new("notify-send")
+              .args([
+                "-a",
+                "t1",
+                "-i",
+                &format!("{}/{}.sqre", thumb_dir.display(), full_filename),
+                &format!("Unable to set wallpaper: {}", e),
+              ])
+              .spawn()?
+          }
         };
       }
     }

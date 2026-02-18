@@ -186,9 +186,6 @@ async fn main() -> anyhow::Result<()> {
     .args([
       "open-many",
       "modern-clock",
-      "cpu-cores",
-      "left-infos",
-      "right-infos",
       "--arg",
       &format!("screen={eww_screen}"),
       "--arg",
