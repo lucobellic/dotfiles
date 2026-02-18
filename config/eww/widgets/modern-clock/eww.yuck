@@ -18,7 +18,6 @@
   (box :class "modern-clock-container"
        :orientation "v"
        :space-evenly false
-       :spacing 5
        :halign "center"
        :valign "center"
     (box :class "day"

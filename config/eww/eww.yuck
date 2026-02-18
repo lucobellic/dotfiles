@@ -70,7 +70,7 @@
 (defwindow workspaces [?screen ?stacking]
   :monitor {screen ?: 0}
   :geometry (geometry :x "0%"
-                      :y "1%"
+                      :y "0.75%"
                       :anchor "top center")
   :stacking {stacking ?: "bottom"}
   (hyprland-workspaces :monitor {screen ?: 0})
