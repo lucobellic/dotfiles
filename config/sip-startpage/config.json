@@ -9,6 +9,11 @@
       "icon": "fa-solid fa-compass"
     },
     {
+      "id": "grafana",
+      "name": "Grafana",
+      "icon": "fa-solid fa-chart-pie"
+    },
+    {
       "id": "applications",
       "name": "Applications",
       "icon": "fa-solid fa-rocket"
@@ -72,16 +77,6 @@
         "name": "Stress Test",
         "url": "https://jenkins.eu.it.easymile.private/job/rapidash-simu-stress-test-tools/",
         "icon": "fa-solid fa-mug-hot"
-      },
-      {
-        "name": "Grafana Vehicle",
-        "url": "https://grafana.central-dev2.fm.easymile.private/",
-        "icon": "fa-solid fa-chart-line"
-      },
-      {
-        "name": "Grafana Develop",
-        "url": "https://grafana.eu.it.easymile.private/d/x1vgglCVz/rapidash-simutests-overview?orgId=1&from=now-7d&to=now&timezone=browser&var-datasource=rapidash-loki",
-        "icon": "fa-solid fa-chart-bar"
       }
     ],
     "personal": [
@@ -121,6 +116,28 @@
         "name": "Global SM",
         "url": "https://internal-docs.easymile.private/rapidash/latest/rapidash-dev/_images/plantuml-ccf49d27d893e2ca94c509944162e6d57bd146e5.svg",
         "icon": "fa-solid fa-diagram-project"
+      },
+      {
+        "name": "Traceability",
+        "url": "https://easymile.atlassian.net/wiki/spaces/System/apps/2237ccc1-3339-4360-9e41-d8b594746224/126ed95b-265f-4505-988f-39c68147fb29/yogi/traceability/24660?var_top_requirement=SYS-OA-021&searchMode=advanced&variantId=108853&query=key+~+%27%24{top_requirement}%27",
+        "icon": "fa-solid fa-search"
+      }
+    ],
+    "grafana": [
+      {
+        "name": "Vehicle",
+        "url": "https://grafana.central-dev2.fm.easymile.private/",
+        "icon": "fa-solid fa-chart-line"
+      },
+      {
+        "name": "Develop",
+        "url": "https://grafana.eu.it.easymile.private/d/x1vgglCVz/rapidash-simutests-overview?orgId=1&from=now-7d&to=now&timezone=browser&var-datasource=rapidash-loki",
+        "icon": "fa-solid fa-chart-bar"
+      },
+      {
+        "name": "Single Test",
+        "url": "https://grafana.eu.it.easymile.private/d/BrPsRGRSz/rapidash-single-test-investigation?orgId=1&var-datasource=rapidash-loki&var-test=ezdolly-v2-k_loader_missions:cancel_mission_while_transfer_load&from=now-7d&to=now&timezone=browser",
+        "icon": "fa-solid fa-chart-bar"
       }
     ],
     "applications": [

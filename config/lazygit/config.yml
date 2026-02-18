@@ -69,6 +69,7 @@ gui:
   sidePanelWidth: 0.3333
   skipRewordInEditorWarning: false
   skipStashWarning: false
+  skipDiscardChangeWarning: true
   splitDiff: auto
   theme:
     inactiveBorderColor:
