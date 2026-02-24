@@ -22,6 +22,9 @@ in
     };
   };
 
+  services.flameshot.enable = true;
+  xdg.configFile.flameshot.source = mkConfigSymlink "flameshot";
+
   home.packages = with pkgs; [
     # Install from package manager:
     # cliphist
@@ -52,7 +55,6 @@ in
     hypridle # idle daemon for screen lock and power management
     (config.lib.nixGL.wrap hyprpanel)
 
-    swappy
     grim
     slurp
     grimblast
