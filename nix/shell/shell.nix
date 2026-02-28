@@ -9,16 +9,12 @@ in
 {
 
   home.packages = [
-    pkgs.nodejs
-    pkgs.yarn
-
-    pkgs.ripgrep
-    pkgs.yarn
+    pkgs.fd
+    pkgs.gh
     pkgs.grc
     pkgs.numbat
-    pkgs.gh
+    pkgs.ripgrep
     pkgs.yazi
-    pkgs.fd
     unimatrix
   ];
 

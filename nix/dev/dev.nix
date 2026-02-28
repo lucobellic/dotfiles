@@ -33,6 +33,9 @@
 
     gopls
     delve
+
+    nodejs
+    yarn
   ];
 
   # Create symlink for xdg-open-host-listener script
