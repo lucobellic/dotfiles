@@ -1,5 +1,5 @@
 ---
-description: Perform sub-tasks to apply a subset of clearly defined instructions, to be spawned in parallel.
+description: Perform sub-tasks to apply a subset of clearly defined instructions, to be spawned in parallel on different files.
 mode: subagent
 model: github-copilot/gpt-5-mini
 temperature: 0.1

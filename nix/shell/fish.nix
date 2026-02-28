@@ -1,5 +1,9 @@
 { pkgs, ... }:
 
+let
+  opencodePort = "4096";
+  opencodeUrl = "http://localhost:${opencodePort}";
+in
 {
 
   home.packages = [
@@ -76,6 +80,7 @@
         astronvim = "NVIM_APPNAME=astronvim nvim";
         nvchad = "NVIM_APPNAME=nvchad nvim";
         caelestia-shell = "quickshell -c caelestia";
+        oc = "opencode attach ${opencodeUrl}";
         start-docker = ''
           cd ~/Development/work/rapidash
           if test (docker container inspect --format '{{.State.Running}}' rapidash) = "true"
