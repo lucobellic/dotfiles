@@ -4,12 +4,14 @@ default:
     workspace: 1
     description: Chimei Innolux Corporation 0x15F6
     rotation: Normal
+    layout: Scrolling
 
   - name: share
     position: auto-up
     workspace: 8
     description: Dell Inc. DELL U3219Q 270XXV2
     rotation: Normal
+    layout: Scrolling
 
 work:
   - name: center
@@ -17,30 +19,35 @@ work:
     workspace: 3
     description: Dell Inc. DELL U2520D DLC9923
     rotation: Normal
+    layout: Scrolling
 
   - name: down
     position: auto-down
     workspace: 1
     description: Chimei Innolux Corporation 0x15F6
     rotation: Normal
+    layout: Scrolling
 
   - name: left
     position: auto-left
     workspace: 4
     description: Dell Inc. DELL U2520D 70C9923
     rotation: Deg270
+    layout: Scrolling
 
   - name: right
     position: auto-right
     workspace: 2
     description: Dell Inc. DELL U2518D 3C4YP9BM468L
     rotation: Deg90
+    layout: Scrolling
 
   - name: share
     position: auto-up
     workspace: 8
     description: Dell Inc. DELL U3219Q 270XXV2
     rotation: Normal
+    layout: Scrolling
 
 home:
   - name: up
@@ -48,15 +55,18 @@ home:
     workspace: 3
     description: Dell Inc. DELL U2415 7MT0176I0M8S
     rotation: Normal
+    layout: Scrolling
 
   - name: center
     position: -1600x0
     workspace: 2
     description: Samsung Electric Company LC49G95T H4ZNC01246
     rotation: Normal
+    layout: Master
 
   - name: down
     position: auto-down
     workspace: 1
     description: Chimei Innolux Corporation 0x15F6
     rotation: Normal
+    layout: Scrolling

@@ -16,6 +16,7 @@ tokio = "1"
 ---
 
 use std::collections::HashMap;
+use std::fmt;
 use std::fs;
 use std::process::Command;
 
@@ -43,13 +44,39 @@ enum Rotation {
   FlippedDeg270 = 7,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+enum Layout {
+  Master,
+  Dwindle,
+  Scrolling,
+  Monocle,
+}
+
+impl Default for Layout {
+  fn default() -> Self {
+    Layout::Master
+  }
+}
+
+impl fmt::Display for Layout {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    match self {
+      Layout::Master => write!(f, "master"),
+      Layout::Dwindle => write!(f, "dwindle"),
+      Layout::Scrolling => write!(f, "scrolling"),
+      Layout::Monocle => write!(f, "monocle"),
+    }
+  }
+}
+
 #[derive(Default, PartialEq, Eq, Debug, Deserialize)]
 struct ScreenConfig {
+  description: String,
+  layout: Layout,
   name: String,
   position: String,
-  workspace: u32,
-  description: String,
   rotation: Rotation,
+  workspace: u32,
 }
 
 impl ScreenConfig {
@@ -65,8 +92,8 @@ impl ScreenConfig {
     Keyword::set(
       "workspace",
       format!(
-        "{}, monitor:desc:{}, default:true",
-        self.workspace, self.description
+        "{}, layout:{}, monitor:desc:{}, default:true",
+        self.workspace, self.layout, self.description
       ),
     )?;
     Ok(())
@@ -104,7 +131,7 @@ async fn setup_home() -> anyhow::Result<()> {
   try_join!(
     dispatch!(async; Exec, "pgrep zen    || zen"),
     dispatch!(async; Exec, "pgrep slack  || slack"),
-    dispatch!(async; Exec, "pgrep kitty  || kitty --class kitty-dev"),
+    // dispatch!(async; Exec, "pgrep kitty  || kitty --class kitty-dev"),
     // dispatch!(async; Exec, cursor_cmd.as_str())
   )?;
 
@@ -125,7 +152,7 @@ async fn setup_work() -> anyhow::Result<()> {
   try_join!(
     dispatch!(async; Exec, "pgrep zen    || zen"),
     dispatch!(async; Exec, "pgrep slack  || slack"),
-    dispatch!(async; Exec, "pgrep kitty  || kitty --class kitty-dev"),
+    // dispatch!(async; Exec, "pgrep kitty  || kitty --class kitty-dev"),
     // dispatch!(async; Exec, cursor_cmd.as_str())
   )?;
 
