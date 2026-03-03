@@ -27,10 +27,13 @@ use std::time::Duration;
 #[command(name = "center-window")]
 #[command(author, version, about, long_about = None)]
 #[command(after_help = "EXAMPLES:
-    center-window                     # Center with default size (60% x 70%)
-    center-window 80% 80%             # Center with 80% width and height
-    center-window 1920 1080           # Center with fixed pixel dimensions
-    center-window --address 0x12345   # Center a specific window by address")]
+    center-window                                        # Center with default size (60% x 70%)
+    center-window 80% 80%                                # Center with 80% width and height
+    center-window 1920 1080                              # Center with fixed pixel dimensions
+    center-window --address 0x12345                      # Center a specific window by address
+    center-window 100% 80% --max-width 1600              # Cap width at 1600px
+    center-window 100% 80% --max-height 900              # Cap height at 900px
+    center-window 100% 80% --max-width 1600 --max-height 900  # Cap both")]
 struct Args {
   /// Width (percentage with % or pixel value)
   #[arg(default_value = "60%")]
@@ -39,6 +42,14 @@ struct Args {
   /// Height (percentage with % or pixel value)
   #[arg(default_value = "70%")]
   height: String,
+
+  /// Maximum width in pixels (caps the computed width)
+  #[arg(long)]
+  max_width: Option<i16>,
+
+  /// Maximum height in pixels (caps the computed height)
+  #[arg(long)]
+  max_height: Option<i16>,
 
   /// Window address to center (defaults to focused window)
   #[arg(long)]
@@ -146,8 +157,16 @@ fn main() -> Result<()> {
 
   // Calculate dimensions
   let (mon_width, mon_height) = get_focused_monitor_dimensions()?;
-  let width = parse_dimension(&args.width, mon_width);
-  let height = parse_dimension(&args.height, mon_height);
+
+  let width = {
+    let w = parse_dimension(&args.width, mon_width);
+    args.max_width.map_or(w, |max| w.min(max))
+  };
+
+  let height = {
+    let h = parse_dimension(&args.height, mon_height);
+    args.max_height.map_or(h, |max| h.min(max))
+  };
 
   // Ensure window is floating
   ensure_floating(&client)?;

@@ -27,12 +27,15 @@ use std::time::Duration;
 #[command(name = "terminal-dropdown")]
 #[command(author, version, about, long_about = None)]
 #[command(after_help = "EXAMPLES:
-    terminal-dropdown dropdown 100% 50%              # 100% width, 50% height of monitor
-    terminal-dropdown dropdown 1920 540              # Fixed 1920x540 pixels
-    terminal-dropdown yazi 100% 50% -- yazi          # Yazi file manager
-    terminal-dropdown dropdown                       # Use defaults (100% width, 50% height)
-    terminal-dropdown dropdown --terminal kitty      # Use Kitty terminal
-    terminal-dropdown dropdown --terminal ghostty    # Use Ghostty terminal (default)")]
+    terminal-dropdown dropdown 100% 50%                          # 100% width, 50% height of monitor
+    terminal-dropdown dropdown 1920 540                          # Fixed 1920x540 pixels
+    terminal-dropdown yazi 100% 50% -- yazi                      # Yazi file manager
+    terminal-dropdown dropdown                                   # Use defaults (100% width, 50% height)
+    terminal-dropdown dropdown --terminal kitty                  # Use Kitty terminal
+    terminal-dropdown dropdown --terminal ghostty                # Use Ghostty terminal (default)
+    terminal-dropdown dropdown 100% 80% --max-width 1600         # Cap width at 1600px
+    terminal-dropdown dropdown 100% 80% --max-height 900         # Cap height at 900px
+    terminal-dropdown dropdown 100% 80% --max-width 1600 --max-height 900  # Cap both")]
 struct Args {
   /// Instance name for the dropdown terminal
   #[arg(default_value = "dropdown")]
@@ -45,6 +48,14 @@ struct Args {
   /// Height (percentage with % or pixel value)
   #[arg(default_value = "50%")]
   height: String,
+
+  /// Maximum width in pixels (caps the computed width)
+  #[arg(long)]
+  max_width: Option<i16>,
+
+  /// Maximum height in pixels (caps the computed height)
+  #[arg(long)]
+  max_height: Option<i16>,
 
   /// Terminal to use (kitty or ghostty)
   #[arg(long, default_value = "ghostty")]
@@ -86,11 +97,21 @@ impl DropdownConfig {
       _ => unreachable!(),
     };
 
+    let width = {
+      let w = parse_dimension(&args.width, mon_width);
+      args.max_width.map_or(w, |max| w.min(max))
+    };
+
+    let height = {
+      let h = parse_dimension(&args.height, mon_height);
+      args.max_height.map_or(h, |max| h.min(max))
+    };
+
     Ok(Self {
       class,
       terminal,
-      width: parse_dimension(&args.width, mon_width),
-      height: parse_dimension(&args.height, mon_height),
+      width,
+      height,
       command: args.command,
     })
   }
