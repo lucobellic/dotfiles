@@ -55,6 +55,14 @@ in
       ];
       interactiveShellInit = ''
         set fish_greeting # Disable greeting
+        # Load runtime secrets
+        for secret in ANTHROPIC_API_KEY:anthropic_api_key CONTEXT7_API_KEY:context7_api_key
+          set var (string split : $secret)[1]
+          set file /run/user/(id -u)/secrets/(string split : $secret)[2]
+          if test -r $file
+            set -gx $var (cat $file)
+          end
+        end
         set -x PATH $HOME/.local/bin $PATH
         set -x PATH $HOME/.pyenv/bin $PATH
         set -x PATH $HOME/.cargo/bin $PATH

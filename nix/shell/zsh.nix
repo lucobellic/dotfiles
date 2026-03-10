@@ -40,6 +40,13 @@
         '';
       };
       initExtra = ''
+        # Load runtime secrets
+        for secret_pair in "ANTHROPIC_API_KEY:anthropic_api_key" "CONTEXT7_API_KEY:context7_api_key"; do
+          var="''${secret_pair%%:*}"
+          file="/run/user/$(id -u)/secrets/''${secret_pair##*:}"
+          [[ -r "$file" ]] && export "$var"="$(< "$file")"
+        done
+
         setopt magic_equal_subst
 
         # Fix completion issues with magic_equal_subst
@@ -78,7 +85,6 @@
         ];
       };
     };
-
 
     fzf = {
       enable = true;

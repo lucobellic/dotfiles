@@ -16,19 +16,48 @@ in
 
   targets.genericLinux.enable = true;
 
-  programs.bash.enable = true;
   xdg.enable = true;
+  programs.bash.enable = true;
   services.ssh-agent.enable = true;
+
+  # GPG configuration
+  programs.gpg = {
+    enable = true;
+    mutableKeys = true;
+    mutableTrust = true;
+  };
+  services.gpg-agent = {
+    enable = true;
+    extraConfig = ''
+      allow-preset-passphrase
+    '';
+    pinentry = {
+      package = pkgs.pinentry-curses;
+    };
+    enableSshSupport = true;
+  };
+
+  # Keyring configuration
+  services.gnome-keyring = {
+    enable = true;
+    package = pkgs.gnome-keyring;
+    components = [
+      "secrets"
+      "ssh"
+    ];
+  };
 
   home.packages = [ pkgs.curl ];
 
   home.sessionVariables = {
     PATH = "/nix/var/nix/profiles/default/bin:$HOME/.nix-profile/bin:${local_hyprland_path}:$PATH";
     OLLAMA_API_BASE = "http://127.0.0.1:11434";
-    SSH_AUTH_SOCK = "/run/user/1000/ssh-agent";
+    # SSH_AUTH_SOCK = "/run/user/1000/ssh-agent";
+    SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/keyring/ssh";
   };
 
   imports = [
+    ./secrets/sops.nix
     ./ai/opencode.nix
     ./btop.nix
     ./dev/dev.nix

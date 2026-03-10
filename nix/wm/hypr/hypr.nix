@@ -25,6 +25,7 @@ in
   };
 
   services.flameshot.enable = true;
+  services.hyprpolkitagent.enable = true;
   xdg.configFile.flameshot.source = mkConfigSymlink "flameshot";
 
   home.packages = with pkgs; [
