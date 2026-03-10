@@ -1,9 +1,15 @@
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 
 let
   unimatrix = import (builtins.fetchGit {
     url = "https://github.com/will8211/unimatrix";
     name = "unimatrix";
+    rev = "5cf67aa2843128207423f4bf2eb690afdf5dcae4";
   }) { inherit pkgs; };
 in
 {
@@ -18,9 +24,9 @@ in
     unimatrix
   ];
 
-
-  xdg.configFile.yazi.source = config.lib.file.mkOutOfStoreSymlink ../../config/yazi;
-  home.file.".aider.conf.yml".source = config.lib.file.mkOutOfStoreSymlink ../../config/.aider.conf.yml;
+  xdg.configFile.yazi.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/home-manager/config/yazi";
+  home.file.".aider.conf.yml".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/home-manager/config/.aider.conf.yml";
 
   home.activation.customMessage = lib.mkAfter ''
     echo -e "\033[1;32m"

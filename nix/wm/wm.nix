@@ -4,11 +4,11 @@
     ./nvidia.nix
     ./themes/theme.nix
     ./hypr/hypr.nix
-    ./silent-sddm.nix
+    ./sddm-astronaut.nix
   ];
 
-  programs.silentSDDM = {
+  programs.sddmAstronaut = {
     enable = true;
-    theme = "default";
+    embeddedTheme = "purple_leaves";
   };
 }

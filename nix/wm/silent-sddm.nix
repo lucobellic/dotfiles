@@ -2,15 +2,13 @@
   pkgs,
   config,
   lib,
+  silent-sddm,
   ...
 }:
 
 let
-  # Fetch the SilentSDDM flake
-  silentSDDMFlake = builtins.getFlake "github:uiriansan/SilentSDDM";
-
   # Get the default package for the current system
-  silentSDDMPackage = silentSDDMFlake.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  silentSDDMPackage = silent-sddm.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
   cfg = config.programs.silentSDDM;
 

@@ -4,7 +4,9 @@
   ...
 }:
 let
-  mkConfigSymlink = path: config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/${path};
+  mkConfigSymlink =
+    path:
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/home-manager/config/${path}";
 in
 {
   imports = [
@@ -83,11 +85,11 @@ in
 
   home.file.".local/share/bin" = {
     recursive = true;
-    source = ~/.config/home-manager/config/hypr/tools/bin;
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/home-manager/config/hypr/tools/bin";
   };
 
   xdg.configFile."xdg-desktop-portal/hyprland-portals.conf".source =
-    config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/xdg-desktop-portal/hyprland-portals.conf;
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/home-manager/config/xdg-desktop-portal/hyprland-portals.conf";
 
   # Desktop Entries
 

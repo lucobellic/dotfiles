@@ -1,0 +1,8 @@
+keys:
+  - &lhussonn age1nlxwhd6kaalqvlrxrd7skswm56a490ye80t78tg8c480nh35pysqmq9ts7
+
+creation_rules:
+  - path_regex: nix/secrets/secrets\.yaml$
+    key_groups:
+      - age:
+        - *lhussonn

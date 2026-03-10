@@ -9,6 +9,6 @@
     OPENCODE_SERVER_URL = "http://localhost:4096";
   };
 
-  xdg.configFile.opencode.source = config.lib.file.mkOutOfStoreSymlink ~/.config/home-manager/config/opencode;
+  xdg.configFile.opencode.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/home-manager/config/opencode";
 
 }

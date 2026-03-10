@@ -1,7 +1,4 @@
-{ pkgs, ... }:
-let
-  awwwFlake = builtins.getFlake "git+https://codeberg.org/LGFae/awww";
-in
+{ pkgs, awww, ... }:
 {
-  home.packages = [ awwwFlake.packages.${pkgs.stdenv.hostPlatform.system}.awww ];
+  home.packages = [ awww.packages.${pkgs.stdenv.hostPlatform.system}.awww ];
 }

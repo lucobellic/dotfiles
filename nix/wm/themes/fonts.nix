@@ -8,6 +8,7 @@ let
     src = builtins.fetchGit {
       url = "https://github.com/naipefoundry/gabarito.git";
       ref = "main";
+      rev = "1f3fb39d6449eefa880543f109f33ede0cd4064f";
     };
 
     installPhase = ''
@@ -22,6 +23,7 @@ let
     src = builtins.fetchGit {
       url = "https://github.com/googlefonts/rubik.git";
       ref = "main";
+      rev = "e337a5f69a9bea30e58d05bd40184d79cc099628";
     };
 
     installPhase = ''
