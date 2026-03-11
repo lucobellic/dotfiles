@@ -16,12 +16,12 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 
 const SDDM_CONF: &str = "/etc/sddm.conf";
-const THEME_DEST: &str = "/usr/share/sddm/themes/silent";
+const THEME_DEST: &str = "/usr/share/sddm/themes/sddm-astronaut-theme";
 const FONTS_DEST: &str = "/usr/share/fonts";
 
 #[derive(Parser)]
 #[command(name = "update-sddm-config")]
-#[command(about = "Install SilentSDDM theme, fonts, and update SDDM configuration")]
+#[command(about = "Install sddm-astronaut theme, fonts, and update SDDM configuration")]
 struct Cli {
   /// Theme source path (defaults to finding it in Nix store)
   #[arg(short, long)]
@@ -29,16 +29,16 @@ struct Cli {
 }
 
 fn find_theme_source() -> Result<PathBuf> {
-  // Try to find SilentSDDM in the Nix store
+  // Try to find sddm-astronaut-theme in the Nix store
   let output = Command::new("find")
     .args([
       "/nix/store",
       "-name",
-      "silent",
+      "sddm-astronaut-theme",
       "-type",
       "d",
       "-path",
-      "*/share/sddm/themes/silent",
+      "*/share/sddm/themes/sddm-astronaut-theme",
     ])
     .output()
     .context("Failed to run find command")?;
@@ -47,7 +47,7 @@ fn find_theme_source() -> Result<PathBuf> {
     .context("Invalid UTF-8 in find output")?
     .lines()
     .next()
-    .ok_or_else(|| anyhow::anyhow!("Could not find SilentSDDM theme in Nix store"))?
+    .ok_or_else(|| anyhow::anyhow!("Could not find sddm-astronaut-theme in Nix store"))?
     .trim()
     .to_string();
 
@@ -62,11 +62,13 @@ fn backup_if_exists(path: &Path) -> Result<()> {
       .as_secs();
     let backup_path = format!("{}.backup.{}", path.display(), timestamp);
     let backup_path = PathBuf::from(backup_path);
-    
+
     if path.is_dir() {
-      copy_dir_all(path, &backup_path).with_context(|| format!("Failed to backup directory {}", path.display()))?;
+      copy_dir_all(path, &backup_path)
+        .with_context(|| format!("Failed to backup directory {}", path.display()))?;
     } else if path.is_file() {
-      fs::copy(path, &backup_path).with_context(|| format!("Failed to backup file {}", path.display()))?;
+      fs::copy(path, &backup_path)
+        .with_context(|| format!("Failed to backup file {}", path.display()))?;
     }
     println!("Backed up {} to {}", path.display(), backup_path.display());
   }
@@ -191,10 +193,9 @@ fn update_sddm_config() -> Result<()> {
   // Complete new configuration
   let new_config = r#"[General]
 InputMethod=qtvirtualkeyboard
-GreeterEnvironment=QML2_IMPORT_PATH=/usr/share/sddm/themes/silent/components/,QT_IM_MODULE=qtvirtualkeyboard
 
 [Theme]
-Current=silent
+Current=sddm-astronaut-theme
 "#;
 
   // Write complete new config (replacing any existing config)
@@ -221,7 +222,7 @@ fn main() -> Result<()> {
   }
 
   println!("==========================================");
-  println!("Installing SilentSDDM theme");
+  println!("Installing sddm-astronaut theme");
   println!("==========================================");
   println!("Theme source: {}", theme_source.display());
   println!();
@@ -237,7 +238,7 @@ fn main() -> Result<()> {
 
   println!();
   println!("==========================================");
-  println!("SilentSDDM installation completed!");
+  println!("sddm-astronaut installation completed!");
   println!("==========================================");
   println!("Theme installed to: {}", THEME_DEST);
   println!("Fonts installed to: {}", FONTS_DEST);
