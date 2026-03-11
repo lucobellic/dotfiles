@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-scrDir=`dirname "$(realpath "$0")"`
-source $scrDir/globalcontrol.sh
-
 hyprctl switchxkblayout at-translated-set-2-keyboard next
 hyprctl switchxkblayout splitkb.com-kyria-rev4 next
 

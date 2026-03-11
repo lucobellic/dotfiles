@@ -2,7 +2,7 @@
 
 {
   home.packages = with pkgs; [
-    nixfmt-rfc-style
+    nixfmt
 
     (python3.withPackages (
       ps: with ps; [
