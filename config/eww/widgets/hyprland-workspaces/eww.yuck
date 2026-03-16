@@ -4,7 +4,6 @@
   (box :class "hyprland-workspaces"
        :orientation "h"
        :space-evenly false
-       :spacing 6
     (for i in {hyprland_monitors[monitor].workspaces}
       (eventbox :onclick "hyprctl dispatch workspace ${i.id}"
                 :onscroll "hyprctl dispatch workspace `echo {} | sed 's/up/+/' | sed 's/down/-/'`1"

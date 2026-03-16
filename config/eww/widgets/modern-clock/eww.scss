@@ -1,6 +1,6 @@
 .modern-clock-container {
   background-color: $color-bg-transparent;
-  padding: $spacing-base;
+  margin-top: 2 * $workspaces-top-margin + $workspaces-font-size;
 }
 
 .day label {
@@ -15,6 +15,7 @@
   letter-spacing: $letter-spacing-normal;
   color: $color-white;
   text-shadow: $shadow-text-medium;
+  margin-top: -12px; // Adjust the margin to create a tighter layout
 }
 
 .time label {

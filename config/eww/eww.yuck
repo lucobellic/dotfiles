@@ -4,11 +4,16 @@
 (include "./widgets/hyprland-workspaces/eww.yuck")
 (include "./widgets/cpu-cores-monitor/eww.yuck")
 
+(defwindow workspaces [?screen ?stacking]
+  :monitor {screen ?: 0}
+  :geometry (geometry :anchor "top center")
+  :stacking {stacking ?: "bottom"}
+  (hyprland-workspaces :monitor {screen ?: 0})
+)
+
 (defwindow modern-clock [?screen ?stacking]
   :monitor {screen ?: 0}
-  :geometry (geometry :x "0%"
-                      :y "1%"
-                      :anchor "center top")
+  :geometry (geometry :anchor "top center")
   :stacking {stacking ?: "bottom"}
   (modern-clock
     :show_day true
@@ -65,13 +70,4 @@
                       :anchor "bottom right")
   :stacking {stacking ?: "bottom"}
   (right-tray)
-)
-
-(defwindow workspaces [?screen ?stacking]
-  :monitor {screen ?: 0}
-  :geometry (geometry :x "0%"
-                      :y "0.75%"
-                      :anchor "top center")
-  :stacking {stacking ?: "bottom"}
-  (hyprland-workspaces :monitor {screen ?: 0})
 )

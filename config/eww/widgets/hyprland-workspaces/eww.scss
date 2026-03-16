@@ -1,11 +1,12 @@
 .hyprland-workspaces {
   background-color: transparent;
+  margin-top: $workspaces-top-margin;
 
   button {
     min-width: 32px;
     border-radius: $border-radius;
     font-family: $font-primary;
-    font-size: 12px;
+    font-size: $workspaces-font-size;
     color: $color-white;
     background-color: transparent;
     text-shadow: $shadow-text-light;
