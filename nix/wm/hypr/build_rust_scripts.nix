@@ -6,7 +6,7 @@
 let
   # Rust script paths for precompilation
   binScripts = [
-    "associate_window_to_workspace.rs"
+    "pin-window.rs"
     "center-window.rs"
     "keybinds_hint.rs"
     "lid_monitor_handler.rs"
