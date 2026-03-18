@@ -7,30 +7,17 @@
   "autoupdate": true,
   "permission": {
     "*": "allow",
-    "doom_loop": "ask",
+    "compaction": "ask",
+    "doom_loop": "ask"
   },
   "instructions": ["AGENTS.md", "~/.config/opencode/AGENTS.md"],
-  "agent": { "explore": { "disabled": true } },
+  "agent": {
+    "explore": {
+      "type": "subagent",
+      "model": "github-copilot/gpt-5-mini",
+    },
+  },
   "mcp": {
-    "brave-search": {
-      "enabled": false,
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@brave/brave-search-mcp-server",
-        "--transport",
-        "stdio",
-      ],
-      "environment": {
-        "BRAVE_API_KEY": "{env:BRAVE_API_KEY}",
-      },
-    },
-    "serena": {
-      "type": "remote",
-      "url": "http://localhost:8001/mcp",
-      "enabled": false,
-    },
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
