@@ -9,6 +9,6 @@
 
   programs.sddmAstronaut = {
     enable = true;
-    embeddedTheme = "purple_leaves";
+    embeddedTheme = "post-apocalyptic_hacker";
   };
 }

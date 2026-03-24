@@ -2,7 +2,10 @@
 
 {
   home.packages = with pkgs; [
+    act # run github action locally
+
     nixfmt
+    statix
 
     (python3.withPackages (
       ps: with ps; [
@@ -30,12 +33,13 @@
     ))
 
     go
-
     gopls
     delve
 
     nodejs
     yarn
+
+    zig
   ];
 
   # Create symlink for xdg-open-host-listener script

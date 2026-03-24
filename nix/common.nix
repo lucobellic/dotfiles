@@ -37,16 +37,6 @@ in
     enableSshSupport = true;
   };
 
-  # Keyring configuration
-  services.gnome-keyring = {
-    enable = true;
-    package = pkgs.gnome-keyring;
-    components = [
-      "secrets"
-      "ssh"
-    ];
-  };
-
   home.packages = [ pkgs.curl ];
 
   home.sessionVariables = {
@@ -54,10 +44,12 @@ in
     OLLAMA_API_BASE = "http://127.0.0.1:11434";
     # SSH_AUTH_SOCK = "/run/user/1000/ssh-agent";
     SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/keyring/ssh";
+    # pass-cli (proton pass) keyring backend does not write to the OS keyring
+    # despite claiming to. Use filesystem provider as a workaround.
+    PROTON_PASS_KEY_PROVIDER = "fs";
   };
 
   imports = [
-    ./secrets/sops.nix
     ./ai/opencode.nix
     ./btop.nix
     ./dev/dev.nix
@@ -68,6 +60,7 @@ in
     ./git.nix
     ./neovim.nix
     ./nix.nix
+    ./secrets/sops.nix
     ./shell/shell.nix
     ./wm/wm.nix
   ];
