@@ -5,10 +5,10 @@
   "share": "disabled",
   "autoshare": false,
   "autoupdate": true,
+  "compaction": { "auto": false },
   "permission": {
     "*": "allow",
-    "compaction": "ask",
-    "doom_loop": "ask"
+    "doom_loop": "ask",
   },
   "instructions": ["AGENTS.md", "~/.config/opencode/AGENTS.md"],
   "agent": {
