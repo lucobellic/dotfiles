@@ -4,6 +4,7 @@
   "keybinds": {
     "messages_half_page_up": "ctrl+u",
     "messages_half_page_down": "ctrl+d",
-    "app_exit": "ctrl+c"
+    "app_exit": "ctrl+c",
+    "terminal_suspend": "none"
   }
 }
