@@ -60,6 +60,7 @@ in
     grim
     slurp
     grimblast
+    hyprshot
     imagemagick
     kdePackages.ffmpegthumbs
     libnotify # for notifications
