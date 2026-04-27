@@ -47,7 +47,7 @@ inputbar {
     children:                    [ "entry" ];
     expand:                      false;
     background-color:            transparent;
-    background-image:            url("~/.cache/theme/wall.quad", width);
+    background-image:            ${ROFI_QUAD_W};
 }
 entry {
     enabled:                     false;

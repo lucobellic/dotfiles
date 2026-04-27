@@ -55,7 +55,7 @@ listbox {
     orientation:                 horizontal;
     children:                    [ "listview" ];
     background-color:            transparent;
-    background-image:            url("~/.cache/theme/wall.blur", width);
+    background-image:            ${ROFI_BLUR_W};
 }
 listview {
     padding:                     2em;

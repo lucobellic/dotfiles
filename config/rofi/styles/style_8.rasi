@@ -34,7 +34,7 @@ mainbox {
     orientation:                 horizontal;
     children:                    [ "listmode" , "inputbar" ];
     background-color:            transparent;
-    background-image:            url("~/.cache/theme/wall.thmb", height);
+    background-image:            ${ROFI_THMB_H};
 }
 
 
@@ -43,7 +43,7 @@ listmode {
     enabled:                     true;
     children:                    [ "listbox" , "mode-switcher" ];
     background-color:            transparent;
-    background-image:            url("~/.cache/theme/wall.blur", height);
+    background-image:            ${ROFI_BLUR_H};
 }
 listbox {
     spacing:                     0em;

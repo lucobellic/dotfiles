@@ -46,7 +46,7 @@ inputbar {
     padding:                     0em;
     children:                    [ "entry" ];
     background-color:            transparent;
-    background-image:            url("~/.cache/theme/wall.sqre", height);
+    background-image:            ${ROFI_SQRE_H};
     border-radius:               1em;
 }
 entry {
