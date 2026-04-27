@@ -16,9 +16,6 @@ in
   ];
 
   programs = {
-    # TODO: to be tested and constumized
-    # mcp = {enable = true; };bled =}
-    # vicinae = { enable = true; };
     bluetuith = {
       enable = true;
     };

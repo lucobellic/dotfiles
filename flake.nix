@@ -37,15 +37,27 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
+      mkHome =
+        userModule:
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            userModule
+            sops-nix.homeManagerModules.sops
+          ];
+          extraSpecialArgs = {
+            inherit
+              awww
+              silent-sddm
+              ;
+          };
+        };
     in
     {
-      homeConfigurations.lhussonn = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [
-          ./home.nix
-          sops-nix.homeManagerModules.sops
-        ];
-        extraSpecialArgs = { inherit awww silent-sddm; };
+      homeConfigurations = {
+        lhussonn = mkHome ./nix/users/work.nix;
+        luco = mkHome ./nix/users/lucobellic.nix;
+        rosuser = mkHome ./nix/users/rosuser.nix;
       };
     };
 }

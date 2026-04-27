@@ -33,6 +33,7 @@ Update `~/.config/nixpkgs/config.nix` with:
 ```sh
 mv ~/.config/home-manager ~/.config/home-manager.bak
 git clone https://github.com/lucobellic/dotfiles ~/.config/home-manager
-cp ~/.config/home-manager/nix/users/lucobellic.nix ~/.config/home-manager/home.nix
-home-manager switch
+home-manager switch -b backup --show-trace --flake .#lhussonn
 ```
+
+Available user configurations: `lhussonn`, `luco`, `rosuser`.

@@ -1,6 +1,5 @@
 { ... }:
 
-# ln -s ~/.config/home-manager/nix/users/lucobellic.nix ~/.config/home-manager/home.nix
 rec {
   home.username = "luco";
   home.homeDirectory = "/home/" + home.username;
@@ -9,5 +8,5 @@ rec {
     email = "luco.bellic@protonmail.com";
   };
 
-  imports = [ ./nix/common.nix ];
+  imports = [ ../common.nix ];
 }

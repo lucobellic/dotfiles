@@ -10,7 +10,9 @@
         "switch",
         "-b",
         "backup",
-        "--show-trace"
+        "--show-trace",
+        "--flake",
+        ".#lhussonn"
       ]
     }
   ]
