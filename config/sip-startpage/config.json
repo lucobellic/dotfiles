@@ -86,6 +86,11 @@
         "icon": "fa-brands fa-github"
       },
       {
+        "name": "GitHub Models Requests",
+        "url": "https://docs.github.com/en/copilot/concepts/billing/copilot-requests",
+        "icon": "fa-solid fa-file-invoice-dollar"
+      },
+      {
         "name": "MyNixOS",
         "url": "https://mynixos.com/",
         "icon": "fa-solid fa-snowflake"
