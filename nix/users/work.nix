@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 rec {
   home.username = "lhussonn";
@@ -7,6 +7,8 @@ rec {
     name = "Ludovic Hussonnois";
     email = "ludovic.hussonnois@easymile.com";
   };
+
+  home.packages = [ pkgs.slack ];
 
   imports = [ ../common.nix ];
 }
