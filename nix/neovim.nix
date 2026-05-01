@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   home.activation = {
@@ -30,7 +35,7 @@
     withRuby = false;
   };
 
-  xdg.configFile.neovide.source = config.lib.file.mkOutOfStoreSymlink ../config/neovide;
+  xdg.configFile.neovide.source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/home-manager/config/neovide";
 
   home.sessionVariables = {
     EDITOR = "nvim";

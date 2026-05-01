@@ -59,8 +59,8 @@
       };
       appearance = {
         cssTheme = "Catppuccin";
-        textFontFamily = "DMMono Nerd Font";
-        monospaceFontFamily = "DMMono Nerd Font";
+        textFontFamily = "DM Mono Nerd Font";
+        monospaceFontFamily = "DM Mono Nerd Font";
         baseFontSize = 12;
       };
       communityPlugins = [ ];

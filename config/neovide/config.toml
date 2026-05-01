@@ -8,9 +8,9 @@ idle = true
 frame = "none"
 
 [font]
-normal = { family = "DMMono Nerd Font", style = "Medium" }
-italic = { family = "DM Mono", style = "Medium Italic" }
-bold = { family = "DMMono Nerd Font", style = "Bold" }
+normal = { family = "DM Mono Nerd Font", style = "Regular" }
+italic = { family = "DM Mono Nerd Font", style = "Regular Italic" }
+bold = { family = "DM Mono Nerd Font", style = "Medium" }
 
 size = 12
 edging = "subpixelantialias"
