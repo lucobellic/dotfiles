@@ -1,10 +1,3 @@
-#!/usr/bin/env -S cargo -Zscript
----cargo
-[dependencies]
-anyhow = "1"
-clap = { version = "4", features = ["derive"] }
-hyprland = "0.4.0-beta.3"
----
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 use hyprland::data::Monitors;
@@ -13,7 +6,7 @@ use hyprland::keyword::Keyword;
 use hyprland::shared::HyprData;
 
 #[derive(Parser)]
-#[command(name = "lid_monitor_handler")]
+#[command(name = "lid-monitor-handler")]
 #[command(about = "Lid Monitor Handler", long_about = None)]
 struct Cli {
   #[command(subcommand)]

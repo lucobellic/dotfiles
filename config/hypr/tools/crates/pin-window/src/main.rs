@@ -1,17 +1,3 @@
-#!/usr/bin/env -S cargo -Zscript
----cargo
-[package]
-name = "pin-window"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
-anyhow = "1"
-hyprland = "0.4.0-beta.3"
-tokio = "1"
-regex = "1"
----
-
 use anyhow::Context;
 use hyprland::data::Client;
 use hyprland::keyword::Keyword;

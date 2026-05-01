@@ -1,16 +1,3 @@
-#!/usr/bin/env -S cargo -Zscript
----cargo
-[package]
-name = "center_window"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
-anyhow = "1"
-hyprland = "0.4.0-beta.3"
-clap = { version = "4", features = ["derive"] }
----
-
 //! Center the currently focused window (make it floating if not already)
 
 use anyhow::{Context, Result};

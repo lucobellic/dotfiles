@@ -1,15 +1,3 @@
-#!/usr/bin/env -S cargo -Zscript
----
-[package]
-edition = "2024"
-
-[profile.dev]
-opt-level = 3
-
-[dependencies]
-anyhow = "1.0"
-serde_json = "1.0"
----
 use anyhow::{Context, Result};
 use std::env;
 use std::ffi::OsStr;
@@ -160,7 +148,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
       });
 
       if let Some(path) = wallpaper {
-        match Command::new("set_wallpaper.rs")
+        match Command::new("set-wallpaper")
           .args(["set", path.to_str().unwrap_or("")])
           .spawn()
         {

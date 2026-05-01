@@ -1,0 +1,12 @@
+[package]
+name = "keybinds-hint"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "keybinds-hint"
+path = "src/main.rs"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true

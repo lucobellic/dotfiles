@@ -1,15 +1,3 @@
-#!/usr/bin/env -S cargo -Zscript
----
-[package]
-edition = "2024"
-
-[profile.dev]
-opt-level = 3
-
-[dependencies]
-anyhow = "1.0"
-clap = { version = "4", features = ["derive"] }
----
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
 use std::ffi::OsStr;
@@ -20,7 +8,7 @@ use std::process::{Command, Stdio};
 const LOCK_FILE_BASE: &str = "/tmp/theme";
 
 #[derive(Parser)]
-#[command(name = "set_wallpaper")]
+#[command(name = "set-wallpaper")]
 #[command(about = "Wallpaper manager", long_about = None)]
 struct Cli {
   #[command(subcommand)]
@@ -283,11 +271,6 @@ fn apply_hyprpaper_wallpaper(_wall_path: &Path) {
     .stdout(Stdio::null())
     .stderr(Stdio::null())
     .spawn();
-  // let _ = Command::new("hyprctl")
-  //   .arg("hyprpaper")
-  //   .arg("reload")
-  //   .arg(format!(",{}", wall_path.display()))
-  //   .spawn();
 }
 
 fn main() {
@@ -313,12 +296,12 @@ fn main() {
   let wallpapers = find_wallpapers(&theme_dir);
   let wall_set = theme_dir.join("wall.set");
 
-  if !fs::read_link(&wall_set)
+  let link_is_valid = fs::read_link(&wall_set)
     .ok()
     .and_then(|p| p.canonicalize().ok())
-    .is_some()
-    && !wallpapers.is_empty()
-  {
+    .is_some();
+
+  if !link_is_valid && !wallpapers.is_empty() {
     eprintln!("fixing link :: {}", wall_set.display());
     let _ = std::os::unix::fs::symlink(&wallpapers[0], &wall_set);
   }

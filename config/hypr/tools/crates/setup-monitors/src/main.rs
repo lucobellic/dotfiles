@@ -1,20 +1,3 @@
-#!/usr/bin/env -S cargo -Zscript
----cargo
-[package]
-name = "setup_monitors"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
-anyhow = "1"
-dirs = "6"
-hyprland = "0.4.0-beta.3"
-serde = { version = "1", features = ["derive"] }
-serde_yaml = "0.9"
-sha1 = "0.10"
-tokio = "1"
----
-
 use std::collections::HashMap;
 use std::fmt;
 use std::fs;
@@ -44,19 +27,15 @@ enum Rotation {
   FlippedDeg270 = 7,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Deserialize)]
 enum Layout {
+  #[default]
   Master,
   Dwindle,
   Scrolling,
   Monocle,
 }
 
-impl Default for Layout {
-  fn default() -> Self {
-    Layout::Master
-  }
-}
 
 impl fmt::Display for Layout {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -131,8 +110,6 @@ async fn setup_home() -> anyhow::Result<()> {
   try_join!(
     dispatch!(async; Exec, "pgrep zen    || zen"),
     dispatch!(async; Exec, "pgrep slack  || slack"),
-    // dispatch!(async; Exec, "pgrep kitty  || kitty --class kitty-dev"),
-    // dispatch!(async; Exec, cursor_cmd.as_str())
   )?;
 
   Ok(())
@@ -152,8 +129,6 @@ async fn setup_work() -> anyhow::Result<()> {
   try_join!(
     dispatch!(async; Exec, "pgrep zen    || zen"),
     dispatch!(async; Exec, "pgrep slack  || slack"),
-    // dispatch!(async; Exec, "pgrep kitty  || kitty --class kitty-dev"),
-    // dispatch!(async; Exec, cursor_cmd.as_str())
   )?;
 
   Ok(())
@@ -183,7 +158,7 @@ async fn main() -> anyhow::Result<()> {
 
   Command::new("notify-send")
     .arg("-a")
-    .arg("setup_monitors")
+    .arg("setup-monitors")
     .arg("-u")
     .arg("normal")
     .arg("Setting monitors")
@@ -219,8 +194,6 @@ async fn main() -> anyhow::Result<()> {
       "stacking=bottom",
     ])
     .spawn()?;
-
-  Command::new("open_eww_workspaces.rs").spawn()?;
 
   Ok(())
 }

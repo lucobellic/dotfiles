@@ -1,9 +1,3 @@
-#!/usr/bin/env -S cargo -Zscript
----
-[dependencies]
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
----
 use serde::{Deserialize, Serialize};
 use std::io::Write;
 use std::process::{Command, Stdio};
@@ -190,7 +184,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
   // Format binds for rofi
   let mut lines = Vec::new();
-  let header = format!("{:<35} {} {:<20}", "󰌌 Keybinds", "", "Description");
+  let header = format!("{:<35} {} {:<20}", "󰌌 Keybinds", "", "Description");
   let term_width = 100; // fallback if tput fails
   let linebreak = "━".repeat(term_width);
 
@@ -276,7 +270,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
   let rofi_config = format!("{}/rofi/clipboard.rasi", conf_dir);
 
   let mut rofi = Command::new("rofi")
-    .args(&[
+    .args([
       "-dmenu",
       "-p",
       "",

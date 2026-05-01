@@ -4,19 +4,6 @@
   ...
 }:
 let
-  # Rust script paths for precompilation
-  binScripts = [
-    "pin-window.rs"
-    "center-window.rs"
-    "keybinds_hint.rs"
-    "lid_monitor_handler.rs"
-    "open_eww_workspaces.rs"
-    "select_wallpaper.rs"
-    "set_wallpaper.rs"
-    "setup_monitors.rs"
-    "terminal-dropdown.rs"
-  ];
-
   ewwScripts = [
     "audio.rs"
     "battery-usage.rs"
@@ -29,7 +16,7 @@ let
     "ram-usage.rs"
   ];
 
-  # Script to compile Rust scripts with progress indication
+  # Script to build the Rust workspace and compile eww scripts
   compileRustScripts = pkgs.writeShellScript "compile-rust-scripts" ''
     set -e
 
@@ -38,83 +25,81 @@ let
 
     # Find cargo
     if ! command -v cargo >/dev/null 2>&1; then
-      echo -e "\033[1;33m⚠ cargo not found, skipping Rust script compilation\033[0m"
+      echo -e "\033[1;33m⚠ cargo not found, skipping Rust compilation\033[0m"
       exit 0
     fi
-
-    # Check if nightly toolchain is available (cargo -Zscript requires nightly)
-    if ! cargo -Zscript --help >/dev/null 2>&1; then
-      echo -e "\033[1;33m⚠ cargo -Zscript not available, skipping Rust script compilation\033[0m"
-      exit 0
-    fi
-
-    # Directory to track compiled script store paths
-    CACHE_DIR="$HOME/.cache/rust-scripts"
-    mkdir -p "$CACHE_DIR"
-
-    compile_script() {
-      local script="$1"
-      local name="$(basename "$script" .rs)"
-      local cache_file="$CACHE_DIR/$name.storepath"
-
-      # Resolve the actual nix store path (for symlinks)
-      local resolved_path
-      if [ -L "$script" ]; then
-        resolved_path="$(readlink -f "$script")"
-      else
-        resolved_path="$script"
-      fi
-
-      # Check if we already compiled this exact store path
-      if [ -f "$cache_file" ] && [ "$(cat "$cache_file")" = "$resolved_path" ]; then
-        echo -e "  \033[1;90m○\033[0m $name (cached)"
-        return 0
-      fi
-
-      # Use cargo build to produce the cached binary (not just check)
-      # This populates the script cache so subsequent runs don't recompile
-      if cargo build -Zscript --manifest-path "$script" >/dev/null 2>&1; then
-        # Store the resolved path to track this version
-        echo "$resolved_path" > "$cache_file"
-        echo -e "  \033[1;32m✓\033[0m $name"
-        return 0
-      else
-        echo -e "  \033[1;31m✗\033[0m $name (compilation failed)"
-        return 1
-      fi
-    }
 
     echo ""
-    echo -e "\033[1;34m🦀 Compiling Rust scripts...\033[0m"
+    echo -e "\033[1;34m🦀 Building Rust workspace...\033[0m"
 
-    # Compile bin scripts
-    BIN_DIR="$HOME/.local/share/bin"
-    if [ -d "$BIN_DIR" ]; then
-      echo -e "\033[1;36m  ~/.local/share/bin:\033[0m"
-      for script in ${lib.concatStringsSep " " binScripts}; do
-        if [ -f "$BIN_DIR/$script" ]; then
-          compile_script "$BIN_DIR/$script" || true
-        fi
-      done
+    # Build the hypr-tools workspace (binaries land in target/release/ and are used directly)
+    WORKSPACE_DIR="$HOME/.config/home-manager/config/hypr/tools"
+
+    if [ -f "$WORKSPACE_DIR/Cargo.toml" ]; then
+      echo -e "\033[1;36m  $WORKSPACE_DIR\033[0m"
+
+      if cargo build --release --manifest-path "$WORKSPACE_DIR/Cargo.toml" 2>&1; then
+        echo -e "\033[1;32m  ✓ Workspace build succeeded\033[0m"
+        echo -e "  Binaries available at: $WORKSPACE_DIR/target/release/"
+      else
+        echo -e "\033[1;31m  ✗ Workspace build failed\033[0m"
+      fi
+    else
+      echo -e "\033[1;33m⚠ Workspace Cargo.toml not found at $WORKSPACE_DIR\033[0m"
     fi
 
-    # Compile eww scripts
-    EWW_DIR="$HOME/.config/eww/scripts"
-    if [ -d "$EWW_DIR" ]; then
-      echo -e "\033[1;36m  ~/.config/eww/scripts:\033[0m"
-      for script in ${lib.concatStringsSep " " ewwScripts}; do
-        if [ -f "$EWW_DIR/$script" ]; then
-          compile_script "$EWW_DIR/$script" || true
+    # Compile eww scripts (still using cargo -Zscript)
+    if cargo -Zscript --help >/dev/null 2>&1; then
+      CACHE_DIR="$HOME/.cache/rust-scripts"
+      mkdir -p "$CACHE_DIR"
+
+      compile_script() {
+        local script="$1"
+        local name="$(basename "$script" .rs)"
+        local cache_file="$CACHE_DIR/$name.storepath"
+
+        local resolved_path
+        if [ -L "$script" ]; then
+          resolved_path="$(readlink -f "$script")"
+        else
+          resolved_path="$script"
         fi
-      done
+
+        if [ -f "$cache_file" ] && [ "$(cat "$cache_file")" = "$resolved_path" ]; then
+          echo -e "  \033[1;90m○\033[0m $name (cached)"
+          return 0
+        fi
+
+        if cargo build -Zscript --manifest-path "$script" >/dev/null 2>&1; then
+          echo "$resolved_path" > "$cache_file"
+          echo -e "  \033[1;32m✓\033[0m $name"
+          return 0
+        else
+          echo -e "  \033[1;31m✗\033[0m $name (compilation failed)"
+          return 1
+        fi
+      }
+
+      EWW_DIR="$HOME/.config/eww/scripts"
+      if [ -d "$EWW_DIR" ]; then
+        echo -e "\033[1;36m  ~/.config/eww/scripts:\033[0m"
+        for script in ${lib.concatStringsSep " " ewwScripts}; do
+          if [ -f "$EWW_DIR/$script" ]; then
+            compile_script "$EWW_DIR/$script" || true
+          fi
+        done
+      fi
     fi
 
-    echo -e "\033[1;32m✓ Rust script compilation complete\033[0m"
+    echo -e "\033[1;32m✓ Rust compilation complete\033[0m"
     echo ""
   '';
 in
 {
-  # Compile Rust scripts after symlinks are created
+  # Build Rust workspace after symlinks are created.
+  # Compiled binaries live at:
+  #   ~/.config/home-manager/config/hypr/tools/target/release/<name>
+  # They are referenced directly via $scrPath in hyprland.conf — no install step needed.
   home.activation.compileRustScripts = lib.hm.dag.entryAfter [ "writeBoundary" "linkGeneration" ] ''
     ${compileRustScripts}
   '';

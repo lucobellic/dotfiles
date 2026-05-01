@@ -1,0 +1,17 @@
+[package]
+name = "setup-monitors"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "setup-monitors"
+path = "src/main.rs"
+
+[dependencies]
+anyhow.workspace = true
+dirs.workspace = true
+hyprland.workspace = true
+serde.workspace = true
+serde_yaml.workspace = true
+sha1.workspace = true
+tokio.workspace = true

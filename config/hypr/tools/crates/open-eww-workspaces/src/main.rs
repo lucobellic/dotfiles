@@ -1,15 +1,3 @@
-#!/usr/bin/env -S cargo -Zscript
----cargo
-[package]
-name = "open_eww_workspaces"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
-anyhow = "1"
-hyprland = "0.4.0-beta.3"
----
-
 //! Opens eww workspace widgets on all monitors with optional auto-close timer.
 
 use anyhow::{Result, bail};

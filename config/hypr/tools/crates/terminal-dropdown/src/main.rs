@@ -1,16 +1,3 @@
-#!/usr/bin/env -S cargo -Zscript
----cargo
-[package]
-name = "terminal_dropdown"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
-anyhow = "1"
-hyprland = "0.4.0-beta.3"
-clap = { version = "4", features = ["derive"] }
----
-
 //! Toggle dropdown terminal (Kitty or Ghostty) with sizing and centering
 
 use anyhow::{Context, Result};
@@ -185,32 +172,9 @@ fn window_id(address: &Address) -> WindowIdentifier<'_> {
   WindowIdentifier::Address(address.clone())
 }
 
-/// Get the script directory path
-fn get_script_dir() -> Result<std::path::PathBuf> {
-  // Get the script path from argv[0] (the invoked script path)
-  let script_path = std::env::args()
-    .next()
-    .context("Failed to get script path from argv[0]")?;
-
-  let script_path = std::path::PathBuf::from(script_path);
-
-  // Canonicalize to resolve all symlinks and get the real path
-  let resolved_path = script_path
-    .canonicalize()
-    .context("Failed to canonicalize script path")?;
-
-  resolved_path
-    .parent()
-    .map(|p| p.to_path_buf())
-    .context("Failed to get script directory")
-}
-
-/// Center a window using the center-window.rs script
+/// Center a window using the center-window binary
 fn center_window(address: &Address, width: i16, height: i16) -> Result<()> {
-  let script_dir = get_script_dir()?;
-  let center_script = script_dir.join("center-window.rs");
-
-  let output = Command::new(&center_script)
+  let output = Command::new("center-window")
     .args([
       &format!("{}", width),
       &format!("{}", height),
@@ -218,14 +182,11 @@ fn center_window(address: &Address, width: i16, height: i16) -> Result<()> {
       &format!("{}", address),
     ])
     .output()
-    .context(format!(
-      "Failed to execute center-window.rs at {:?}",
-      center_script
-    ))?;
+    .context("Failed to execute center-window")?;
 
   if !output.status.success() {
     anyhow::bail!(
-      "center-window.rs failed: {}",
+      "center-window failed: {}",
       String::from_utf8_lossy(&output.stderr)
     );
   }
@@ -257,7 +218,7 @@ fn find_window_by_address(address: &Address) -> Result<Option<Client>> {
 
 /// Resize, center, and focus a window in sequence
 fn setup_window(address: &Address, width: i16, height: i16) -> Result<()> {
-  // center-window.rs handles both resizing and centering
+  // center-window handles both resizing and centering
   center_window(address, width, height).and_then(|_| focus_window(address))
 }
 

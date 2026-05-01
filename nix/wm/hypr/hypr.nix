@@ -81,11 +81,6 @@ in
   xdg.configFile.walker.source = mkConfigSymlink "walker";
   xdg.configFile.wlogout.source = mkConfigSymlink "wlogout";
 
-  home.file.".local/share/bin" = {
-    recursive = true;
-    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/home-manager/config/hypr/tools/bin";
-  };
-
   xdg.configFile."xdg-desktop-portal/hyprland-portals.conf".source =
     config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/home-manager/config/xdg-desktop-portal/hyprland-portals.conf";
 

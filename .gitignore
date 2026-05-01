@@ -5,3 +5,4 @@
 .opencode
 
 target/**
+config/hypr/tools/target/**
