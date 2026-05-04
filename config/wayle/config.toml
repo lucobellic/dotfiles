@@ -1,0 +1,56 @@
+[bar]
+scale = 0.80
+padding = 0.0
+padding-ends = 0.0
+bg = "transparent"
+button-variant = "basic"
+button-bg-opacity = 0
+button-icon-size = 0.85
+button-label-size = 0.90
+button-border-location = "none"
+
+[[bar.layout]]
+monitor = "*"
+show = false
+left = [
+    "hyprland-workspaces",
+    "media",
+    "bluetooth",
+    "network",
+]
+center = [
+    "dashboard",
+    "clock",
+    "notifications",
+]
+right = [
+    "microphone",
+    "volume",
+    "battery",
+    "hyprsunset",
+]
+
+[styling]
+rounding = "none"
+
+[styling.palette]
+bg = "#11111b"
+surface = "#181825"
+elevated = "#1e1e2e"
+fg = "#cdd6f4"
+fg-muted = "#bac2de"
+primary = "#b4befe"
+red = "#f38ba8"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+blue = "#74c7ec"
+
+[modules.clock]
+format = "%A %d %b %H:%M"
+icon-show = false
+
+[modules.notification]
+label-show = false
+
+[wallpaper]
+engine-enabled = false

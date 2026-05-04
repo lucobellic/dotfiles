@@ -51,7 +51,7 @@ in
     hyprshade
     hyprsunset
     hypridle # idle daemon for screen lock and power management
-    (config.lib.nixGL.wrap hyprpanel)
+    (config.lib.nixGL.wrap wayle)
 
     swappy
     grim
@@ -74,7 +74,7 @@ in
   xdg.configFile.dunst.source = mkConfigSymlink "dunst";
   xdg.configFile.eww.source = mkConfigSymlink "eww";
   xdg.configFile.hypr.source = mkConfigSymlink "hypr";
-  xdg.configFile.hyprpanel.source = mkConfigSymlink "hyprpanel";
+  xdg.configFile.wayle.source = mkConfigSymlink "wayle";
   xdg.configFile.onagre.source = mkConfigSymlink "onagre";
   xdg.configFile.rofi.source = mkConfigSymlink "rofi";
   xdg.configFile.swaylock.source = mkConfigSymlink "swaylock";
