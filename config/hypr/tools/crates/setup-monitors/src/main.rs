@@ -4,8 +4,9 @@ use std::fs;
 use std::process::Command;
 
 use dirs::home_dir;
-use hyprland::data::Monitors;
+use hyprland::data::{Monitors, Workspaces};
 use hyprland::dispatch;
+use hyprland::dispatch::{Dispatch, DispatchType, MonitorIdentifier, WorkspaceIdentifier};
 use hyprland::keyword::Keyword;
 use hyprland::shared::HyprData;
 use serde::Deserialize;
@@ -134,6 +135,38 @@ async fn setup_work() -> anyhow::Result<()> {
   Ok(())
 }
 
+/// Force-reassign workspaces to their configured monitors.
+async fn reassign_workspaces(screens: &[ScreenConfig]) -> anyhow::Result<()> {
+  let monitors = Monitors::get()?;
+  let workspaces = Workspaces::get()?;
+
+  for screen in screens {
+    // Find the physical monitor matching this screen config by description.
+    let Some(monitor) = monitors.iter().find(|m| m.description == screen.description) else {
+      // Monitor not currently connected — skip.
+      continue;
+    };
+
+    let desired_ws_id = screen.workspace as i32;
+
+    // Find where the desired workspace currently lives (if it exists at all).
+    let currently_on_wrong_monitor = workspaces
+      .iter()
+      .find(|w| w.id == desired_ws_id)
+      .map(|w| w.monitor != monitor.name)
+      .unwrap_or(false);
+
+    if currently_on_wrong_monitor {
+      Dispatch::call(DispatchType::MoveWorkspaceToMonitor(
+        WorkspaceIdentifier::Id(desired_ws_id),
+        MonitorIdentifier::Name(&monitor.name),
+      ))?;
+    }
+  }
+
+  Ok(())
+}
+
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> anyhow::Result<()> {
   let home = home_dir().context("Failed to get home directory")?;
@@ -169,6 +202,8 @@ async fn main() -> anyhow::Result<()> {
     .iter()
     .try_for_each(|screen| screen.apply())?;
 
+  reassign_workspaces(screens_to_apply).await?;
+
   match config_name {
     "home" => setup_home().await?,
     "work" => setup_work().await?,
@@ -194,6 +229,8 @@ async fn main() -> anyhow::Result<()> {
       "stacking=bottom",
     ])
     .spawn()?;
+
+  Command::new("open_eww_workspaces.rs").spawn()?;
 
   Ok(())
 }
