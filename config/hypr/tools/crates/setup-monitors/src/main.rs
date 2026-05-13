@@ -230,7 +230,8 @@ async fn main() -> anyhow::Result<()> {
     ])
     .spawn()?;
 
-  Command::new("open_eww_workspaces.rs").spawn()?;
+  std::thread::sleep(std::time::Duration::from_millis(500));
+  Command::new("open-eww-workspaces").spawn()?;
 
   Ok(())
 }
